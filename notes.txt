@@ -1,0 +1,40 @@
+Notes TA Sparing Futsal
+
+Proses Bisnis
+1. Pemilik Lapangan (Venue) daftar atau register (user juga begitu)
+   > General Informations    
+    - Venue Name (String)    
+    - Venue Address (String)    
+    - Postal Code (String)    
+    - Phone Number (String)    
+    - Number of Field (int)    
+    - FIeld Name (String)    
+    - Field Type (String)    
+    - Photo (String)
+  > Personal Details    
+    - Owner Name (String)    
+    - NIK (String)    
+    - Phone Number (String)    
+    - Email (String)    
+    - Password (String)    
+    - Repeat Password (String)    
+    - Term Condition (Boolean)
+2. Habis register diverifikasi admin
+3. User melihat ketersediaan lapangan
+4. User memesan lapangan (bisa lebih dari 1 lapangan)
+ > Pesan untuk sendiri (booking lapangan)     
+   User booking lapangan yang kemudian akan nampil di venue untuk diverifikasi setelah dilakukan pembayaran secara offline    
+    - Venue apa    
+    - Tanggal berapa    
+    - Jam berapa    
+    - Durasi berapa lama (satuan jam)    
+    - Lapangan apa> Pesan untuk sparing dengan yang available (booking lapangan ngikut dari orang yang mau diajak sparing)    User milih lawan sparing yang kemudian akan memberikan info ke lawan sparing untuk bisa nerima request sparing atau menolak
+5. User melakukan pembayaran secara offline (tidak di sistemkan)
+6. Venue melakukan verifikasi terhadap booking untuk di acc ketika pembayaran masuk, meolak ketika pembayaran tidak dilakukan. (otomatis ditolak ketika ga bayar dp dalam waktu 1x24jam)
+7. Ketika sudah diverif maka data ditampilkan di list booked
+8. User memberi ulasan kepada venue dan/atau tim lain yang diajak sparing
+
+Notes:
+- Admin page isinya USER LIST, OWNER LIST detailnya ke VENUE LIST, REPORT AKUN FAKE YANG GA DATENG SPARING
+- Admin bisa hapus akun/deactive akun 
+- Venue bisa ngisi jadwal untuk yang booking ditempat
