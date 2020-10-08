@@ -1,0 +1,20 @@
+.msha_toast
+{
+    width: 330px !important;
+    background-color: rgb(209, 209, 209) !important;
+}
+
+.msha_toast_container
+{
+    top: 8px !important;
+}
+
+.msha_toast_title
+{
+    color: black !important;
+}
+
+.msha_toast_desc
+{
+    color: black !important;
+}
