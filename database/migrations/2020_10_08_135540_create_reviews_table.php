@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class CreateReviewsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,17 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('reviews', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->nullable();
-            $table->string('email')->unique()->nullable();
-            $table->string('phone_number')->nullable();
-            $table->string('password')->nullable();
-            $table->integer('role')->nullable();
-            $table->integer('verified')->default(0);
-            $table->timestamp('verified_at')->nullable();
+            $table->integer('booking_list_id')->unsigned()->nullable();
+            $table->foreign('booking_list_id')->references('id')->on('booking_lists');
+            $table->integer('user_reporter_id')->unsigned()->nullable();
+            $table->foreign('user_reporter_id')->references('id')->on('users');
+            $table->integer('user_reported_id')->unsigned()->nullable();
+            $table->foreign('user_reported_id')->references('id')->on('users');
+            $table->string('object_type')->nullable();
+            $table->string('review_type')->nullable();
+            $table->string('comment')->nullable();
             $table->integer('flag_active')->default(1);
             $table->timestamp('created_at')->nullable();
             $table->string('created_by')->nullable();
@@ -39,6 +41,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('reviews');
     }
 }

@@ -40,16 +40,10 @@ Notes:
 - Venue bisa ngisi jadwal untuk yang booking ditempat
 
 DATABASE TABLES
-*user = id, user_name, email, password, phone_number, type, is_verified, verified_at , flag_active
-
-*user_team = id, id_user, team_name, category, date_established, address, postal_code, photo, flag_active
-
-*user_venue = id, id_user, venue_name, address, phone_number, postal_code, photo, flag_active
-
-*venue_field = id, id_user_venue, field_name, field_type, price, photo, flag_active
-
-*sparring_request = id, id_user, id_booking_list, is_accepted, flag_active
-
-*booking_list = id, id_venue_field, id_user, booking_type, date, hour, duration, price, sparring_user, is_available, is_paid, flag_active
-
-*review = id, id_booking_list, id_user_reporter, object_type, review_type, id_reported, comment, flag_active
+[V] user = id, name, email, password, phone_number, role, is_verified, verified_at , flag_active
+[V] user_team = id, id_user, team_name, category, date_established, address, postal_code, photo, bio, flag_active
+[V] user_venue = id, id_user, venue_name, address, phone_number, postal_code, photo, flag_active
+[V] venue_field = id, id_user_venue, field_name, field_type, price, photo, flag_active
+[V] sparring_request = id, id_user, id_booking_list, is_accepted, flag_active
+[V] booking_list = id, id_venue_field, id_user, booking_type, date, hour, duration, price, sparring_user, is_available, is_paid, flag_active
+[V] review = id, id_booking_list, id_user_reporter, object_type, review_type, id_reported, comment, flag_active

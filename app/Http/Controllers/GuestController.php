@@ -25,35 +25,4 @@ class GuestController extends Controller
     {
         return FlashSession::success(url("admin/dashboard"), 'Berhasil');
     }
-    
-    public function registerUser(Request $request)
-    {
-        $data = ['asd'];
-
-        return view('guest.register.user',$data);
-    }
-
-    public function registerVenue(Request $request)
-    {
-        $data = ['asd'];
-
-        return view('guest.register.venue',$data);
-    }
-
-    
-    public function registerUserSubmit(Request $request)
-    {
-        $data = ['asd'];
-
-        return FlashSession::success(url("user/dashboard"), 'Berhasil');
-    }
-
-    public function registerVenueSubmit(Request $request)
-    {
-        $data = ['asd'];
-
-        return FlashSession::success(url("venue/dashboard"), 'Berhasil');
-    }
-
-
 }

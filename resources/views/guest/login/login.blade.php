@@ -46,7 +46,7 @@
 				<img src="images/Logo2.png"> -->
 
             <div class="wrap-login100">
-                <form class="login100-form validate-form">
+                <form class="login100-form validate-form" action="{{ url('login') }}" method="POST">
                     @csrf
                     
                     <span class="login100-form-title p-b-43">
@@ -67,7 +67,7 @@
                     </div>
 
                     <div class="container-login100-form-btn mt-5">
-                        <button type="button" class="login100-form-btn">
+                        <button type="submit" class="login100-form-btn">
                             Login
                         </button>
                     </div>

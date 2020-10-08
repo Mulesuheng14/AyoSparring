@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class CreateVenueFieldsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,14 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('venue_fields', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->nullable();
-            $table->string('email')->unique()->nullable();
-            $table->string('phone_number')->nullable();
-            $table->string('password')->nullable();
-            $table->integer('role')->nullable();
-            $table->integer('verified')->default(0);
-            $table->timestamp('verified_at')->nullable();
+            $table->integer('user_venue_id')->unsigned()->nullable();
+            $table->foreign('user_venue_id')->references('id')->on('user_venues');
+            $table->string('field_name')->nullable();
+            $table->string('field_type')->nullable();
+            $table->string('price')->nullable();
+            $table->string('photo')->nullable();
             $table->integer('flag_active')->default(1);
             $table->timestamp('created_at')->nullable();
             $table->string('created_by')->nullable();
@@ -39,6 +38,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('venue_fields');
     }
 }

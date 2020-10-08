@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,14 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Authentication Routes...
+Auth::routes(['register' => false]); // Set route register in auth laravel is false
+Route::get('register/user', 'Auth\RegisterController@registerUser');
+Route::get('register/venue', 'Auth\RegisterController@registerVenue');
+Route::post('register/user/submit', 'Auth\RegisterController@registerUserSubmit');
+Route::post('register/venue/submit', 'Auth\RegisterController@registerVenueSubmit');
+
 // ROUTE FOR GUEST
 Route::get('/', 'GuestController@index');
-Route::get('/login', 'GuestController@login');
-Route::post('/login/submit', 'GuestController@loginSubmit');
-Route::get('/register/user', 'GuestController@registerUser');
-Route::get('/register/venue', 'GuestController@registerVenue');
-Route::post('/register/user/submit', 'GuestController@registerUserSubmit');
-Route::post('/register/venue/submit', 'GuestController@registerVenueSubmit');
+Route::get('login', 'GuestController@login');
+Route::post('login/submit', 'GuestController@loginSubmit');
 
 // ROUTE FOR USER
 Route::get('/user/dashboard', 'UserController@index');

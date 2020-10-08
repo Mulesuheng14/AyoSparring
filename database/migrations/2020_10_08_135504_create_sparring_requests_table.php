@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class CreateSparringRequestsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('sparring_requests', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->nullable();
-            $table->string('email')->unique()->nullable();
-            $table->string('phone_number')->nullable();
-            $table->string('password')->nullable();
-            $table->integer('role')->nullable();
-            $table->integer('verified')->default(0);
-            $table->timestamp('verified_at')->nullable();
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('booking_list_id')->unsigned()->nullable();
+            $table->foreign('booking_list_id')->references('id')->on('booking_lists');
+            $table->integer('is_accepted')->default(0);
             $table->integer('flag_active')->default(1);
             $table->timestamp('created_at')->nullable();
             $table->string('created_by')->nullable();
@@ -39,6 +37,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('sparring_requests');
     }
 }

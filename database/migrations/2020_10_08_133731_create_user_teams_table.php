@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class CreateUserTeamsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,17 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('user_teams', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->nullable();
-            $table->string('email')->unique()->nullable();
-            $table->string('phone_number')->nullable();
-            $table->string('password')->nullable();
-            $table->integer('role')->nullable();
-            $table->integer('verified')->default(0);
-            $table->timestamp('verified_at')->nullable();
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->string('team_name')->nullable();
+            $table->string('category')->nullable();
+            $table->timestamp('date_established')->nullable();
+            $table->string('address')->nullable();
+            $table->string('photo')->nullable();
+            $table->string('postal_code')->nullable();
+            $table->string('bio')->nullable();
             $table->integer('flag_active')->default(1);
             $table->timestamp('created_at')->nullable();
             $table->string('created_by')->nullable();
@@ -39,6 +41,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('user_teams');
     }
 }
