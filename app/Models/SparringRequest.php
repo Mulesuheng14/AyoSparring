@@ -19,11 +19,11 @@ class SparringRequest extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo('App\Models\User', 'user_id');
     }
 
     public function booking()
     {
-        return $this->belongsTo('App\BookingList', 'booking_list_id');
+        return $this->belongsTo('App\Models\BookingList', 'booking_list_id');
     }
 }

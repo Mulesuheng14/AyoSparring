@@ -19,16 +19,16 @@ class Review extends Model
 
     public function reporter()
     {
-        return $this->belongsTo('App\User', 'user_reporter_id');
+        return $this->belongsTo('App\Models\User', 'user_reporter_id');
     }
 
     public function reported()
     {
-        return $this->belongsTo('App\User', 'user_reported_id');
+        return $this->belongsTo('App\Models\User', 'user_reported_id');
     }
 
     public function booking()
     {
-        return $this->belongsTo('App\BookingList', 'booking_list_id');
+        return $this->belongsTo('App\Models\BookingList', 'booking_list_id');
     }
 }

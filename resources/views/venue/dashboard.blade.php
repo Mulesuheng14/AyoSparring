@@ -26,6 +26,9 @@
     <!-- Fontawesome CSS -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/fontawesome/css/all.min.css') }}">
 
+    {{-- DataTables CSS --}}
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/datatables/css/dataTables.css') }}">
+
     <!-- JToast CSS  -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/jtoast/src/toastStyle.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/jtoast/src/custom.css') }}">
@@ -53,7 +56,7 @@
             <span class="d-block d-lg-none"> </span>
             <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="assets/img/iconmonstr-user-20-240.png" alt="" /></span>
         </a>
-        <div class="sidebar-heading text-warning">STAR FUTSAL</div>
+        <div class="sidebar-heading text-warning">{{ Auth::user()->venues->first()->venue_name }}</div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav">
@@ -63,7 +66,7 @@
                 <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#feedback">Feedback</a></li>
                 <li class="nav-item">
                     <a class="nav-link js-scroll-trigge" href="{{ url('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i data-feather="power" class="svg-icon mr-2 ml-1"></i>
+                        <i data-feather="power" class="svg-icon"></i>
                         Logout
 
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -76,120 +79,62 @@
     <!-- Page Content-->
     <div class="container-fluid p-0">
         <!-- My-Venue-->
-        <section class="resume-section" style="width: fit-content; height: fit-content;" id="my-venue">
+        <section class="resume-section" style="width: fit-content;height: fit-content;" id="my-venue">
             <div class="resume-section-content d-flex flex-column ">
+                
                 <h1 class="mb-0">
-                    <h1 class="card-title text-blue">STAR<span class="text-dark"> FUTSAL</span></h1>
+                    <h1 class="card-title text-blue">{{ Auth::user()->venues->first()->venue_name }}</h1>
                 </h1>
+
                 <div class="subheading mb-5">
-                    Jalan Kaliurang KM. 9, Ngaglik, Sleman, DIY
-                    <h4 class="text-dark"> 081223456789 </h4>
+                    {{ Auth::user()->venues->first()->address }}
+                    <h4 class="text-dark">{{ Auth::user()->venues->first()->phone_number }}</h4>
                 </div>
+                
                 <div class="card mt-1 " style="width: 70rem; height: fit-content;">
+
                     <h5 class="card-header bg-primary text-light">Schedule Availability</h5>
-                    <div class="card-body">
-                        <table class="table table-bordered">
+                    
+                    <div class="car-body">
+
+                        <table class="table table-striped table-bordered display nowrap">
                             <thead>
                                 <tr>
-                                    <th scope="col">
-                                        <style>
-                                            h3 {
-                                                text-align: center;
-                                            }
-                                        </style>
-
-                                        <body>
-                                            <h3 class>Date</h3>
-                                        </body>
-                                    </th>
-                                    </th>
-                                    <th scope="col" colspan="10">
-                                        <style>
-                                            h3 {
-                                                text-align: center;
-                                            }
-                                        </style>
-
-                                        <body>
-                                            <h3 class>Time</h3>
-                                        </body>
-                                    </th>
+                                    <tr>
+                                        <th rowspan="2" class="text-center align-middle">Date</th>
+                                        <th colspan="99999" class="text-center align-middle">Time</th>
+                                    </tr>
                                 </tr>
                                 <tr>
-                                    <td scope="col">-</td>
-                                    <th scope="col" colspan="2">19.00-20.00</th>
-                                    <th scope="col" colspan="2">20.00-21.00</th>
-                                    <th scope="col" colspan="2">21.00-22.00</th>
-                                    <th scope="col" colspan="2">22.00-23.00</th>
-                                    <th scope="col" colspan="2">23.00-24.00</th>
-
+                                    @foreach ($schedules[0]['time'] as $time)
+                                        <th class="text-center align-middle">{{$time}}</th>
+                                    @endforeach
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">05/10/2020</th>
-                                    <td colspan="2">Available</td>
-                                    <td colspan="2">Not Available</td>
-                                    <td colspan="2">Not Available</td>
-                                    <td colspan="2">Available</td>
-                                    <td colspan="2">Available</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">06/10/2020</th>
-                                    <td colspan="2">Available</td>
-                                    <td colspan="2">Not Available</td>
-                                    <td colspan="2">Not Available</td>
-                                    <td colspan="2">Available</td>
-                                    <td colspan="2">Available</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">07/10/2020</th>
-                                    <td colspan="2">Available</td>
-                                    <td colspan="2">Not Available</td>
-                                    <td colspan="2">Not Available</td>
-                                    <td colspan="2">Available</td>
-                                    <td colspan="2">Available</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">08/10/2020</th>
-                                    <td colspan="2">Available</td>
-                                    <td colspan="2">Not Available</td>
-                                    <td colspan="2">Not Available</td>
-                                    <td colspan="2">Available</td>
-                                    <td colspan="2">Available</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">09/10/2020</th>
-                                    <td colspan="2">Available</td>
-                                    <td colspan="2">Not Available</td>
-                                    <td colspan="2">Not Available</td>
-                                    <td colspan="2">Available</td>
-                                    <td colspan="2">Available</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">10/10/2020</th>
-                                    <td colspan="2">Available</td>
-                                    <td colspan="2">Not Available</td>
-                                    <td colspan="2">Not Available</td>
-                                    <td colspan="2">Available</td>
-                                    <td colspan="2">Available</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">11/10/2020</th>
-                                    <td colspan="2">Available</td>
-                                    <td colspan="2">Not Available</td>
-                                    <td colspan="2">Not Available</td>
-                                    <td colspan="2">Available</td>
-                                    <td colspan="2">Available</td>
-                                </tr>
+
+                                @foreach ($schedules as $schedule)
+                                    <tr>
+                                        <th class="text-center align-middle">{{ $schedule['date'] }}</th>
+                                        @foreach ($schedule['time'] as $index => $time)
+                                            <td class="text-center align-middle">
+                                                @if ($schedule['availibility'][$index])
+                                                    <i class="fas fa-check-circle text-success"></i>
+                                                @else
+                                                    <i class="fas fa-times-circle text-danger"></i>
+                                                @endif
+                                            </td>
+                                        @endforeach
+                                    </tr>
+                                @endforeach
+
                             </tbody>
                         </table>
+
                     </div>
+
                 </div>
-                <!-- <span class="d-none d-lg-block"><img class="img-fluid img-profile mx-auto mb-1" src="assets/img/StarFutsal.jpg" alt="" /></span>
-                    <p class="lead mb-1"> Tersedia satu lapangan vinyl.</p>
-                    <p class="lead mb-1"> Pukul 08.00-18.00 Harga 80rb/jam</p>
-                    <p class="lead mb-1"> Pukul 18.00-23.00 Harga 120rb/jam</p> -->
+                
                 <div class="card mt-5 " style="width: 40rem;">
                     <h5 class="card-header bg-primary text-light">Upcoming Schedule</h5>
                     <div class="card-body">
@@ -197,17 +142,11 @@
                     </div>
                 </div>
 
-                <!-- <div class="card mt-5 " style="width: 40rem;">
-                        <h5 class="card-header bg-primary text-light">Next Match</h5>
-                        <div class="card-body">
-                            <h3 class="card-title">VS. <span class="text-red">Gadjah Mada University</span></h3>
-                            <p class="lead text-dark">At Jakal 7 Futsal</p>
-                            <p class="lead text-dark">Monday, 09.00 PM</p>
-                        </div>
-                    </div> -->
             </div>
         </section>
+
         <hr class="m-0" />
+
         <!-- Booking-List-->
         <div style="background-color: #f2f2f2;">
             <section class="resume-section" style="width: fit-content; height: fit-content;" id="booking-list">
@@ -412,6 +351,9 @@
     {{-- JToast JAVASCRIPT --}}
     <script type="text/javascript" src="{{ asset('assets/jtoast/src/toast.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/jtoast/src/custom.js') }}"></script>
+
+    {{-- DataTables JAVASCRIPT --}}
+    <script type="text/javascript" src="{{ asset('assets/datatables/js/dataTables.js') }}"></script>
 
     {{-- Mine JAVASCRIPT --}}
     <script type="text/javascript" src="{{ asset('assets/js/scripts.js') }}"></script>

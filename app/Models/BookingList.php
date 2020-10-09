@@ -20,26 +20,26 @@ class BookingList extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User', 'user_id');
+        return $this->belongsTo('App\Models\User', 'user_id');
     }
 
     public function field()
     {
-        return $this->belongsTo('App\VenueField', 'venue_field_id');
+        return $this->belongsTo('App\Models\VenueField', 'venue_field_id');
     }
 
     public function sparringUser()
     {
-        return $this->belongsTo('App\User', 'sparring_user');
+        return $this->belongsTo('App\Models\User', 'sparring_user');
     }
 
     public function reviews()
     {
-        return $this->hasMany('App\Review', 'booking_list_id');
+        return $this->hasMany('App\Models\Review', 'booking_list_id');
     }
 
     public function sparringRequests()
     {
-        return $this->hasMany('App\SparringRequest', 'booking_list_id');
+        return $this->hasMany('App\Models\SparringRequest', 'booking_list_id');
     }
 }

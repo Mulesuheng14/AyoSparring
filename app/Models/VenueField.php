@@ -19,11 +19,11 @@ class VenueField extends Model
 
     public function venue()
     {
-        return $this->belongsTo('App\UserVenue', 'user_venue_id');
+        return $this->belongsTo('App\Models\UserVenue', 'user_venue_id');
     }
 
     public function bookings()
     {
-        return $this->hasMany('App\BookingList', 'venue_field_id');
+        return $this->hasMany('App\Models\BookingList', 'venue_field_id');
     }
 }

@@ -26,36 +26,36 @@ class User extends Authenticatable
 
     public function teams()
     {
-        return $this->hasMany('App\UserTeam', 'user_id');
+        return $this->hasMany('App\Models\UserTeam', 'user_id');
     }
 
     public function venues()
     {
-        return $this->hasMany('App\UserVenue', 'user_id');
+        return $this->hasMany('App\Models\UserVenue', 'user_id');
     }
 
     public function bookings()
     {
-        return $this->hasMany('App\BookingList', 'user_id');
+        return $this->hasMany('App\Models\BookingList', 'user_id');
     }
 
     public function sparringRequests()
     {
-        return $this->hasMany('App\SparringRequest', 'user_id');
+        return $this->hasMany('App\Models\SparringRequest', 'user_id');
     }
 
     public function reviewReporter()
     {
-        return $this->hasMany('App\Review', 'user_reporter_id');
+        return $this->hasMany('App\Models\Review', 'user_reporter_id');
     }
 
     public function reviewReported()
     {
-        return $this->hasMany('App\Review', 'user_reported_id');
+        return $this->hasMany('App\Models\Review', 'user_reported_id');
     }
 
     public function bookingSparrings()
     {
-        return $this->hasMany('App\BookingList', 'sparring_user');
+        return $this->hasMany('App\Models\BookingList', 'sparring_user');
     }
 }

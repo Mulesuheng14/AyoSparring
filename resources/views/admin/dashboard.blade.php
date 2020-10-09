@@ -56,7 +56,7 @@
             <span class="d-block d-lg-none"> </span>
             <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="assets/img/iconmonstr-user-20-240.png" alt="" /></span>
         </a>
-        <div class="sidebar-heading text-warning">ADMIN</div>
+        <div class="sidebar-heading text-warning">{{ Auth::user()->name }}</div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav">
@@ -84,7 +84,7 @@
             <div class="resume-section-content d-flex flex-column ">
 
                 <h1 class="mb-0">
-                    <h1 class="card-title text-green">ADMIN</h1>
+                    <h1 class="card-title text-green">{{ Auth::user()->name }}</h1>
                 </h1>
 
                 <div class="card mt-1 w-100">
@@ -161,7 +161,7 @@
 
                     <h5 class="card-header bg-primary text-light">LIST VENUES</h5>
 
-                    <div class="card-body">
+                    <div class="card-body table-responsive">
                         <table id="tabelVenue" class="table table-striped table-bordered display nowrap" style="width:100% !important">
                             <thead>
                                 <tr>
