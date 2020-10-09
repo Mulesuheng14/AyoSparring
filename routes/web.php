@@ -14,23 +14,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Authentication Routes...
-Auth::routes(['register' => false]); // Set route register in auth laravel is false
+// ROUTE FOR GUEST
+Route::get('/', 'GuestController@index');
+Auth::routes(['register' => false]); 
 Route::get('register/user', 'Auth\RegisterController@registerUser');
 Route::get('register/venue', 'Auth\RegisterController@registerVenue');
 Route::post('register/user/submit', 'Auth\RegisterController@registerUserSubmit');
 Route::post('register/venue/submit', 'Auth\RegisterController@registerVenueSubmit');
-
-// ROUTE FOR GUEST
-Route::get('/', 'GuestController@index');
-Route::get('login', 'GuestController@login');
-Route::post('login/submit', 'GuestController@loginSubmit');
-
-// ROUTE FOR USER
-Route::get('/user/dashboard', 'UserController@index');
-
-// ROUTE FOR VENUE
-Route::get('/venue/dashboard', 'VenueController@index');
+Route::get('login', 'Auth\LoginController@showLoginForm');
+Route::post('login', 'Auth\LoginController@login');
+Route::get('home', 'HomeController@home');
 
 // ROUTE FOR ADMIN
-Route::get('/admin/dashboard', 'AdminController@index');
+Route::group(['middleware' => ['role:1']], function ()
+{
+    Route::get('admin/dashboard', 'AdminController@index');
+});
+
+// ROUTE FOR VENUE
+Route::group(['middleware' => ['role:2']], function ()
+{
+    Route::get('venue/dashboard', 'VenueController@index');
+});
+
+// ROUTE FOR USER
+Route::group(['middleware' => ['role:3']], function ()
+{
+    Route::get('user/dashboard', 'UserController@index');
+});

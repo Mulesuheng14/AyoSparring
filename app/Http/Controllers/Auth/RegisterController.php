@@ -5,10 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Exception;
 use App\Models\User;
 use App\Models\UserTeam;
-use App\Classing\LogsApp;
-use App\Mail\WelcomingEmail;
 use Illuminate\Http\Request;
-use App\Mail\ActivationEmail;
 use App\Classing\FlashSession;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -17,34 +14,37 @@ use App\Models\UserVenue;
 use App\Models\VenueField;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
     public function registerUser(Request $request)
     {
-        // if(Auth::user()->role == 1) {
-        //     return redirect('admin/dashboard');
-        // } else if(Auth::user()->role == 2) {
-        //     return redirect('venue/dashboard');
-        // } else if(Auth::user()->role == 3) {
-        //     return redirect('user/dashboard');
-        // }
+        if(Auth::user()) {
+            if(Auth::user()->role == 1) {
+                return redirect('admin/dashboard');
+            } else if(Auth::user()->role == 2) {
+                return redirect('venue/dashboard');
+            } else if(Auth::user()->role == 3) {
+                return redirect('user/dashboard');
+            }
+        }
 
         return view('guest.register.user',);
     }
 
     public function registerVenue(Request $request)
     {
-        // if(Auth::user()->role == 1) {
-        //     return redirect('admin/dashboard');
-        // } else if(Auth::user()->role == 2) {
-        //     return redirect('venue/dashboard');
-        // } else if(Auth::user()->role == 3) {
-        //     return redirect('user/dashboard');
-        // }
-
+        if(Auth::user()) {
+            if(Auth::user()->role == 1) {
+                return redirect('admin/dashboard');
+            } else if(Auth::user()->role == 2) {
+                return redirect('venue/dashboard');
+            } else if(Auth::user()->role == 3) {
+                return redirect('user/dashboard');
+            }
+        }
+        
         return view('guest.register.venue');
     }
 

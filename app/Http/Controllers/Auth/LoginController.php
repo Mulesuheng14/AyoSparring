@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
+use Illuminate\Http\Request;
+use App\Classing\FlashSession;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -37,4 +41,64 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    public function showLoginForm()
+    {
+        if(Auth::user()) {
+            if(Auth::user()->role == 1) {
+                return redirect('admin/dashboard');
+            } else if(Auth::user()->role == 2) {
+                return redirect('venue/dashboard');
+            } else if(Auth::user()->role == 3) {
+                return redirect('user/dashboard');
+            }
+        }
+
+        return view('guest.login.login');
+    }
+
+    public function username()
+    {
+        return 'email';
+    }
+
+    public function login(Request $request)
+    {
+        $this->validateLogin($request);
+
+        $user = User::where('email',$request->email)->first();
+        if ($user == null) {
+            return FlashSession::error('login','Your email is not registered!');
+        }
+
+        $user_is_verified = $user->verified;
+        if ($user_is_verified == 0) {
+            return FlashSession::error('login','Your account has not been verified by Administrator!');
+        }
+
+        if (method_exists($this, 'hasTooManyLoginAttempts') &&
+            $this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
+
+            return $this->sendLockoutResponse($request);
+        }
+
+        if ($this->attemptLogin($request)) {
+            return $this->sendLoginResponse($request);
+        }
+
+        $this->incrementLoginAttempts($request);
+
+        return $this->sendFailedLoginResponse($request);
+    }
+
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        return $this->loggedOut($request) ?: redirect('/');
+    }
+
 }

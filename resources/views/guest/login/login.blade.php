@@ -33,11 +33,24 @@
     <style>
         .not-allowed {cursor: not-allowed;}
         button:disabled {
-            cursor: not-allowed;
+            cursor: not-allowed !important;
+            pointer-events: all !important;
         }  
         input:disabled {
-            cursor: not-allowed;
+            cursor: not-allowed !important;
+            pointer-events: all !important;
+        }
+        button[disabled] {
+            cursor: not-allowed !important;
+            pointer-events: all !important;
         }  
+        input[disabled] {
+            cursor: not-allowed !important;
+            pointer-events: all !important;
+        }
+        .error {
+            color: rgb(0, 0, 0) !important;
+        }
     </style>
     
 </head>
@@ -50,28 +63,35 @@
 				<img src="images/Logo2.png"> -->
 
             <div class="wrap-login100">
-                <form class="login100-form validate-form" action="{{ url('login') }}" method="POST">
+                <form class="login100-form validate-form" id="form" action="{{ url('login') }}" method="POST">
                     @csrf
                     
                     <span class="login100-form-title p-b-43">
                         Sign In
                     </span>
 
-                    <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                        <input class="input100" type="text" name="email">
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100" type="text" name="email" value="{{ old('email') }}" autofocus>
                         <span class="focus-input100"></span>
                         <span class="label-input100">Email</span>
                     </div>
 
+                    @error('email')
+                        <i><small class="text-danger">{{ $message }}</small></i>
+                    @enderror
 
-                    <div class="wrap-input100 validate-input" data-validate="Password is required">
-                        <input class="input100" type="password" name="pass">
+                    <div class="wrap-input100 validate-input">
+                        <input class="input100" type="password" name="password" value="{{ old('password') }}">
                         <span class="focus-input100"></span>
                         <span class="label-input100">Password</span>
                     </div>
 
+                    @error('password')
+                        <i><small class="text-danger">{{ $message }}</small></i>
+                    @enderror
+                    
                     <div class="container-login100-form-btn mt-5">
-                        <button type="submit" class="login100-form-btn">
+                        <button type="button" id="login-button" class="login100-form-btn">
                             Login
                         </button>
                     </div>
@@ -99,6 +119,7 @@
 
     {{-- JQuery JAVASCRIPT --}}
     <script type="text/javascript" src="{{ asset('assets/jquery/jquery-3.4.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/jquery/jquery.validate.min.js') }}"></script>
 
     {{-- Bootstrap JAVASCRIPT --}}
     <script type="text/javascript" src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
@@ -120,6 +141,69 @@
     <script type="text/javascript" src="{{ asset('assets/js/mainlogin.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/flashsession.js') }}"></script>
 
+    <script>
+        $(document).ready(function()
+        {
+            $("#login-button").click(function() {
+                if(form.valid()) {
+                    form.submit();
+                }
+            });
+    
+            var form = $("#form");
+            form.validate({
+                focusInvalid: false,
+                rules: {
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    password: {
+                        required: true,
+                        minlength: 8
+                    },
+                },
+                messages: {
+                    email: {
+                        required: "Must be filled!",
+                        email: "Enter a valid email address!"
+                    },
+                    password: {
+                        required: "Must be filled!",
+                        minlength: "Enter at least 8 characters!"
+                    },
+                },
+                errorElement: "em",
+                errorPlacement: function (error, element) {
+                    error.addClass("invalid-feedback");
+    
+                    if (element.prop("type") === "checkbox") {
+                        error.insertAfter(element.next("label"));
+                    }
+                    else {
+                        error.insertAfter(element);
+                    }
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass("is-invalid").removeClass("is-valid");
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).addClass("is-valid").removeClass("is-invalid");
+                },
+                invalidHandler: function(form, validator) {
+                    
+                    if (!validator.numberOfInvalids())
+                        return;
+                    
+                    $('html, body').animate({
+                        scrollTop: $(validator.errorList[0].element).offset().top - 150
+                    }, 1000);
+                    
+                }
+            });
+        });
+    </script>
+    
 </body>
 
 </html>
