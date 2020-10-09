@@ -65,7 +65,7 @@
                 <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#report">Report</a></li>
                 <li class="nav-item">
                     <a class="nav-link js-scroll-trigge" href="{{ url('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <i data-feather="power" class="svg-icon mr-2 ml-1"></i>
+                        <i data-feather="power" class="svg-icon"></i>
                         Logout
 
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
