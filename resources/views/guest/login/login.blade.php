@@ -14,6 +14,10 @@
     <!-- Fontawesome CSS -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/fontawesome/css/all.min.css') }}">
 
+    <!-- JToast CSS  -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/jtoast/src/toastStyle.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/jtoast/src/custom.css') }}">
+
     <!-- Vendor Template CSS -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/fonts/Linearicons-Free-v1.0.0/icon-font.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/animate/animate.css') }}">

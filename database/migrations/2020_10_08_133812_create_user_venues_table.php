@@ -17,6 +17,7 @@ class CreateUserVenuesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->string('nik')->nullable();
             $table->string('venue_name')->nullable();
             $table->string('address')->nullable();
             $table->string('phone_number')->nullable();

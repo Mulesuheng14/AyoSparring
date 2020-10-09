@@ -13,7 +13,7 @@ class UserVenue extends Model
     public $timestamps = false;
     
     protected $fillable = [
-        'user_id', 'venue_name', 'address', 'phone_number', 'photo', 'postal_code', 
+        'user_id', 'venue_name', 'address', 'phone_number', 'photo', 'postal_code', 'nik',
         'flag_active', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'
     ];
 
