@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Review;
 use Illuminate\Http\Request;
 use App\Classing\FlashSession;
 use Illuminate\Support\Carbon;
@@ -21,6 +22,10 @@ class AdminController extends Controller
                             ->where('u.role',2)
                             ->where('u.flag_active',1)
                             ->get();
+
+        $review = Review::where('flag_active',1);
+        $data['review_reports'] = $review->where('review_type','report')->get();
+        $data['review_ulasans'] = $review->where('review_type','ulasan')->get();
         
         return view('admin.dashboard',$data);
     }

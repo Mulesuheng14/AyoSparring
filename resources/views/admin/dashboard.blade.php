@@ -200,42 +200,88 @@
                 </div>
             </div>
         </section>
+
         <hr class="m-0" />
+
         <!-- Report-->
         <section class="resume-section height: fit-content" id="report">
             <div class="resume-section-content d-flex flex-md-row justify-content-between mb-5">
-                <div class="card mt-0" style="width: 30rem; height: 35rem;">
-                    <div class="card-header bg-primary">
-                        <h5 class="text-light">REPORT</h5>
-                    </div>
-                    <div class="d-flex flex-md-row">
-                        <ul class="list-group list-group-flush flex-md-column">
-                            <li class="list-group-item">
+                <div class="card mt-0" style="width: 100%; min-height: 50px;">
 
-                                <h4 class="card-title">Hexadecima Informatika UII<span class="text-red"> reported</span> Industri UII</span></h4>
-                                <h9 class="lead text-dark1 mt-0 mb-5">Monday, 14 September 2020, 08.00 P.M</h9>
-                                <h4> -Bermain kasar</h4>
-                            </li>
+                    <div class="card-header bg-primary">
+                        <h5 class="text-light mb-0">REPORT</h5>
                     </div>
-                    <!-- <h6 class="lead text-dark1">Monday, 08.00 P.M</h6><span><button type="button" class="btn btn-danger btn-hover" style="width: 2cm; height: 1cm;"><h6 class="text-light">Request</h6></button></span></li> -->
-                    </ul>
+
+                    <div class="d-flex flex-md-row">
+                        <ul class="list-group list-group-flush flex-md-column w-100">
+                            
+                            @if ($review_reports->count() > 0)
+                                @foreach ($review_reports as $indexReview => $review)
+                                    <li class="list-group-item">
+
+                                        @if ($indexReview != 0)
+                                            <hr>
+                                        @endif
+
+                                        @if ($review->object_type == "team")
+                                            <h4 class="card-title">{{ $review->reported->name }} <span class="text-danger">reported</span> {{ $review->reporter->name }}</h4>
+                                            <h5>{{ $review->comment }}</h5>
+                                            <h5 class="lead text-dark1 mt-0">{{ $review->created_at }}</h5>
+                                        @else
+                                            <h4 class="card-title">{{ $review->reported->venues->first()->venue_name }} <span class="text-danger">reported</span> {{ $review->reporter->name }}</h4>
+                                            <h5>{{ $review->comment }}</h5>
+                                            <h5 class="lead text-dark1 mt-0">{{ $review->created_at }}</h5>
+                                        @endif
+                                        
+                                    </li>
+                                @endforeach 
+                            @else
+                                <li class="list-group-item text-center">
+                                    <h5>Data not found</h5>
+                                </li>
+                            @endif
+
+                        </ul>
+                    </div>
+
                 </div>
-                </ul>
             </div>
-    </div>
-    </section>
-    <section class="resume-section height: fit-content" id="feedback">
-        <div class="resume-section-content d-flex flex-md-row justify-content-between mb-5">
-            <div class="card mt-5 " style="width: 40rem;">
-                <h5 class="card-header bg-primary text-light">FEEDBACK</h5>
-                <div class="card-body">
-                    <h5 class="card-title">Feedback from : <span class="text-blue">Gadjah Mada University</span></h5>
-                    <h5 class="lead text-dark">Monday, 11.00 PM</h5>
-                    <p class="lead text-dark"> - Lapangannya luas, bolanya enak ditendang</p>
+        </section>
+
+        <hr class="m-0" />
+
+        <section class="resume-section height: fit-content" id="feedback">
+            <div class="resume-section-content d-flex flex-md-row justify-content-between mb-5">
+                <div class="card mt-5 " style="width: 100%;min-height:50px">
+                    <h5 class="card-header bg-primary text-light">FEEDBACK</h5>
+                    <div class="card-body">
+
+                        @if ($review_ulasans->count() > 0)
+                            @foreach ($review_ulasans as $indexUlasan => $ulasan)
+
+                                @if ($indexUlasan != 0)
+                                    <hr>
+                                @endif
+
+                                @if ($ulasan->object_type == "team")
+                                    <h5 class="card-title">Feedback from : <span class="text-blue">{{ $ulasan->reporter->name }}</span></h5>
+                                    <p class="lead text-dark">{{ $ulasan->comment }}</p>
+                                    <h5 class="lead text-dark">{{ $ulasan->created_at }}</h5>
+                                @else
+                                    <h5 class="card-title">Feedback from : <span class="text-blue">{{ $ulasan->reporter->name }}</span></h5>
+                                    <p class="lead text-dark">{{ $ulasan->comment }}</p>
+                                    <h5 class="lead text-dark">{{ $ulasan->created_at }}</h5>
+                                @endif
+                                
+                            @endforeach 
+                        @else
+                            <h5 class="text-center">Data not found</h5>
+                        @endif
+                        
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
     @include('flashsession.flashsession')
 
