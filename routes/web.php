@@ -29,6 +29,8 @@ Route::get('home', 'HomeController@home');
 Route::group(['middleware' => ['role:1']], function ()
 {
     Route::get('admin/dashboard', 'AdminController@index');
+    Route::post('admin/dashboard/user/verifikasi/{status}', 'AdminController@verification');
+    Route::post('admin/dashboard/user/block', 'AdminController@block');
 });
 
 // ROUTE FOR VENUE

@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
                 'email' => 'admin@ayosparring.com',
                 'phone_number' => '0987654321',
                 'role' => 1,
+                'account_type' => 'admin',
                 'verified' => 1,
                 'verified_at' => Carbon::now(),
                 'created_at' => Carbon::now(),

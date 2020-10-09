@@ -23,6 +23,9 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/owl.carousel/assets/owl.carousel.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendor/aos/aos.css') }}">
 
+    {{-- DataTables CSS --}}
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/datatables/css/dataTables.css') }}">
+
     <!-- Fontawesome CSS -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/fontawesome/css/all.min.css') }}">
 
@@ -46,8 +49,8 @@
 </head>
 
 <body id="page-top">
-    <!-- Navigation-->
 
+    <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
         <a class="navbar-brand js-scroll-trigger" href="#page-top">
             <span class="d-block d-lg-none"> </span>
@@ -72,228 +75,125 @@
                 </li>
         </div>
     </nav>
+
     <!-- Page Content-->
     <div class="container-fluid p-0">
+
         <!-- User-->
         <section class="resume-section height: fit-content" id="list-users">
             <div class="resume-section-content d-flex flex-column ">
+
                 <h1 class="mb-0">
                     <h1 class="card-title text-green">ADMIN</h1>
                 </h1>
-                <div class="card mt-1 " style="width: 70rem;">
+
+                <div class="card mt-1 w-100">
                     <h5 class="card-header bg-primary text-light">LIST USERS</h5>
-                    <div class="card-body">
-                        <table class="table table-bordered">
+                    <div class="card-body table-responsive">
+                        <table id="tabelUser" class="table table-striped table-bordered display nowrap" style="width:100% !important">
                             <thead>
                                 <tr>
-                                    <th scope="col">
-                                        <style>
-                                            h3 {
-                                                text-align: center;
-                                            }
-                                        </style>
-
-                                        <body>
-                                            <h3 class>No.</h3>
-                                        </body>
-                                    </th>
-                                    </th>
-                                    <th scope="col" colspan="10">
-                                        <style>
-                                            h3 {
-                                                text-align: center;
-                                            }
-                                        </style>
-
-                                        <body>
-                                            <h3 class>Users</h3>
-                                        </body>
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <td scope="col">-</td>
-                                    <th scope="col" colspan="2">Nama Team</th>
-                                    <th scope="col" colspan="2">Alamat</th>
-                                    <th scope="col" colspan="2">Email</th>
-                                    <th scope="col" colspan="2">No. Handphone</th>
-                                    <th scope="col" colspan="2">Keterangan</th>
+                                    <th class="text-center align-middle">No</th>
+                                    <th class="text-center align-middle">Account Type</th>
+                                    <th class="text-center align-middle">Name</th>
+                                    <th class="text-center align-middle">Email</th>
+                                    <th class="text-center align-middle">Phone Number</th>
+                                    <th class="text-center align-middle">Status Account</th>
+                                    <th class="text-center align-middle">Verification</th>
+                                    <th class="text-center align-middle">Blockir Account</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">1.</th>
-                                    <td colspan="2">Sparta FTI UII</td>
-                                    <td colspan="2">Jl. Kaliurang KM 14,5</td>
-                                    <td colspan="2">sparta.fti@uii.ac.id</td>
-                                    <td colspan="2">0812334212312</td>
-                                    <td colspan="2">Aktif</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">1.</th>
-                                    <td colspan="2">Sparta FTI UII</td>
-                                    <td colspan="2">Jl. Kaliurang KM 14,5</td>
-                                    <td colspan="2">sparta.fti@uii.ac.id</td>
-                                    <td colspan="2">0812334212312</td>
-                                    <td colspan="2">Aktif</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">1.</th>
-                                    <td colspan="2">Sparta FTI UII</td>
-                                    <td colspan="2">Jl. Kaliurang KM 14,5</td>
-                                    <td colspan="2">sparta.fti@uii.ac.id</td>
-                                    <td colspan="2">0812334212312</td>
-                                    <td colspan="2">Aktif</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">1.</th>
-                                    <td colspan="2">Sparta FTI UII</td>
-                                    <td colspan="2">Jl. Kaliurang KM 14,5</td>
-                                    <td colspan="2">sparta.fti@uii.ac.id</td>
-                                    <td colspan="2">0812334212312</td>
-                                    <td colspan="2">Aktif</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">1.</th>
-                                    <td colspan="2">Sparta FTI UII</td>
-                                    <td colspan="2">Jl. Kaliurang KM 14,5</td>
-                                    <td colspan="2">sparta.fti@uii.ac.id</td>
-                                    <td colspan="2">0812334212312</td>
-                                    <td colspan="2">Aktif</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">1.</th>
-                                    <td colspan="2">Sparta FTI UII</td>
-                                    <td colspan="2">Jl. Kaliurang KM 14,5</td>
-                                    <td colspan="2">sparta.fti@uii.ac.id</td>
-                                    <td colspan="2">0812334212312</td>
-                                    <td colspan="2">Aktif</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">1.</th>
-                                    <td colspan="2">Sparta FTI UII</td>
-                                    <td colspan="2">Jl. Kaliurang KM 14,5</td>
-                                    <td colspan="2">sparta.fti@uii.ac.id</td>
-                                    <td colspan="2">0812334212312</td>
-                                    <td colspan="2">Aktif</td>
-                                </tr>
+
+                                @foreach ($users as $index => $user)
+                                    <tr>
+                                        <td class="text-center align-middle">{{ $index+1 }}</td>
+                                        <td class="text-left align-middle">{{ $user->account_type == 'owner' ? 'Owner' : 'User' }}</td>
+                                        <td class="text-left align-middle">{{ $user->name }}</td>
+                                        <td class="text-left align-middle">{{ $user->email }}</td>
+                                        <td class="text-left align-middle">{{ $user->phone_number }}</td>
+                                        <td class="text-center align-middle">{{ $user->verified == 1 ? 'Verified' : 'Not Verified' }}</td>
+                                        <td class="text-center align-middle">
+                                            @if ($user->verified == 0)
+                                                <form action="{{ url('admin/dashboard/user/verifikasi/active') }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="form-control btn btn-success">
+                                                        <i class="fas fa-double-check mr-2"></i>Verification
+                                                    </button>
+                                                    <input name="id_user" type="hidden" value="{{ $user->id }}">
+                                                </form>
+                                            @else
+                                                <form action="{{ url('admin/dashboard/user/verifikasi/deactive') }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="form-control btn btn-danger">
+                                                        <i class="fas fa-minus mr-2"></i>Cancel Verification
+                                                    </button>
+                                                    <input name="id_user" type="hidden" value="{{ $user->id }}">
+                                                </form>
+                                            @endif
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            <form action="{{ url('admin/dashboard/user/block') }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="form-control btn btn-danger">
+                                                    <i class="fas fa-user-times mr-2"></i>Block
+                                                </button>
+                                                <input name="id_user" type="hidden" value="{{ $user->id }}">
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <!-- <span class="d-none d-lg-block"><img class="img-fluid img-profile mx-auto mb-1" src="assets/img/StarFutsal.jpg" alt="" /></span>
-                    <p class="lead mb-1"> Tersedia satu lapangan vinyl.</p>
-                    <p class="lead mb-1"> Pukul 08.00-18.00 Harga 80rb/jam</p>
-                    <p class="lead mb-1"> Pukul 18.00-23.00 Harga 120rb/jam</p> -->
-                <!-- <div class="card mt-5 " style="width: 40rem;">
-                        <h5 class="card-header bg-primary text-light">Next Match</h5>
-                        <div class="card-body">
-                            <h3 class="card-title">VS. <span class="text-red">Gadjah Mada University</span></h3>
-                            <p class="lead text-dark">At Jakal 7 Futsal</p>
-                            <p class="lead text-dark">Monday, 09.00 PM</p>
-                        </div>
-                    </div> -->
+                
             </div>
         </section>
+
         <hr class="m-0" />
+
         <!-- Owner-->
         <section class="resume-section height: fit-content" id="list-owner">
             <div class="resume-section-content d-flex flex-md-row justify-content-between mb-5">
                 <div class="card mt-1 " style="width: 70rem;">
-                    <h5 class="card-header bg-primary text-light">LIST OWNERS</h5>
+
+                    <h5 class="card-header bg-primary text-light">LIST VENUES</h5>
+
                     <div class="card-body">
-                        <table class="table table-bordered">
+                        <table id="tabelVenue" class="table table-striped table-bordered display nowrap" style="width:100% !important">
                             <thead>
                                 <tr>
-                                    <th scope="col">
-                                        <style>
-                                            h3 {
-                                                text-align: center;
-                                            }
-                                        </style>
-
-                                        <body>
-                                            <h3 class>No.</h3>
-                                        </body>
-                                    </th>
-                                    </th>
-                                    <th scope="col" colspan="10">
-                                        <style>
-                                            h3 {
-                                                text-align: center;
-                                            }
-                                        </style>
-
-                                        <body>
-                                            <h3 class>Owners</h3>
-                                        </body>
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <td scope="col">-</td>
-                                    <th scope="col" colspan="2">Nama Lapangan</th>
-                                    <th scope="col" colspan="2">Alamat</th>
-                                    <th scope="col" colspan="2">Jenis Lapangan</th>
-                                    <th scope="col" colspan="2">No. Handphone</th>
-                                    <th scope="col" colspan="2">Keterangan</th>
+                                    <th class="text-center align-middle">No</th>
+                                    <th class="text-center align-middle">Venue Name</th>
+                                    <th class="text-center align-middle">Field Name</th>
+                                    <th class="text-center align-middle">Address</th>
+                                    <th class="text-center align-middle">Type of Field</th>
+                                    <th class="text-center align-middle">Price</th>
+                                    <th class="text-center align-middle">Image</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">1.</th>
-                                    <td colspan="2">Star Futsal</td>
-                                    <td colspan="2">Jalan Kaliurang KM. 9, Ngaglik, Sleman, DIY</td>
-                                    <td colspan="2">Vinyl</td>
-                                    <td colspan="2">0812334212312</td>
-                                    <td colspan="2">Aktif</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">1.</th>
-                                    <td colspan="2">Star Futsal</td>
-                                    <td colspan="2">Jalan Kaliurang KM. 9, Ngaglik, Sleman, DIY</td>
-                                    <td colspan="2">Vinyl</td>
-                                    <td colspan="2">0812334212312</td>
-                                    <td colspan="2">Aktif</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">1.</th>
-                                    <td colspan="2">Star Futsal</td>
-                                    <td colspan="2">Jalan Kaliurang KM. 9, Ngaglik, Sleman, DIY</td>
-                                    <td colspan="2">Vinyl</td>
-                                    <td colspan="2">0812334212312</td>
-                                    <td colspan="2">Aktif</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">1.</th>
-                                    <td colspan="2">Star Futsal</td>
-                                    <td colspan="2">Jalan Kaliurang KM. 9, Ngaglik, Sleman, DIY</td>
-                                    <td colspan="2">Vinyl</td>
-                                    <td colspan="2">0812334212312</td>
-                                    <td colspan="2">Aktif</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">1.</th>
-                                    <td colspan="2">Star Futsal</td>
-                                    <td colspan="2">Jalan Kaliurang KM. 9, Ngaglik, Sleman, DIY</td>
-                                    <td colspan="2">Vinyl</td>
-                                    <td colspan="2">0812334212312</td>
-                                    <td colspan="2">Aktif</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">1.</th>
-                                    <td colspan="2">Star Futsal</td>
-                                    <td colspan="2">Jalan Kaliurang KM. 9, Ngaglik, Sleman, DIY</td>
-                                    <td colspan="2">Vinyl</td>
-                                    <td colspan="2">0812334212312</td>
-                                    <td colspan="2">Aktif</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">1.</th>
-                                    <td colspan="2">Star Futsal</td>
-                                    <td colspan="2">Jalan Kaliurang KM. 9, Ngaglik, Sleman, DIY</td>
-                                    <td colspan="2">Vinyl</td>
-                                    <td colspan="2">0812334212312</td>
-                                    <td colspan="2">Aktif</td>
-                                </tr>
+                                
+                                @foreach ($venues as $index => $venues)
+                                    <tr>
+                                        <td class="text-center align-middle">{{ $index+1 }}</td>
+                                        <td class="text-left align-middle">{{ $venues->venue_name }}</td>
+                                        <td class="text-left align-middle">{{ $venues->field_name }}</td>
+                                        <td class="text-left align-middle">{{ $venues->address }}</td>
+                                        <td class="text-left align-middle">{{ $venues->field_type }}</td>
+                                        <td class="text-right align-middle">{{ $venues->price }}</td>
+                                        <td class="text-center align-middle">
+                                            <a target="_blank" href="{{ asset('storage/field/'.$venues->photo) }}">
+                                                <button class="btn btn-info">
+                                                    <i class="fas fa-eye mr-2"></i>See
+                                                </button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+
                             </tbody>
                         </table>
                     </div>
@@ -359,10 +259,45 @@
     <script type="text/javascript" src="{{ asset('assets/jtoast/src/toast.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/jtoast/src/custom.js') }}"></script>
 
+    {{-- DataTables JAVASCRIPT --}}
+    <script type="text/javascript" src="{{ asset('assets/datatables/js/dataTables.js') }}"></script>
+
     {{-- Mine JAVASCRIPT --}}
     <script type="text/javascript" src="{{ asset('assets/js/scripts.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/flashsession.js') }}"></script>
 
+    <script>
+        $(document).ready(function()
+        {
+            $('#tabelUser').DataTable(
+            {
+                "sScrollX": "100%",
+                "language":
+                {
+                    "search": "Search",
+                    "paginate":
+                    {
+                        "previous": "<<",
+                        "next": ">>"
+                    }
+                }
+            });
+
+            $('#tabelVenue').DataTable(
+            {
+                "sScrollX": "100%",
+                "language":
+                {
+                    "search": "Search",
+                    "paginate":
+                    {
+                        "previous": "<<",
+                        "next": ">>"
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
