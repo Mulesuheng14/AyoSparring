@@ -87,10 +87,10 @@
                     <h1 class="card-title text-green">{{ Auth::user()->name }}</h1>
                 </h1>
 
-                <div class="card mt-1 w-100">
+                <div class="card mt-1" style="width: 70rem;">
                     <h5 class="card-header bg-primary text-light">LIST USERS</h5>
-                    <div class="card-body table-responsive">
-                        <table id="tabelUser" class="table table-striped table-bordered display nowrap" style="width:100% !important">
+                    <div class="card-body">
+                        <table class="table table-striped table-bordered display nowrap">
                             <thead>
                                 <tr>
                                     <th class="text-center align-middle">No</th>
@@ -157,12 +157,12 @@
         <!-- Owner-->
         <section class="resume-section height: fit-content" id="list-owner">
             <div class="resume-section-content d-flex flex-md-row justify-content-between mb-5">
-                <div class="card mt-1 " style="width: 70rem;">
+                <div class="card mt-1" style="width: 70rem;">
 
                     <h5 class="card-header bg-primary text-light">LIST VENUES</h5>
 
-                    <div class="card-body table-responsive">
-                        <table id="tabelVenue" class="table table-striped table-bordered display nowrap" style="width:100% !important">
+                    <div class="card-body">
+                        <table class="table table-striped table-bordered display nowrap">
                             <thead>
                                 <tr>
                                     <th class="text-center align-middle">No</th>
@@ -206,14 +206,14 @@
         <!-- Report-->
         <section class="resume-section height: fit-content" id="report">
             <div class="resume-section-content d-flex flex-md-row justify-content-between mb-5">
-                <div class="card mt-0" style="width: 100%; min-height: 50px;">
+                <div class="card mt-0" style="width: 30rem; min-height: 50px;">
 
                     <div class="card-header bg-primary">
                         <h5 class="text-light mb-0">REPORT</h5>
                     </div>
 
                     <div class="d-flex flex-md-row">
-                        <ul class="list-group list-group-flush flex-md-column w-100">
+                        <ul class="list-group list-group-flush flex-md-column">
                             
                             @if ($review_reports->count() > 0)
                                 @foreach ($review_reports as $indexReview => $review)
@@ -252,7 +252,7 @@
 
         <section class="resume-section height: fit-content" id="feedback">
             <div class="resume-section-content d-flex flex-md-row justify-content-between mb-5">
-                <div class="card mt-5 " style="width: 100%;min-height:50px">
+                <div class="card mt-5 " style="width: 30rem;min-height:50px">
                     <h5 class="card-header bg-primary text-light">FEEDBACK</h5>
                     <div class="card-body">
 
@@ -312,38 +312,6 @@
     <script type="text/javascript" src="{{ asset('assets/js/scripts.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/flashsession.js') }}"></script>
 
-    <script>
-        $(document).ready(function()
-        {
-            $('#tabelUser').DataTable(
-            {
-                "sScrollX": "100%",
-                "language":
-                {
-                    "search": "Search",
-                    "paginate":
-                    {
-                        "previous": "<<",
-                        "next": ">>"
-                    }
-                }
-            });
-
-            $('#tabelVenue').DataTable(
-            {
-                "sScrollX": "100%",
-                "language":
-                {
-                    "search": "Search",
-                    "paginate":
-                    {
-                        "previous": "<<",
-                        "next": ">>"
-                    }
-                }
-            });
-        });
-    </script>
 </body>
 
 </html>
