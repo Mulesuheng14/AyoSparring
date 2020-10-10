@@ -37,6 +37,17 @@ class VenueController extends Controller
         return view('venue.dashboard',$data);
     }
 
+    private function convertToTime($integer)
+    {
+        if(strlen($integer) == 1) {
+            return '0'.$integer.':00';
+        } else if(strlen($integer) == 2) {
+            return $integer.':00';
+        } else {
+            return "Format jam salah";
+        }
+    }
+
     // return FlashSession::error(url("hiring-partner"), 'Company Logo is required, please upload your company logo!');
 
 }
