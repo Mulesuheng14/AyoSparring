@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 // ROUTE FOR GUEST
 Route::get('/', 'GuestController@index');
-Auth::routes(['register' => false]); 
+Auth::routes(['register' => false]);
 Route::get('register/user', 'Auth\RegisterController@registerUser');
 Route::get('register/venue', 'Auth\RegisterController@registerVenue');
 Route::post('register/user/submit', 'Auth\RegisterController@registerUserSubmit');
@@ -26,21 +26,20 @@ Route::post('login', 'Auth\LoginController@login');
 Route::get('home', 'HomeController@home');
 
 // ROUTE FOR ADMIN
-Route::group(['middleware' => ['role:1']], function ()
-{
+Route::group(['middleware' => ['role:1']], function () {
     Route::get('admin/dashboard', 'AdminController@index');
     Route::post('admin/dashboard/user/verifikasi/{status}', 'AdminController@verification');
     Route::post('admin/dashboard/user/block', 'AdminController@block');
 });
 
 // ROUTE FOR VENUE
-Route::group(['middleware' => ['role:2']], function ()
-{
+Route::group(['middleware' => ['role:2']], function () {
     Route::get('venue/dashboard', 'VenueController@index');
+    Route::post('venue/dashboard/response/booking/{status}', 'VenueController@responseBooking');
 });
 
 // ROUTE FOR USER
-Route::group(['middleware' => ['role:3']], function ()
-{
+Route::group(['middleware' => ['role:3']], function () {
     Route::get('user/dashboard', 'UserController@index');
+    Route::post('user/dashboard/response/sparring/{status}', 'UserController@responseSparring');
 });

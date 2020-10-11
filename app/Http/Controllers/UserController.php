@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Classing\FlashSession;
+use App\Models\BookingList;
+use App\Models\SparringRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -18,6 +21,52 @@ class UserController extends Controller
         $data['reviewLists'] = $this->reviewLists();
 
         return view('user.dashboard', $data);
+    }
+
+    public function responseSparring(Request $request, $status)
+    {
+        $currentSparringRequest = SparringRequest::where('id', $request->id_sparring_request)->first();
+        if ($currentSparringRequest == null) {
+            return FlashSession::error('user/dashboard', 'Response sparring request failed, sparring request not found!');
+        }
+        if ($status == 'accepted') {
+
+            $currentBookingList = BookingList::where('id', $request->id_booking_list)->first();
+            if ($currentBookingList == null) {
+                return FlashSession::error('user/dashboard', 'Response sparring request failed, id booking not found!');
+            }
+
+            $responseSparringRequest = $currentSparringRequest->update([
+                'is_accepted' => 1,
+                'updated_by' => Auth::user()->id,
+                'updated_at' => Carbon::now(),
+                'flag_active' => 0,
+            ]);
+
+            if ($responseSparringRequest) {
+                $responseBookingList = $currentBookingList->update([
+                    'sparring_user' => $request->id_user,
+                    'is_available' => 0,
+                    'updated_by' => Auth::user()->id,
+                    'updated_at' => Carbon::now(),
+                ]);
+                if ($responseBookingList) {
+                    return FlashSession::success('user/dashboard', 'Response sparring request successful');
+                }
+            }
+        } else {
+            $responseSparringRequest = $currentSparringRequest->update([
+                'is_accepted' => 0,
+                'updated_by' => Auth::user()->id,
+                'updated_at' => Carbon::now(),
+                'flag_active' => 0,
+            ]);
+
+            if ($responseSparringRequest) {
+                return FlashSession::success('user/dashboard', 'Response sparring request successful');
+            }
+        }
+        return FlashSession::error('user/dashboard', 'Response sparring request failed when update database');
     }
 
     private function bookingLists()
@@ -43,7 +92,7 @@ class UserController extends Controller
     private function requestLists()
     {
         $requestList = DB::table('sparring_requests AS s')
-            ->select('ut.team_name', 'vf.field_name', 'uv.venue_name', 'b.date')
+            ->select('s.id as sparring_request_id', 's.booking_list_id', 's.user_id', 'ut.team_name', 'vf.field_name', 'uv.venue_name', 'b.date')
             ->leftjoin('booking_lists AS b', 'b.id', '=', 's.booking_list_id')
             ->leftjoin('user_teams AS ut', 'ut.user_id', '=', 's.user_id')
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
@@ -68,6 +117,7 @@ class UserController extends Controller
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
             ->leftjoin('user_venues AS uv', 'uv.id', '=', 'vf.user_venue_id')
             ->where('b.date', '>=', Carbon::now())
+            ->where('b.user_id', '!=', Auth::user()->id)
             ->where('b.is_available', 1)
             ->where('b.booking_type', 'sparring')
             ->where('b.is_accepted', 1)

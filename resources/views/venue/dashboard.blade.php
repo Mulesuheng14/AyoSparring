@@ -224,13 +224,15 @@
                                 <h9 class="lead text-dark1">{{ date('l, d F Y, H:i A ', strtotime($list->date)) }}</h9>
                                 <div class="d-flex flex-md-row">
                                     <button type="button" class="btn bg-primary ml-0 mt-3" data-toggle="modal" data-target="#{{'exampleModal'.$index}}">
-                                        <!-- <img class="img-fluid img-profile mx-auto mb-2" src="assets/img/iconmonstr-check-mark-17-24.png" alt="" /> -->
                                         Accept
                                     </button>
-                                    <button type="button" class="btn btn-danger ml-2 mt-3">
-                                        <!-- <img class="img-fluid img-profile mx-auto mb-2" src="assets/img/iconmonstr-x-mark-1-16.png" alt="" /> -->
-                                        Decline
-                                    </button>
+                                    <form action="{{ url('venue/dashboard/response/booking/declined') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger ml-2 mt-3">
+                                            Decline
+                                        </button>
+                                        <input name="id_booking_list" type="hidden" value="{{ $list->id }}">
+                                    </form>
 
                                     <!-- Modal -->
                                     <div class="modal fade" id="{{'exampleModal'.$index}}" tabindex="-1" role="dialog" aria-labelledby="{{'exampleModalTitle'.$index}}" aria-hidden="true">
@@ -249,9 +251,13 @@
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                                         <h6 class="text-light">No</h6>
                                                     </button>
-                                                    <button type="button" class="btn btn-danger">
-                                                        <h6 class="text-light">Yes</h6>
-                                                    </button>
+                                                    <form action="{{ url('venue/dashboard/response/booking/accepted') }}" method="POST">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-danger">
+                                                            <h6 class="text-light">Yes</h6>
+                                                        </button>
+                                                        <input name="id_booking_list" type="hidden" value="{{ $list->id }}">
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>

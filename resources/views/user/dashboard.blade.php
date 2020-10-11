@@ -141,18 +141,24 @@
                                 <p class="lead text-dark">{{ $list->venue_name.' '.$list->field_name }}</p>
                                 <p class="lead text-dark">{{ date('l, d F Y, H:i A ', strtotime($list->date)) }}</p>
                                 <div class="d-flex flex-md-row">
-                                    <button type="button" class="btn bg-secondary ml-0 mt-3" data-toggle="modal" data-target="#{{'exampleModalLong'.$index}}">
+                                    <button type="button" class="btn bg-secondary ml-0 mt-3" data-toggle="modal" data-target="#{{'requestSparring'.$index}}">
                                         Accept
                                     </button>
-                                    <button type="button" class="btn btn-danger ml-2 mt-3">
-                                        Decline
-                                    </button>
+                                    <form action="{{ url('user/dashboard/response/sparring/declined') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger ml-2 mt-3">
+                                            Decline
+                                        </button>
+                                        <input name="id_user" type="hidden" value="{{ $list->user_id }}">
+                                        <input name="id_booking_list" type="hidden" value="{{ $list->booking_list_id }}">
+                                        <input name="id_sparring_request" type="hidden" value="{{ $list->sparring_request_id }}">
+                                    </form>
                                     <!-- Modal -->
-                                    <div class="modal fade" id="{{'exampleModalLong'.$index}}" tabindex="-1" role="dialog" aria-labelledby="{{'exampleModalLong'.$index}}" aria-hidden="true">
+                                    <div class="modal fade" id="{{'requestSparring'.$index}}" tabindex="-1" role="dialog" aria-labelledby="{{'requestSparring'.$index}}" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="{{'exampleModalLong'.$index}}">Sparring Confirmation</h5>
+                                                    <h5 class="modal-title" id="{{'requestSparring'.$index}}">Sparring Confirmation</h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
@@ -164,9 +170,15 @@
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                                         <h6 class="text-light">No</h6>
                                                     </button>
-                                                    <button type="button" class="btn bg-secondary">
-                                                        <h6 class="text-light">Yes</h6>
-                                                    </button>
+                                                    <form action="{{ url('user/dashboard/response/sparring/accepted') }}" method="POST">
+                                                        @csrf
+                                                        <button type="submit" class="btn bg-secondary">
+                                                            <h6 class="text-light">Yes</h6>
+                                                        </button>
+                                                        <input name="id_user" type="hidden" value="{{ $list->user_id }}">
+                                                        <input name="id_booking_list" type="hidden" value="{{ $list->booking_list_id }}">
+                                                        <input name="id_sparring_request" type="hidden" value="{{ $list->sparring_request_id }}">
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
@@ -196,16 +208,16 @@
                         @if ($sparringLists->count() > 0)
                         @foreach ($sparringLists as $index => $list)
                         <li class="list-group-item">
-                            <div class="accordion" id="{{'accordionExample'.$index}}">
+                            <div class="accordion" id="{{'accordionSparring'.$index}}">
                                 <div class="card">
                                     <div class="card-header" id="{{'heading'.$index}}">
                                         <h2 class="mb-0">
-                                            <button class="btn btn-link btn-block text-middle" type="button" data-toggle="collapse" data-target="#{{'collapse'.$index}}" aria-expanded="true" aria-controls="collapseOne">
+                                            <button class="btn btn-link btn-block text-middle" type="button" data-toggle="collapse" data-target="#{{'collapseSparring'.$index}}" aria-expanded="true" aria-controls="collapseOne">
                                                 <h4 class="text-red">{{ $list->team_name }}</h4>
                                             </button>
                                         </h2>
                                     </div>
-                                    <div id="{{'collapse'.$index}}" class="collapse hide" aria-labelledby="{{'heading'.$index}}" data-parent="#{{'accordionExample'.$index}}">
+                                    <div id="{{'collapseSparring'.$index}}" class="collapse hide" aria-labelledby="{{'heading'.$index}}" data-parent="#{{'accordionSparring'.$index}}">
                                         <div class="card-body">
                                             {{ $list->bio }}
                                         </div>

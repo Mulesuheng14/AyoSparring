@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Classing\FlashSession;
 use App\Models\BookingList;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +20,37 @@ class VenueController extends Controller
         $data['sparringLists'] = $this->sparringLists();
         $data['reviewLists'] = $this->reviewLists();
         return view('venue.dashboard', $data);
+    }
+
+    public function responseBooking(Request $request, $status)
+    {
+        $currentBookingList = BookingList::where('id', $request->id_booking_list)->first();
+        if ($currentBookingList == null) {
+            return FlashSession::error('venue/dashboard', 'Response booking request failed, sparring request not found!');
+        }
+        if ($status == 'accepted') {
+
+            $responseBookingList = $currentBookingList->update([
+                'is_accepted' => 1,
+                'updated_by' => Auth::user()->id,
+                'updated_at' => Carbon::now(),
+            ]);
+            if ($responseBookingList) {
+                return FlashSession::success('venue/dashboard', 'Response booking request successful');
+            }
+        } else {
+            $responseBookingList = $currentBookingList->update([
+                'is_accepted' => 0,
+                'updated_by' => Auth::user()->id,
+                'updated_at' => Carbon::now(),
+                'flag_active' => 0,
+            ]);
+
+            if ($responseBookingList) {
+                return FlashSession::success('venue/dashboard', 'Response booking request successful');
+            }
+        }
+        return FlashSession::error('venue/dashboard', 'Response booking request failed when update database');
     }
 
     private function convertToTime($integer)
@@ -82,7 +114,7 @@ class VenueController extends Controller
             ->leftjoin('user_teams AS tu', 'tu.user_id', '=', 'b.sparring_user')
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
             ->whereDate('b.date', '=', today()->format('Y-m-d'))
-            ->whereTime('b.date', '>=', Carbon::now())
+            ->where('b.date', '>=', Carbon::now())
             ->where('b.is_accepted', 1)
             ->where('b.flag_active', 1)
             ->orderBy('b.date', 'ASC')
@@ -111,7 +143,7 @@ class VenueController extends Controller
             ->select('b.id', 'ut.team_name', 'vf.field_name', 'b.booking_type', 'b.date', 'b.hour', 'b.duration')
             ->leftjoin('user_teams AS ut', 'ut.user_id', '=', 'b.user_id')
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
-            ->whereDate('b.date', '>=', today()->format('Y-m-d'))
+            ->where('b.date', '>=', Carbon::now())
             ->where('b.is_accepted', 0)
             ->where('b.flag_active', 1)
             ->orderBy('b.date', 'ASC')
@@ -126,7 +158,7 @@ class VenueController extends Controller
             ->leftjoin('user_teams AS ut', 'ut.user_id', '=', 'b.user_id')
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
             ->leftjoin('user_teams AS tu', 'tu.user_id', '=', 'b.sparring_user')
-            ->whereDate('b.date', '>=', today()->format('Y-m-d'))
+            ->where('b.date', '>=', Carbon::now())
             ->where('b.is_accepted', 1)
             ->whereNotNull('b.sparring_user')
             ->where('b.booking_type', 'sparring')
