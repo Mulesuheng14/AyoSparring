@@ -224,12 +224,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- <div class="d-flex flex-md-column"> -->
                             <h6 class="lead text-dark1">At {{ $list->venue_name.' - '.$list->field_name }}</h6>
                             <h6 class="lead text-dark1">{{ date('l, d F Y, H:i A ', strtotime($list->date)) }}</h6>
-                            <button type="button" class="btn bg-secondary" style="width: 2cm; height: 1cm;" data-toggle="modal" data-target="#{{'requestModal'.$index}}">
-                                <h6 class="text-light">Request</h6>
-                            </button>
+                            <form action="{{ url('user/dashboard/request/sparring') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn bg-secondary" style="width: 2cm; height: 1cm;" data-toggle="modal" data-target="#{{'requestModal'.$index}}">
+                                    <h6 class="text-light">Request</h6>
+                                </button>
+                                <input name="id_booking_list" type="hidden" value="{{ $list->id }}">
+                            </form>
                             <div class="modal fade" id="{{'requestModal'.$index}}" tabindex="-1" role="dialog" aria-labelledby="{{'requestModal'.$index}}" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">

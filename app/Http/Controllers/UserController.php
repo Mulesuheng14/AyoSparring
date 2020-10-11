@@ -69,6 +69,29 @@ class UserController extends Controller
         return FlashSession::error('user/dashboard', 'Response sparring request failed when update database');
     }
 
+    public function requestSparring(Request $request)
+    {
+        $currentBookingList = BookingList::where('id', $request->id_booking_list)->first();
+        if ($currentBookingList == null) {
+            return FlashSession::error('user/dashboard', 'Request sparring failed, id booking not found!');
+        }
+
+        $requestSparring = SparringRequest::create([
+            'user_id' => Auth::user()->id,
+            'booking_list_id' => $request->id_booking_list,
+            'created_at' => Carbon::now(),
+            'created_by' => 'Self',
+            'updated_at' => Carbon::now(),
+            'updated_by' => 'Self',
+        ]);
+
+        if ($requestSparring) {
+            return FlashSession::success('user/dashboard', 'Response sparring request successful');
+        } else {
+            return FlashSession::error('user/dashboard', 'Response sparring request failed');
+        }
+    }
+
     private function bookingLists()
     {
         $bookingList = DB::table('booking_lists AS b')
@@ -77,7 +100,7 @@ class UserController extends Controller
             ->leftjoin('user_teams AS tu', 'tu.user_id', '=', 'b.sparring_user')
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
             ->leftjoin('user_venues AS uv', 'uv.id', '=', 'vf.user_venue_id')
-            ->where('b.date', '>=', Carbon::now())
+            ->where('b.date', '>=', Carbon::parse(Carbon::now())->addHour(-1))
             ->where(function ($q) {
                 $q->orwhere('b.user_id', Auth::user()->id)
                     ->orWhere('b.sparring_user', Auth::user()->id);
@@ -98,6 +121,7 @@ class UserController extends Controller
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
             ->leftjoin('user_venues AS uv', 'uv.id', '=', 'vf.user_venue_id')
             ->where('b.date', '>=', Carbon::now())
+            ->where('b.user_id', Auth::user()->id)
             ->where('s.is_accepted', 0)
             ->where('b.is_accepted', 1)
             ->where('b.booking_type', 'sparring')
@@ -112,7 +136,7 @@ class UserController extends Controller
     private function sparringLists()
     {
         $sparringList = DB::table('booking_lists AS b')
-            ->select('ut.team_name', 'ut.bio', 'vf.field_name', 'uv.venue_name', 'b.booking_type', 'b.date')
+            ->select('b.id', 'ut.team_name', 'ut.bio', 'vf.field_name', 'uv.venue_name', 'b.booking_type', 'b.date')
             ->leftjoin('user_teams AS ut', 'ut.user_id', '=', 'b.user_id')
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
             ->leftjoin('user_venues AS uv', 'uv.id', '=', 'vf.user_venue_id')
@@ -135,7 +159,7 @@ class UserController extends Controller
             ->leftjoin('user_teams AS tu', 'tu.user_id', '=', 'b.sparring_user')
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
             ->leftjoin('user_venues AS uv', 'uv.id', '=', 'vf.user_venue_id')
-            ->where('b.date', '<', Carbon::now())
+            ->where('b.date', '<', Carbon::parse(Carbon::now())->addHour(-1))
             ->where(function ($q) {
                 $q->orwhere('b.user_id', Auth::user()->id)
                     ->orWhere('b.sparring_user', Auth::user()->id);

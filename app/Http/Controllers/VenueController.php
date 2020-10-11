@@ -74,7 +74,10 @@ class VenueController extends Controller
         $firstDateInThisMonth = now()->startOfMonth();
         $endDateInThisMonth = now()->endOfMonth();
         $allDateInThisMonth = \Carbon\CarbonPeriod::create($firstDateInThisMonth, $endDateInThisMonth);
-        $dataSchedule = BookingList::whereIn('venue_field_id', $idVenueFields)->whereMonth('date', $thisMonth)->where('is_accepted', 1)->where('flag_active', 1);
+        $dataSchedule = BookingList::whereIn('venue_field_id', $idVenueFields)
+            ->whereMonth('date', $thisMonth)
+            ->where('is_accepted', 1)
+            ->where('flag_active', 1);
 
         // $schedulesThisMonth = BookingList::whereIn('venue_field_id', $idVenueFields)->whereMonth('date', $thisMonth)->where('is_accepted', 1)->where('flag_active', 1);
 
@@ -113,8 +116,10 @@ class VenueController extends Controller
             ->leftjoin('user_teams AS ut', 'ut.user_id', '=', 'b.user_id')
             ->leftjoin('user_teams AS tu', 'tu.user_id', '=', 'b.sparring_user')
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
+            ->leftjoin('user_venues AS uv', 'uv.id', '=', 'vf.user_venue_id')
             ->whereDate('b.date', '=', today()->format('Y-m-d'))
-            ->where('b.date', '>=', Carbon::now())
+            ->where('b.date', '>=', Carbon::parse(Carbon::now())->addHour(-1))
+            ->where('uv.user_id', Auth::user()->id)
             ->where('b.is_accepted', 1)
             ->where('b.flag_active', 1)
             ->orderBy('b.date', 'ASC')
@@ -129,7 +134,9 @@ class VenueController extends Controller
             ->leftjoin('user_teams AS ut', 'ut.user_id', '=', 'b.user_id')
             ->leftjoin('user_teams AS tu', 'tu.user_id', '=', 'b.sparring_user')
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
+            ->leftjoin('user_venues AS uv', 'uv.id', '=', 'vf.user_venue_id')
             ->whereDate('b.date', '>', today()->format('Y-m-d'))
+            ->where('uv.user_id', Auth::user()->id)
             ->where('b.is_accepted', 1)
             ->where('b.flag_active', 1)
             ->orderBy('b.date', 'ASC')
@@ -143,7 +150,9 @@ class VenueController extends Controller
             ->select('b.id', 'ut.team_name', 'vf.field_name', 'b.booking_type', 'b.date', 'b.hour', 'b.duration')
             ->leftjoin('user_teams AS ut', 'ut.user_id', '=', 'b.user_id')
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
+            ->leftjoin('user_venues AS uv', 'uv.id', '=', 'vf.user_venue_id')
             ->where('b.date', '>=', Carbon::now())
+            ->where('uv.user_id', Auth::user()->id)
             ->where('b.is_accepted', 0)
             ->where('b.flag_active', 1)
             ->orderBy('b.date', 'ASC')
@@ -157,8 +166,10 @@ class VenueController extends Controller
             ->select('ut.team_name', 'vf.field_name', 'b.booking_type', 'b.date', 'b.hour', 'b.duration', 'b.sparring_user', 'tu.team_name AS sparring_name')
             ->leftjoin('user_teams AS ut', 'ut.user_id', '=', 'b.user_id')
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
+            ->leftjoin('user_venues AS uv', 'uv.id', '=', 'vf.user_venue_id')
             ->leftjoin('user_teams AS tu', 'tu.user_id', '=', 'b.sparring_user')
             ->where('b.date', '>=', Carbon::now())
+            ->where('uv.user_id', Auth::user()->id)
             ->where('b.is_accepted', 1)
             ->whereNotNull('b.sparring_user')
             ->where('b.booking_type', 'sparring')
