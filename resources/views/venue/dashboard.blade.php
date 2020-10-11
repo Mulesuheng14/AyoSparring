@@ -35,17 +35,21 @@
 
     <!-- Mine CSS  -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/styles.css') }}">
-    
+
     <style>
-        .not-allowed {cursor: not-allowed;}
+        .not-allowed {
+            cursor: not-allowed;
+        }
+
         button:disabled {
             cursor: not-allowed;
-        }  
+        }
+
         input:disabled {
             cursor: not-allowed;
-        }  
+        }
     </style>
-        
+
 </head>
 
 <body id="page-top">
@@ -81,7 +85,7 @@
         <!-- My-Venue-->
         <section class="resume-section" style="width: fit-content;height: fit-content;" id="my-venue">
             <div class="resume-section-content d-flex flex-column ">
-                
+
                 <h1 class="mb-0">
                     <h1 class="card-title text-blue">{{ Auth::user()->venues->first()->venue_name }}</h1>
                 </h1>
@@ -90,55 +94,74 @@
                     {{ Auth::user()->venues->first()->address }}
                     <h4 class="text-dark">{{ Auth::user()->venues->first()->phone_number }}</h4>
                 </div>
-                
+
                 <div class="card mt-1 " style="width: 70rem; height: fit-content;">
 
                     <h5 class="card-header bg-primary text-light">Schedule Availability</h5>
-                    
+
                     <div class="car-body">
 
                         <table class="table table-striped table-bordered display nowrap">
                             <thead>
                                 <tr>
-                                    <tr>
-                                        <th rowspan="2" class="text-center align-middle">Date</th>
-                                        <th colspan="99999" class="text-center align-middle">Time</th>
-                                    </tr>
+                                <tr>
+                                    <th rowspan="2" class="text-center align-middle">Date</th>
+                                    <th colspan="99999" class="text-center align-middle">Time</th>
+                                </tr>
                                 </tr>
                                 <tr>
                                     @foreach ($schedules[0]['time'] as $time)
-                                        <th class="text-center align-middle">{{$time}}</th>
+                                    <th class="text-center align-middle">{{$time}}</th>
                                     @endforeach
                                 </tr>
                             </thead>
                             <tbody>
 
                                 @foreach ($schedules as $schedule)
-                                    <tr>
-                                        <th class="text-center align-middle">{{ $schedule['date'] }}</th>
-                                        @foreach ($schedule['time'] as $index => $time)
-                                            <td class="text-center align-middle">
-                                                @if ($schedule['availibility'][$index])
-                                                    <i class="fas fa-check-circle text-success"></i>
-                                                @else
-                                                    <i class="fas fa-times-circle text-danger"></i>
-                                                @endif
-                                            </td>
-                                        @endforeach
-                                    </tr>
+                                <tr>
+                                    <th class="text-center align-middle">{{ $schedule['date'] }}</th>
+                                    @foreach ($schedule['time'] as $index => $time)
+                                    <td class="text-center align-middle">
+                                        @if ($schedule['availibility'][$index])
+                                        <i class="fas fa-check-circle text-success"></i>
+                                        @else
+                                        <i class="fas fa-times-circle text-danger"></i>
+                                        @endif
+                                    </td>
+                                    @endforeach
+                                </tr>
                                 @endforeach
-
                             </tbody>
                         </table>
-
                     </div>
 
                 </div>
-                
+
                 <div class="card mt-5 " style="width: 40rem;">
                     <h5 class="card-header bg-primary text-light">Upcoming Schedule</h5>
-                    <div class="card-body">
-                        <h3 class="card-title">Hexadecima Informatika UII</h3>
+                    <div class="d-flex flex-md-row">
+                        <ul class="list-group list-group-flush flex-md-column">
+                            @if ($upcomingLists->count() > 0)
+                            @foreach ($upcomingLists as $index => $list)
+                            <li class="list-group-item">
+                                <div class="d-flex flex-md-row">
+                                    @if ($list->sparring_user == null)
+                                    <h4 class="text-red">{{$list->team_name}}</h4>
+                                    @else
+                                    <h4 class="text-red">{{$list->team_name}} vs {{$list->sparring_name}}</h4>
+                                    @endif
+                                </div>
+                                <div class="d-flex flex-md-column">
+                                    <h9 class="lead text-dark1">{{ date('l, d F Y, H:i A ', strtotime($list->date)) }}</h9>
+                                </div>
+                            </li>
+                            @endforeach
+                            @else
+                            <li class="list-group-item text-center">
+                                <h5>Data not found</h5>
+                            </li>
+                            @endif
+                        </ul>
                     </div>
                 </div>
 
@@ -156,67 +179,37 @@
                             <h5 class="text-light">BOOKING LIST</h5>
                         </div>
                         <ul class="list-group list-group-flush flex-md-column">
+                            @if ($bookingLists->count() > 0)
+                            @foreach ($bookingLists as $index => $list)
                             <li class="list-group-item">
-                                <div class="accordion" id="accordionExample">
+                                <div class="accordion" id="{{'accordionExample'.$index}}">
                                     <div class="card">
-                                        <div class="card-header" id="headingOne">
+                                        <div class="card-header" id="{{'heading'.$index}}">
                                             <h2 class="mb-0">
-                                                <button class="btn btn-link btn-block text-middle " type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                    <h4 class="text-red">Hexadecima Informatika UII</h4>
+                                                <button class="btn btn-link btn-block text-middle " type="button" data-toggle="collapse" data-target="#{{'collapse'.$index}}" aria-expanded="true" aria-controls="{{'collapse'.$index}}">
+                                                    @if ($list->sparring_user == null)
+                                                    <h4 class="text-red">{{$list->team_name}}</h4>
+                                                    @else
+                                                    <h4 class="text-red">{{$list->team_name}} vs {{$list->sparring_name}}</h4>
+                                                    @endif
                                                 </button>
                                             </h2>
                                         </div>
-                                        <div id="collapseOne" class="collapse hide" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                        <div id="{{'collapse'.$index}}" class="collapse hide" aria-labelledby="{{'heading'.$index}}" data-parent="#{{'accordionExample'.$index}}">
                                             <div class="card-body">
-                                                Kami adalah tim futsal yang beranggotakan mahasiswa/i dari Informatika UII Angkatan 16
+                                                {{$list->bio}}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <h9 class="lead text-dark1"> - Monday, 14 September 2020, 08.00 P.M</h9>
-                                <!-- <h6 class="lead text-dark1">Wednesday, 08.00 P.M</h6><button type="button" class="btn btn-danger btn-hover" style="width: 2cm; height: 1cm;"><h6 class="text-light">Request</h6></button> -->
-
+                                <h9 class="lead text-dark1">{{ date('l, d F Y, H:i A ', strtotime($list->date)) }}</h9>
                             </li>
-                            <li class="list-group-item">
-                                <div class="accordion" id="accordionExample1">
-                                    <div class="card">
-                                        <div class="card-header" id="headingTwo">
-                                            <h2 class="mb-0">
-                                                <button class="btn btn-link btn-block text-middle" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">
-                                                    <h4 class="text-red">FAKULTAS HUKUM UGM</h4>
-                                                </button>
-                                            </h2>
-                                        </div>
-
-                                        <div id="collapseTwo" class="collapse hide" aria-labelledby="headingTwo" data-parent="#accordionExample1">
-                                            <div class="card-body">
-                                                Kami adalah tim futsal yang beranggotakan mahasiswa/i dari Fakultas Hukum Universitas Gadjah Mada Yogyakarta.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <h9 class="lead text-dark1"> - Friday, 18 September 2020, 08.00 P.M</h9>
-                                <!-- <h6 class="lead text-dark1">Friday, 08.00 P.M</h6><span><button type="button" class="btn btn-danger btn-hover" style="width: 2cm; height: 1cm;"><h6 class="text-light">Request</h6></button></span></li> -->
-                            <li class="list-group-item">
-                                <div class="accordion" id="accordionExample2">
-                                    <div class="card">
-                                        <div class="card-header" id="headingThree">
-                                            <h2 class="mb-0">
-                                                <button class="btn btn-link btn-block text-middle" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                                                    <h4 class="text-red">MINARED INFORMATIKA UII</h4>
-                                                </button>
-                                            </h2>
-                                        </div>
-
-                                        <div id="collapseThree" class="collapse hide" aria-labelledby="headingThree" data-parent="#accordionExample2">
-                                            <div class="card-body">
-                                                Kami adalah Komunitas Mahasiswa Teknik Informatika (KMTF) di jurusan Informatika Fakultas Teknologi Industri UII.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <h9 class="lead text-dark1"> - Monday, 21 September 2020, 08.00 P.M</h6>
-                                    <!-- <h6 class="lead text-dark1">Monday, 08.00 P.M</h6><span><button type="button" class="btn btn-danger btn-hover" style="width: 2cm; height: 1cm;"><h6 class="text-light">Request</h6></button></span></li> -->
+                            @endforeach
+                            @else
+                            <li class="list-group-item text-center">
+                                <h5>Data not found</h5>
+                            </li>
+                            @endif
                         </ul>
                     </div>
                     <div class="card mt-0 ml-5" style="width: 30rem; height: fit-content;">
@@ -224,26 +217,33 @@
                             <h5 class="text-light">REQUEST LIST</h5>
                         </div>
                         <ul class="list-group list-group-flush">
+                            @if ($requestLists->count() > 0)
+                            @foreach ($requestLists as $index => $list)
                             <li class="list-group-item">
-                                <h4 class="text-red">Sparta FTI UII</h4>
-                                <h9 class="lead text-dark1"> - Thursday, 17 September 2020, 08.00 P.M</h9>
+                                <h4 class="text-red">{{$list->team_name}}</h4>
+                                <h9 class="lead text-dark1">{{ date('l, d F Y, H:i A ', strtotime($list->date)) }}</h9>
                                 <div class="d-flex flex-md-row">
-                                    <button type="button" class="btn bg-primary ml-0 mt-3" data-toggle="modal" data-target="#exampleModalLong">
-                                        <img class="img-fluid img-profile mx-auto mb-2" src="assets/img/iconmonstr-check-mark-17-24.png" alt="" />
+                                    <button type="button" class="btn bg-primary ml-0 mt-3" data-toggle="modal" data-target="#{{'exampleModal'.$index}}">
+                                        <!-- <img class="img-fluid img-profile mx-auto mb-2" src="assets/img/iconmonstr-check-mark-17-24.png" alt="" /> -->
+                                        Accept
+                                    </button>
+                                    <button type="button" class="btn btn-danger ml-2 mt-3">
+                                        <!-- <img class="img-fluid img-profile mx-auto mb-2" src="assets/img/iconmonstr-x-mark-1-16.png" alt="" /> -->
+                                        Decline
                                     </button>
 
                                     <!-- Modal -->
-                                    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                    <div class="modal fade" id="{{'exampleModal'.$index}}" tabindex="-1" role="dialog" aria-labelledby="{{'exampleModalTitle'.$index}}" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLongTitle">Schedule Confirmation</h5>
+                                                    <h5 class="modal-title" id="{{'exampleModalTitle'.$index}}">Schedule Confirmation</h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Are you sure to Book want to Accept book from Sparta FTI?
+                                                    Are you sure to Book want to Accept book from {{ $list->team_name }}?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -256,21 +256,19 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="button" class="btn btn-danger ml-2 mt-3">
-                                        <img class="img-fluid img-profile mx-auto mb-2" src="assets/img/iconmonstr-x-mark-1-16.png" alt="" />
-                                    </button>
-
-                                    <!-- Modal -->
-
-                                    <!-- <button type="button" class="btn btn-success height: 1cm"><span class="d-none d-lg-block"><img class="img-fluid img-profile mx-auto mb-1" src="assets/img/iconmonstr-check-mark-1-240.png" alt="" /></span></button> -->
-                                    <!-- <h6 class="lead text-dark1">Wednesday, 08.00 P.M</h6><button type="button" class="btn btn-danger btn-hover" style="width: 2cm; height: 1cm;"><h6 class="text-light">Request</h6></button> -->
                                 </div>
                             </li>
+                            @endforeach
+                            @else
+                            <li class="list-group-item text-center">
+                                <h5>Data not found</h5>
+                            </li>
+                            @endif
+                        </ul>
                     </div>
-                    </ul>
                 </div>
+            </section>
         </div>
-        </section>
     </div>
     <hr class="m-0" />
     <!-- Sparring-List-->
@@ -282,33 +280,25 @@
                 </div>
                 <div class="d-flex flex-md-row">
                     <ul class="list-group list-group-flush flex-md-column">
+                        @if ($sparringLists->count() > 0)
+                        @foreach ($sparringLists as $index => $list)
                         <li class="list-group-item">
                             <div class="d-flex flex-md-row">
-                                <h4 class="text-red">Hexadecima Informatika UII vs Teknik Industri UII</h4>
+                                <h4 class="text-red">{{$list->team_name}} vs {{$list->sparring_name}}</h4>
                             </div>
                             <div class="d-flex flex-md-column">
-                                <h9 class="lead text-dark1"> - Monday, 14 September 2020, 08.00 P.M</h9>
-                                <!-- <h6 class="lead text-dark1">Wednesday, 08.00 P.M</h6><button type="button" class="btn btn-danger btn-hover" style="width: 2cm; height: 1cm;"><h6 class="text-light">Request</h6></button> -->
+                                <h9 class="lead text-dark1">{{ date('l, d F Y, H:i A ', strtotime($list->date)) }}</h9>
                             </div>
                         </li>
+                        @endforeach
+                        @else
+                        <li class="list-group-item text-center">
+                            <h5>Data not found</h5>
+                        </li>
+                        @endif
+                    </ul>
                 </div>
-
-                <li class="list-group-item">
-                    <div class="d-flex flex-md-row">
-                        <h4 class="text-red">Fakultas Hukum UGM vs Sparta FTI UII</h4>
-                    </div>
-                    <h9 class="lead text-dark1"> - Friday, 18 September 2020, 08.00 P.M</h9>
-                    <!-- <h6 class="lead text-dark1">Friday, 08.00 P.M</h6><span><button type="button" class="btn btn-danger btn-hover" style="width: 2cm; height: 1cm;"><h6 class="text-light">Request</h6></button></span></li> -->
-                <li class="list-group-item">
-                    <div class="d-flex flex-md-row">
-                        <h4 class="text-red">Minared Informatika vs Teknik Sipil UII</h4>
-                    </div>
-                    <h9 class="lead text-dark1"> - Monday, 21 September 2020, 08.00 P.M</h6>
-                        <!-- <h6 class="lead text-dark1">Monday, 08.00 P.M</h6><span><button type="button" class="btn btn-danger btn-hover" style="width: 2cm; height: 1cm;"><h6 class="text-light">Request</h6></button></span></li> -->
-                        </ul>
             </div>
-            </ul>
-        </div>
         </div>
     </section>
 
@@ -316,12 +306,26 @@
     <div style="background-color: #f2f2f2;">
         <section class="resume-section" style="width: fit-content; height: fit-content;" id="feedback">
             <div class="resume-section-content d-flex flex-md-row justify-content-between mb-5">
-                <div class="card mt-5 " style="width: 40rem; height: fit-content;">
-                    <h5 class="card-header bg-primary text-light">FEEDBACK</h5>
-                    <div class="card-body">
-                        <h5 class="card-title">Feedback from : <span class="text-blue">Gadjah Mada University</span></h5>
-                        <h5 class="lead text-dark">Monday, 11.00 PM</h5>
-                        <p class="lead text-dark"> - Lapangannya luas, bolanya enak ditendang</p>
+                <div class="card mt-0" style="width: 30rem; height: fit-content;">
+                    <div class="card-header bg-primary">
+                        <h5 class="text-light">FEEDBACK</h5>
+                    </div>
+                    <div class="d-flex flex-md-row">
+                        <ul class="list-group list-group-flush flex-md-column">
+                            @if ($reviewLists->count() > 0)
+                            @foreach ($reviewLists as $index => $list)
+                            <li class="list-group-item">
+                                <h5 class="card-title">Feedback from : <span class="text-blue">{{ $list->team_name }}</span></h5>
+                                <h5 class="lead text-dark">{{ date('l, d F Y, H:i A ', strtotime($list->date)) }}</h5>
+                                <p class="lead text-dark">{{ $list->comment }}</p>
+                            </li>
+                            @endforeach
+                            @else
+                            <li class="list-group-item text-center">
+                                <h5>Data not found</h5>
+                            </li>
+                            @endif
+                        </ul>
                     </div>
                 </div>
             </div>

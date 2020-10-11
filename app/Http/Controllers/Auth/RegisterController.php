@@ -20,12 +20,12 @@ class RegisterController extends Controller
 {
     public function registerUser(Request $request)
     {
-        if(Auth::user()) {
-            if(Auth::user()->role == 1) {
+        if (Auth::user()) {
+            if (Auth::user()->role == 1) {
                 return redirect('admin/dashboard');
-            } else if(Auth::user()->role == 2) {
+            } else if (Auth::user()->role == 2) {
                 return redirect('venue/dashboard');
-            } else if(Auth::user()->role == 3) {
+            } else if (Auth::user()->role == 3) {
                 return redirect('user/dashboard');
             }
         }
@@ -35,26 +35,26 @@ class RegisterController extends Controller
 
     public function registerVenue(Request $request)
     {
-        if(Auth::user()) {
-            if(Auth::user()->role == 1) {
+        if (Auth::user()) {
+            if (Auth::user()->role == 1) {
                 return redirect('admin/dashboard');
-            } else if(Auth::user()->role == 2) {
+            } else if (Auth::user()->role == 2) {
                 return redirect('venue/dashboard');
-            } else if(Auth::user()->role == 3) {
+            } else if (Auth::user()->role == 3) {
                 return redirect('user/dashboard');
             }
         }
-        
+
         return view('guest.register.venue');
     }
 
     public function registerUserSubmit(Request $request)
     {
-        if(User::where('email',$request->email)->exists()) {
+        if (User::where('email', $request->email)->exists()) {
             return FlashSession::error(url('register/user'), 'Email is already in used!');
         }
-        
-        if(!$request->hasFile('photo')) {
+
+        if (!$request->hasFile('photo')) {
             return FlashSession::error(url('register/user'), 'Team photo must be filled!');
         }
 
@@ -95,7 +95,7 @@ class RegisterController extends Controller
             'updated_by' => 'Self',
         ]);
 
-        if($storeUser) {
+        if ($storeUser) {
             $id_user = $storeUser->id;
 
             $storeTeam = UserTeam::create([
@@ -111,29 +111,30 @@ class RegisterController extends Controller
                 'updated_at' => Carbon::now(),
                 'updated_by' => 'Self',
             ]);
-    
-            if($storeTeam) {
-                $filename = $request->club_name.'_'.time().'.'.$request->file('photo')->getClientOriginalExtension();
-                
+
+            if ($storeTeam) {
+                $id_team = $storeTeam->id;
+                $filename = $request->club_name . '_' . time() . '.' . $request->file('photo')->getClientOriginalExtension();
+
                 try {
                     $request->file('photo')->storeAs('public/storage/team', $filename);
-                }
-                catch (Exception $e) {
+                } catch (Exception $e) {
                     DB::rollBack();
                     return FlashSession::error(url('register/user'), 'Registration failed when uploading team photo/logo to server!');
                 }
 
-                $updatePhoto = UserTeam::where('id',$id_user)->update([
+                $updatePhoto = UserTeam::where('id', $id_team)->update([
                     'photo' => $filename,
                     'updated_at' => Carbon::now(),
                     'updated_by' => 'Self',
                 ]);
 
-                if($updatePhoto) {
+                if ($updatePhoto) {
                     DB::commit();
                     return FlashSession::success(url('login'), 'Registration success!');
                 } else {
                     DB::rollBack();
+                    dd('gagal');
                     return FlashSession::error(url('register/user'), 'Registration failed when saving team photo/logo to database!');
                 }
             } else {
@@ -148,18 +149,18 @@ class RegisterController extends Controller
 
     public function registerVenueSubmit(Request $request)
     {
-        if(User::where('email',$request->email)->exists()) {
+        if (User::where('email', $request->email)->exists()) {
             return FlashSession::error(url('register/user'), 'Email is already in used!');
         }
-        
-        if(!$request->hasFile('photo_venue')) {
+
+        if (!$request->hasFile('photo_venue')) {
             return FlashSession::error(url('register/user'), 'Venue photo / logo must be filled!');
         }
 
-        if(!$request->hasFile('image_field')) {
+        if (!$request->hasFile('image_field')) {
             return FlashSession::error(url('register/user'), 'Field image must be filled!');
         }
-        
+
         $rulesValidation = array(
             'venue_name' => 'required',
             'address' => 'required',
@@ -204,7 +205,7 @@ class RegisterController extends Controller
             'updated_by' => 'Self',
         ]);
 
-        if($storeUser) {
+        if ($storeUser) {
             $id_user = $storeUser->id;
 
             $storeVenue = UserVenue::create([
@@ -219,36 +220,34 @@ class RegisterController extends Controller
                 'updated_at' => Carbon::now(),
                 'updated_by' => 'Self',
             ]);
-    
-            if($storeVenue) {
+
+            if ($storeVenue) {
                 $id_venue = $storeVenue->id;
-                
-                $filename = $request->venue_name.'_'.time().'.'.$request->file('photo_venue')->getClientOriginalExtension();
-                
+
+                $filename = $request->venue_name . '_' . time() . '.' . $request->file('photo_venue')->getClientOriginalExtension();
+
                 try {
                     $request->file('photo_venue')->storeAs('public/storage/venue', $filename);
-                }
-                catch (Exception $e) {
+                } catch (Exception $e) {
                     return FlashSession::error(url('register/user'), 'Registration failed when uploading venue photo/logo to server!');
                 }
 
-                $updatePhoto = UserVenue::where('id',$id_venue)->update([
+                $updatePhoto = UserVenue::where('id', $id_venue)->update([
                     'photo' => $filename,
                     'updated_at' => Carbon::now(),
                     'updated_by' => 'Self',
                 ]);
 
-                if($updatePhoto) {
+                if ($updatePhoto) {
                     $files = $request->file('image_field');
-                    
+
                     foreach ($files as $index => $file) {
                         $filename = '';
 
                         try {
-                            $filename = $request->field_name[$index].'_'.time().'.'.$file->getClientOriginalExtension();
+                            $filename = $request->field_name[$index] . '_' . time() . '.' . $file->getClientOriginalExtension();
                             $file->storeAs('public/storage/field', $filename);
-                        }
-                        catch (Exception $e) {
+                        } catch (Exception $e) {
                             DB::rollBack();
                             return FlashSession::error(url('register/venue'), 'Registration failed when uploading team field image to server!');
                         }
@@ -265,7 +264,7 @@ class RegisterController extends Controller
                             'updated_by' => 'Self',
                         ]);
 
-                        if(!$storeVenueField) {
+                        if (!$storeVenueField) {
                             DB::rollBack();
                             return FlashSession::error(url('register/venue'), 'Registration failed when store data venue field to database!');
                         }

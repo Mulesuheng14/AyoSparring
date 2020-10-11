@@ -32,17 +32,21 @@
 
     <!-- Mine CSS  -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/styles_user.css') }}">
-    
+
     <style>
-        .not-allowed {cursor: not-allowed;}
+        .not-allowed {
+            cursor: not-allowed;
+        }
+
         button:disabled {
             cursor: not-allowed;
-        }  
+        }
+
         input:disabled {
             cursor: not-allowed;
-        }  
+        }
     </style>
-        
+
 </head>
 
 <body id="page-top">
@@ -53,7 +57,7 @@
             <span class="d-block d-lg-none"> </span>
             <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="assets/img/SPARTA-FTI.jpg" alt="" /></span>
         </a>
-        <div class="sidebar-heading text-warning">Sparta FTI</div>
+        <div class="sidebar-heading text-warning">{{ Auth::user()->teams->first()->team_name }}</div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav">
@@ -82,13 +86,13 @@
         <section class="resume-section" style="width: fit-content; height: fit-content;" id="home">
             <div class="resume-section-content d-flex flex-column">
                 <h1 class="mb-0">
-                    <h1 class="card-title text-red">SPARTA<span class="text-dark"> FTI</span></h1>
+                    <h1 class="card-title text-red">{{ Auth::user()->teams->first()->team_name }}</h1>
                 </h1>
                 <div class="subheading mb-5">
-                    Gedung KH Mas Mansyur, Jl. Kaliurang KM 14,5
-                    <h4 class="text-dark"> 082299119922 </h4>
+                    {{ Auth::user()->teams->first()->address }}
+                    <h4 class="text-dark">{{ Auth::user()->phone_number }}</h4>
                 </div>
-                <p class="lead mb-3"> We are the proffesional futsal team of Faculty of Industrial Technology, Islamic University of Indonesia.</p>
+                <p class="lead mb-3">{{ Auth::user()->teams->first()->bio }}</p>
                 <p class="lead mb-3 text-dark text-secondary">FIND US AT</p>
                 <div class="social-icons">
                     <a class="social-icon" href="#"><i class="fab fa-instagram"></i></a>
@@ -98,10 +102,24 @@
 
                 <div class="card mt-5 " style="width: 40rem;">
                     <h5 class="card-header bg-primary text-light">Next Match</h5>
-                    <div class="card-body">
-                        <h2 class="card-title">VS. <span class="text-red">Gadjah Mada University</span></h2>
-                        <p class="lead text-dark">At Jakal 7 Futsal</p>
-                        <p class="lead text-dark">Monday, 09.00 PM</p>
+                    <div class="d-flex flex-md-row">
+                        <ul class="list-group list-group-flush flex-md-column">
+                            @if ($bookingLists->count() > 0)
+                            <li class="list-group-item">
+                                @if ($bookingLists[0]->sparring_user != null)
+                                <h2 class="card-title"><span class="text-red">{{ $bookingLists[0]->team_name }}</span> VS. <span class="text-red">{{ $bookingLists[0]->sparring_name }}</span></h2>
+                                @else
+                                <h2 class="card-title">{{ $bookingLists[0]->team_name }}</h2>
+                                @endif
+                                <p class="lead text-dark">At {{ $bookingLists[0]->venue_name.' - '.$bookingLists[0]->field_name }}</p>
+                                <p class="lead text-dark">{{ date('l, d F Y, H:i A ', strtotime($bookingLists[0]->date)) }}</p>
+                            </li>
+                            @else
+                            <li class="list-group-item text-center">
+                                <h5>Data not found</h5>
+                            </li>
+                            @endif
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -116,25 +134,31 @@
                             <h5 class="text-light">REQUEST LIST</h5>
                         </div>
                         <ul class="list-group list-group-flush">
+                            @if ($requestLists->count() > 0)
+                            @foreach ($requestLists as $index => $list)
                             <li class="list-group-item">
-                                <h4 class="text-red">Industri UII</h4>
-                                <h9 class="lead text-dark1"> - Thursday, 17 September 2020, 08.00 P.M</h9>
+                                <h4 class="text-red">{{ $list->team_name }}</h4>
+                                <p class="lead text-dark">{{ $list->venue_name.' '.$list->field_name }}</p>
+                                <p class="lead text-dark">{{ date('l, d F Y, H:i A ', strtotime($list->date)) }}</p>
                                 <div class="d-flex flex-md-row">
-                                    <button type="button" class="btn bg-secondary ml-0 mt-3" data-toggle="modal" data-target="#exampleModalLong15">
-                                        <img class="img-fluid img-profile mx-auto mb-2" src="assets/img/iconmonstr-check-mark-17-24.png" alt="" />
+                                    <button type="button" class="btn bg-secondary ml-0 mt-3" data-toggle="modal" data-target="#{{'exampleModalLong'.$index}}">
+                                        Accept
+                                    </button>
+                                    <button type="button" class="btn btn-danger ml-2 mt-3">
+                                        Decline
                                     </button>
                                     <!-- Modal -->
-                                    <div class="modal fade" id="exampleModalLong15" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle15" aria-hidden="true">
+                                    <div class="modal fade" id="{{'exampleModalLong'.$index}}" tabindex="-1" role="dialog" aria-labelledby="{{'exampleModalLong'.$index}}" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLongTitle15">Sparring Confirmation</h5>
+                                                    <h5 class="modal-title" id="{{'exampleModalLong'.$index}}">Sparring Confirmation</h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Are you sure to Book want to Accept request from Industri UII?
+                                                    Are you sure to Book want to Accept request from {{ $list->team_name }}?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -147,89 +171,15 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="button" class="btn btn-danger ml-2 mt-3">
-                                        <img class="img-fluid img-profile mx-auto mb-2" src="assets/img/iconmonstr-x-mark-1-16.png" alt="" />
-                                    </button>
-                                    <!-- <button type="button" class="btn btn-success height: 1cm"><span class="d-none d-lg-block"><img class="img-fluid img-profile mx-auto mb-1" src="assets/img/iconmonstr-check-mark-1-240.png" alt="" /></span></button> -->
-                                    <!-- <h6 class="lead text-dark1">Wednesday, 08.00 P.M</h6><button type="button" class="btn btn-danger btn-hover" style="width: 2cm; height: 1cm;"><h6 class="text-light">Request</h6></button> -->
                                 </div>
                             </li>
-                            <li class="list-group-item">
-                                <h4 class="text-red">Sipil UII</h4>
-                                <h9 class="lead text-dark1"> - Thursday, 24 September 2020, 08.00 P.M</h9>
-                                <div class="d-flex flex-md-row">
-                                    <button type="button" class="btn bg-secondary ml-0 mt-3" data-toggle="modal" data-target="#exampleModalLong16">
-                                        <img class="img-fluid img-profile mx-auto mb-2" src="assets/img/iconmonstr-check-mark-17-24.png" alt="" />
-                                    </button>
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="exampleModalLong16" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle16" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLongTitle16">Schedule Confirmation</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    Are you sure to Book want to Accept book from Sipil FTI?
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                                        <h6 class="text-light">No</h6>
-                                                    </button>
-                                                    <button type="button" class="btn bg-secondary">
-                                                        <h6 class="text-light">Yes</h6>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button type="button" class="btn btn-danger ml-2 mt-3">
-                                        <img class="img-fluid img-profile mx-auto mb-2" src="assets/img/iconmonstr-x-mark-1-16.png" alt="" />
-                                    </button>
-                                    <!-- <button type="button" class="btn btn-success height: 1cm"><span class="d-none d-lg-block"><img class="img-fluid img-profile mx-auto mb-1" src="assets/img/iconmonstr-check-mark-1-240.png" alt="" /></span></button> -->
-                                    <!-- <h6 class="lead text-dark1">Wednesday, 08.00 P.M</h6><button type="button" class="btn btn-danger btn-hover" style="width: 2cm; height: 1cm;"><h6 class="text-light">Request</h6></button> -->
-                                </div>
+                            @endforeach
+                            @else
+                            <li class="list-group-item text-center">
+                                <h5>Data not found</h5>
                             </li>
-                            <li class="list-group-item">
-                                <h4 class="text-red">Hukum UII</h4>
-                                <h9 class="lead text-dark1"> - Thursday, 01 Oktober 2020, 08.00 P.M</h9>
-                                <div class="d-flex flex-md-row">
-                                    <button type="button" class="btn bg-secondary ml-0 mt-3" data-toggle="modal" data-target="#exampleModalLong18">
-                                        <img class="img-fluid img-profile mx-auto mb-2" src="assets/img/iconmonstr-check-mark-17-24.png" alt="" />
-                                    </button>
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="exampleModalLong18" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle18" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLongTitle18">Schedule Confirmation</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    Are you sure to Book want to Accept book from Hukum UII?
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                                        <h6 class="text-light">No</h6>
-                                                    </button>
-                                                    <button type="button" class="btn bg-secondary">
-                                                        <h6 class="text-light">Yes</h6>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button type="button" class="btn btn-danger ml-2 mt-3">
-                                        <img class="img-fluid img-profile mx-auto mb-2" src="assets/img/iconmonstr-x-mark-1-16.png" alt="" />
-                                    </button>
-                                    <!-- <button type="button" class="btn btn-success height: 1cm"><span class="d-none d-lg-block"><img class="img-fluid img-profile mx-auto mb-1" src="assets/img/iconmonstr-check-mark-1-240.png" alt="" /></span></button> -->
-                                    <!-- <h6 class="lead text-dark1">Wednesday, 08.00 P.M</h6><button type="button" class="btn btn-danger btn-hover" style="width: 2cm; height: 1cm;"><h6 class="text-light">Request</h6></button> -->
-                                </div>
-                            </li>
+                            @endif
+                        </ul>
                     </div>
                 </div>
             </section>
@@ -242,167 +192,37 @@
                     <div class="card-header bg-primary">
                         <h5 class="text-light">SPARRING AVAILABLE</h5>
                     </div>
-                    <!-- <div class="card-body">
-                    <div class="list-item flex-md-row">
-                        <div class="flex-md-row">
-                            FAKULTAS PERTANIAN INSTIPER
-                        </div>
-                        <div class="flex-md-row">
-                            <p>At Telaga Futsal 2</p>
-                            <p>Wednesday, 08.00 P.M</p>
-                        </div>
-                        <div class="flex-md-column">
-                            <button>Request</button>
-                            <button>Dropdown</button>
-                        </div>
-                    </div>
-                    </div> -->
-                    <!-- <div class="d-flex flex-md-row"> -->
                     <ul class="list-group list-group-flush flex-md-column">
+                        @if ($sparringLists->count() > 0)
+                        @foreach ($sparringLists as $index => $list)
                         <li class="list-group-item">
-                            <!-- <div class="d-flex flex-md-row">
-                                <h4 class="text-red">Fakultas Pertanian Instiper</h4> 
-                                  <div class="dropdown ml-0 mb-2">
-                                    <button class="btn btn-danger dropdown-toggle d-flex flex-md-row ml-2 mt-1" href="#teaminfo" style="width: fit-content;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#teaminfo">Action</a>
-                                      </div>
-                                  </div>          
-                              </div> -->
-                            <div class="accordion" id="accordionExample">
+                            <div class="accordion" id="{{'accordionExample'.$index}}">
                                 <div class="card">
-                                    <div class="card-header" id="headingOne">
+                                    <div class="card-header" id="{{'heading'.$index}}">
                                         <h2 class="mb-0">
-                                            <button class="btn btn-link btn-block text-middle" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                <h4 class="text-red">FAKULTAS PERTANIAN INSTIPER</h4>
+                                            <button class="btn btn-link btn-block text-middle" type="button" data-toggle="collapse" data-target="#{{'collapse'.$index}}" aria-expanded="true" aria-controls="collapseOne">
+                                                <h4 class="text-red">{{ $list->team_name }}</h4>
                                             </button>
                                         </h2>
                                     </div>
-                                    <div id="collapseOne" class="collapse hide" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                    <div id="{{'collapse'.$index}}" class="collapse hide" aria-labelledby="{{'heading'.$index}}" data-parent="#{{'accordionExample'.$index}}">
                                         <div class="card-body">
-                                            Kami adalah tim futsal yang beranggotakan mahasiswa/i dari Fakultas Pertanian Instiper Yogyakarta
+                                            {{ $list->bio }}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <!-- <div class="d-flex flex-md-column"> -->
-                            <h6 class="lead text-dark1">At Telaga 2 Futsal</h6>
-                            <h6 class="lead text-dark1">Wednesday, 08.00 P.M</h6>
-                            <button type="button" class="btn bg-secondary" style="width: 2cm; height: 1cm;" data-toggle="modal" data-target="#exampleModalLong">
+                            <h6 class="lead text-dark1">At {{ $list->venue_name.' - '.$list->field_name }}</h6>
+                            <h6 class="lead text-dark1">{{ date('l, d F Y, H:i A ', strtotime($list->date)) }}</h6>
+                            <button type="button" class="btn bg-secondary" style="width: 2cm; height: 1cm;" data-toggle="modal" data-target="#{{'requestModal'.$index}}">
                                 <h6 class="text-light">Request</h6>
                             </button>
-                            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLong" aria-hidden="true">
+                            <div class="modal fade" id="{{'requestModal'.$index}}" tabindex="-1" role="dialog" aria-labelledby="{{'requestModal'.$index}}" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLong">Request Information</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Your sparring request has been sent.
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn bg-secondary">
-                                                <h6 class="text-light">Oke</h6>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- </div> -->
-                        </li>
-                        <!-- </div> -->
-                        <li class="list-group-item">
-                            <!-- <div class="d-flex flex-md-row">
-                                  <h4 class="text-red">Fakultas Hukum UGM</h4> 
-                                    <div class="dropdown ml-0 mb-2">
-                                      <button class="btn btn-danger dropdown-toggle d-flex flex-md-row ml-2 mt-1" href="#teaminfo" style="width: fit-content;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                          <a class="dropdown-item" href="#teaminfo">Action</a>
-                                        </div>
-                                    </div>          
-                                </div> -->
-                            <div class="accordion" id="accordionExample1">
-                                <div class="card">
-                                    <div class="card-header" id="headingTwo">
-                                        <h2 class="mb-0">
-                                            <button class="btn btn-link btn-block text-middle" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                                <h4 class="text-red">FAKULTAS HUKUM UGM</h4>
-                                            </button>
-                                        </h2>
-                                    </div>
-                                    <div id="collapseTwo" class="collapse hide" aria-labelledby="headingTwo" data-parent="#accordionExample1">
-                                        <div class="card-body">
-                                            Kami adalah tim futsal yang beranggotakan mahasiswa/i dari Fakultas Hukum Universitas Gadjah Mada Yogyakarta.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <h6 class="lead text-dark1">At Jakal 7 Futsal</h6>
-                            <h6 class="lead text-dark1">Friday, 08.00 P.M</h6><span>
-                                <button type="button" class="btn bg-secondary btn-hover" style="width: 2cm; height: 1cm;" data-toggle="modal" data-target="#exampleModalLong1">
-                                    <h6 class="text-light">Request</h6>
-                                </button>
-                                <div class="modal fade" id="exampleModalLong1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLong1" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLong1">Request Information</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                Your sparring request has been sent.
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn bg-secondary">
-                                                    <h6 class="text-light">Oke</h6>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                        </li>
-                        <li class="list-group-item">
-                            <!-- <div class="d-flex flex-md-row">
-                          <h4 class="text-red">Minared Informatika UII</h4> 
-                            <div class="dropdown ml-0 mb-2">
-                              <button class="btn btn-danger dropdown-toggle d-flex flex-md-row ml-2 mt-1" href="#teaminfo" style="width: fit-content;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                  <a class="dropdown-item" href="#teaminfo">Action</a>
-                                </div>
-                            </div>          
-                        </div> -->
-                            <div class="accordion" id="accordionExample2">
-                                <div class="card">
-                                    <div class="card-header" id="headingThree">
-                                        <h2 class="mb-0">
-                                            <button class="btn btn-link btn-block text-middle" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                                                <h4 class="text-red">MINARED INFORMATIKA UII</h4>
-                                            </button>
-                                        </h2>
-                                    </div>
-
-                                    <div id="collapseThree" class="collapse hide" aria-labelledby="headingThree" data-parent="#accordionExample2">
-                                        <div class="card-body">
-                                            Kami adalah Komunitas Mahasiswa Teknik Informatika (KMTF) di jurusan Informatika Fakultas Teknologi Industri UII.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <h6 class="lead text-dark1">At Star Futsal</h6>
-                            <h6 class="lead text-dark1">Monday, 08.00 P.M</h6>
-                            <button type="button" class="btn bg-secondary btn-hover" style="width: 2cm; height: 1cm;" data-toggle="modal" data-target="#exampleModalLong2">
-                                <h6 class="text-light">Request</h6>
-                            </button>
-                            <div class="modal fade" id="exampleModalLong2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLong2" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLong2">Request Information</h5>
+                                            <h5 class="modal-title" id="{{'requestModal'.$index}}">Request Information</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -419,26 +239,12 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="list-group-item">
-                            <div class="accordion" id="accordionExample14">
-                                <div class="card">
-                                    <div class="card-header" id="heading14">
-                                        <h2 class="mb-0">
-                                            <button class="btn btn-link btn-block text-middle" type="button" data-toggle="collapse" data-target="#collapse14" aria-expanded="true" aria-controls="collapse14">
-                                                <h4 class="text-red">Sparta FTI UII</h4>
-                                            </button>
-                                        </h2>
-                                    </div>
-                                    <div id="collapse14" class="collapse hide" aria-labelledby="heading14" data-parent="#accordionExample14">
-                                        <div class="card-body">
-                                            We are the proffesional futsal team of Faculty of Industrial Technology, Islamic University of Indonesia.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <h6 class="lead text-dark1">At Star Futsal</h6>
-                            <h6 class="lead text-dark1">Thursday, 08.00 P.M</h6>
+                        @endforeach
+                        @else
+                        <li class="list-group-item text-center">
+                            <h5>Data not found</h5>
                         </li>
+                        @endif
                     </ul>
                 </div>
                 <div class="card mt-0 ml-5" style="width: 30rem; height: fit-content;">
@@ -446,16 +252,23 @@
                         <h5 class="text-light">TEAM SCHEDULE</h5>
                     </div>
                     <ul class="list-group list-group-flush">
+                        @if ($bookingLists->count() > 0)
+                        @foreach ($bookingLists as $index => $list)
                         <li class="list-group-item">
-                            <h4 class="text-dark">VS. <span class="text-red">Gadjah Mada University</span></h4>
-                            <h6 class="lead text-dark1">At Jakal 7 Futsal</h6>
-                            <h6 class="lead text-dark1">Monday, 09.00 P.M</h6>
+                            @if ($list->sparring_user != null)
+                            <h4 class="text-dark"><span class="text-red">{{ $list->team_name }}</span> VS. <span class="text-red">{{ $list->sparring_name }}</span></h4>
+                            @else
+                            <h4 class="text-dark">{{ $list->team_name }}</h4>
+                            @endif
+                            <h6 class="lead text-dark">At {{ $list->venue_name.' - '.$list->field_name }}</h6>
+                            <h6 class="lead text-dark">{{ date('l, d F Y, H:i A ', strtotime($list->date)) }}</h6>
                         </li>
-                        <li class="list-group-item">
-                            <h4 class="text-dark">VS. <span class="text-red">Perminyakan UPN</span></h4>
-                            <h6 class="lead text-dark1">At Jakal 7 Futsal</h6>
-                            <h6 class="lead text-dark1">Friday, 08.00 P.M</h6>
+                        @endforeach
+                        @else
+                        <li class="list-group-item text-center">
+                            <h5>Data not found</h5>
                         </li>
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -1016,11 +829,6 @@
 
                             </div>
                         </div>
-                        <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.6124673662425!2d110.39903331472546!3d-7.72466099443204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a5938616504cd%3A0xa1625d4f77e3cacf!2sStar%20Futsal%20Center!5e0!3m2!1sen!2sid!4v1599014523621!5m2!1sen!2sid" width="475" height="600" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe> -->
-                        <!-- <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><h4 class="text-dark">VS. <span class="text-red">Gadjah Mada University</span></h4> <h6 class="lead text-dark1">At Jakal 7 Futsal</h6><h6 class="lead text-dark1">Monday, 09.00 P.M</h6></li>
-                    <li class="list-group-item"><h4 class="text-dark">VS. <span class="text-red">Perminyakan UPN</span></h4> <h6 class="lead text-dark1">At Jakal 7 Futsal</h6><h6 class="lead text-dark1">Friday, 08.00 P.M</h6></li>
-                  </ul> -->
                     </div>
                 </div>
             </section>
@@ -1034,27 +842,28 @@
                         <h5 class="text-light">HISTORY</h5>
                     </div>
                     <ul class="list-group list-group-flush">
+                        @if ($historyLists->count() > 0)
+                        @foreach ($historyLists as $index => $list)
                         <li class="list-group-item">
                             <div class="d-flex flex-md-row">
-                                <h4 class="text-dark">VS. <span class="text-red">Gadjah Mada University</span></h4>
-                                <button type="button" class="btn bg-secondary ml-5 mt-0" style="width: fit-content; height: fit-content;" data-toggle="modal" data-target="#exampleModalLong6">
+                                @if ($list->sparring_user == null)
+                                <h4 class="text-red">{{$list->team_name}}</h4>
+                                @else
+                                <h4 class="text-red">{{$list->team_name}} vs {{$list->sparring_name}}</h4>
+                                @endif
+                                <button type="button" class="btn bg-secondary ml-5 mt-0" style="width: fit-content; height: fit-content;" data-toggle="modal" data-target="#{{'reviewUser'.$index}}">
                                     <h6 class="text-light">Review</h6>
                                 </button>
-                                <div class="modal fade" id="exampleModalLong6" tabindex="-1" role="dialog" aria-labelledby="exampleModalLong6" aria-hidden="true">
+                                <div class="modal fade" id="{{'reviewUser'.$index}}" tabindex="-1" role="dialog" aria-labelledby="{{'reviewUser'.$index}}" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLong6">Review</h5>
+                                                <h5 class="modal-title" id="{{'reviewUser'.$index}}">Review</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <!-- <span class="fa fa-star"></span>
-                                      <span class="fa fa-star"></span>
-                                      <span class="fa fa-star"></span>
-                                      <span class="fa fa-star"></span>
-                                      <span class="fa fa-star"></span> -->
                                                 <form action="/action_page.php">
                                                     <label for="Review">Review :</label>
                                                     <textarea id="Review" name="Review" rows="4" cols="50"></textarea>
@@ -1066,14 +875,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button type="button" class="btn btn-secondary ml-3 mt-0" style="width: fit-content; height: fit-content;" data-toggle="modal" data-target="#exampleModalLong7">
+                                <button type="button" class="btn btn-secondary ml-3 mt-0" style="width: fit-content; height: fit-content;" data-toggle="modal" data-target="#{{'reportUser'.$index}}">
                                     <h6 class="text-light">Report</h6>
                                 </button>
-                                <div class="modal fade" id="exampleModalLong7" tabindex="-1" role="dialog" aria-labelledby="exampleModalLong7" aria-hidden="true">
+                                <div class="modal fade" id="{{'reportUser'.$index}}" tabindex="-1" role="dialog" aria-labelledby="{{'reportUser'.$index}}" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLong7">Report</h5>
+                                                <h5 class="modal-title" id="{{'reportUser'.$index}}">Report</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -1095,202 +904,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <h5>05 Oktober 2020,</h5>
-                            <h5 class="text-dark mt-1">At Jakal7 futsal</h5>
-                            <button type="button" class="btn bg-secondary ml-0 mt-0" style="width: fit-content; height: fit-content;" data-toggle="modal" data-target="#exampleModalLong8">
+                            <h5>{{ date('l, d F Y', strtotime($list->date)) }},</h5>
+                            <h5 class="text-dark mt-1">At {{ $list->venue_name.' '.$list->field_name }}</h5>
+                            <button type="button" class="btn bg-secondary ml-0 mt-0" style="width: fit-content; height: fit-content;" data-toggle="modal" data-target="#{{'reviewVenue'.$index}}">
                                 <h6 class="text-light">Review</h6>
                             </button>
-                            <div class="modal fade" id="exampleModalLong8" tabindex="-1" role="dialog" aria-labelledby="exampleModalLong8" aria-hidden="true">
+                            <div class="modal fade" id="{{'reviewVenue'.$index}}" tabindex="-1" role="dialog" aria-labelledby="{{'reviewVenue'.$index}}" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLong8">Review</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <!-- <span class="fa fa-star"></span>
-                                      <span class="fa fa-star"></span>
-                                      <span class="fa fa-star"></span>
-                                      <span class="fa fa-star"></span>
-                                      <span class="fa fa-star"></span> -->
-                                            <form action="/action_page.php">
-                                                <label for="Review">Review :</label>
-                                                <textarea id="Review" name="Review" rows="4" cols="50"></textarea>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <input class="btn-secondary" type="submit" value="Submit">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="d-flex flex-md-row">
-                                <h4 class="text-dark">VS. <span class="text-red">Industri UII</span></h4>
-                                <button type="button" class="btn bg-secondary ml-5 mt-0" style="width: fit-content; height: fit-content;" data-toggle="modal" data-target="#exampleModalLong9">
-                                    <h6 class="text-light">Review</h6>
-                                </button>
-                                <div class="modal fade" id="exampleModalLong9" tabindex="-1" role="dialog" aria-labelledby="exampleModalLong9" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLong9">Review</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <!-- <span class="fa fa-star"></span>
-                                      <span class="fa fa-star"></span>
-                                      <span class="fa fa-star"></span>
-                                      <span class="fa fa-star"></span>
-                                      <span class="fa fa-star"></span> -->
-                                                <form action="/action_page.php">
-                                                    <label for="Review">Review :</label>
-                                                    <textarea id="Review" name="Review" rows="4" cols="50"></textarea>
-                                                </form>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <input class="btn-secondary" type="submit" value="Submit">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button type="button" class="btn btn-secondary ml-3 mt-0" style="width: fit-content; height: fit-content;" data-toggle="modal" data-target="#exampleModalLong10">
-                                    <h6 class="text-light">Report</h6>
-                                </button>
-                                <div class="modal fade" id="exampleModalLong10" tabindex="-1" role="dialog" aria-labelledby="exampleModalLong10" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLong10">Report</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form>
-                                                    <input type="radio" id="Fake-request" name="report" value="Fake-request">
-                                                    <label for="Fake-request">Fake Request</label><br>
-                                                    <input type="radio" id="Bermain-kasar" name="report" value="Bermain-kasar">
-                                                    <label for="Bermain-kasar">Bermain kasar</label><br>
-                                                    <input type="radio" id="Deskripsi-tidakSesuai" name="report" value="Deskripsi-tidakSesuai">
-                                                    <label for="other">Deskripsi tidak sesuai</label>
-                                                </form>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <input class="btn-secondary" type="submit" value="Submit">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <h5>08 September 2020,</h5>
-                            <h5 class="text-dark mt-1">At Meteor futsal</h5>
-                            <button type="button" class="btn bg-secondary ml-0 mt-0" style="width: fit-content; height: fit-content;" data-toggle="modal" data-target="#exampleModalLong11">
-                                <h6 class="text-light">Review</h6>
-                            </button>
-                            <div class="modal fade" id="exampleModalLong11" tabindex="-1" role="dialog" aria-labelledby="exampleModalLong11" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLong11">Review</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <!-- <span class="fa fa-star"></span>
-                                        <span class="fa fa-star"></span>
-                                        <span class="fa fa-star"></span>
-                                        <span class="fa fa-star"></span>
-                                        <span class="fa fa-star"></span> -->
-                                            <form action="/action_page.php">
-                                                <label for="Review">Review :</label>
-                                                <textarea id="Review" name="Review" rows="4" cols="50"></textarea>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <input class="btn-secondary" type="submit" value="Submit">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="d-flex flex-md-row">
-                                <h4 class="text-dark">VS. <span class="text-red">Sipil UII</span></h4>
-                                <button type="button" class="btn bg-secondary ml-5 mt-0" style="width: fit-content; height: fit-content;" data-toggle="modal" data-target="#exampleModalLong12">
-                                    <h6 class="text-light">Review</h6>
-                                </button>
-                                <div class="modal fade" id="exampleModalLong12" tabindex="-1" role="dialog" aria-labelledby="exampleModalLong12" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLong12">Review</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <!-- <span class="fa fa-star"></span>
-                                        <span class="fa fa-star"></span>
-                                        <span class="fa fa-star"></span>
-                                        <span class="fa fa-star"></span>
-                                        <span class="fa fa-star"></span> -->
-                                                <form action="/action_page.php">
-                                                    <label for="Review">Review :</label>
-                                                    <textarea id="Review" name="Review" rows="4" cols="50"></textarea>
-                                                </form>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <input class="btn-secondary" type="submit" value="Submit">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button type="button" class="btn btn-secondary ml-3 mt-0" style="width: fit-content; height: fit-content;" data-toggle="modal" data-target="#exampleModalLong14">
-                                    <h6 class="text-light">Report</h6>
-                                </button>
-                                <div class="modal fade" id="exampleModalLong14" tabindex="-1" role="dialog" aria-labelledby="exampleModalLong14" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLong14">Report</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form>
-                                                    <input type="radio" id="Fake-request" name="report" value="Fake-request">
-                                                    <label for="Fake-request">Fake Request</label><br>
-                                                    <input type="radio" id="Bermain-kasar" name="report" value="Bermain-kasar">
-                                                    <label for="Bermain-kasar">Bermain kasar</label><br>
-                                                    <input type="radio" id="Deskripsi-tidakSesuai" name="report" value="Deskripsi-tidakSesuai">
-                                                    <label for="other">Deskripsi tidak sesuai</label>
-                                                </form>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <input class="btn-secondary" type="submit" value="Submit">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <h5>02 September 2020,</h5>
-                            <h5 class="text-dark mt-1">At Star futsal</h5>
-                            <button type="button" class="btn bg-secondary ml-0 mt-0" style="width: fit-content; height: fit-content;" data-toggle="modal" data-target="#exampleModalLong13">
-                                <h6 class="text-light">Review</h6>
-                            </button>
-                            <div class="modal fade" id="exampleModalLong13" tabindex="-1" role="dialog" aria-labelledby="exampleModalLong13" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLong13">Review</h5>
+                                            <h5 class="modal-title" id="{{'reviewVenue'.$index}}">Review</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -1308,6 +931,12 @@
                                 </div>
                             </div>
                         </li>
+                        @endforeach
+                        @else
+                        <li class="list-group-item text-center">
+                            <h5>Data not found</h5>
+                        </li>
+                        @endif
                     </ul>
                 </div>
             </div>
@@ -1316,12 +945,26 @@
         <div style="background-color: #f2f2f2;">
             <section class="resume-section height: fit-content" id="feedback">
                 <div class="resume-section-content d-flex flex-md-row justify-content-between mb-5" style="width: fit-content;">
-                    <div class="card mt-5 " style="width: 40rem;">
-                        <h5 class="card-header bg-primary text-light">FEEDBACK</h5>
-                        <div class="card-body">
-                            <h5 class="card-title">Feedback from : <span class="text-red">Gadjah Mada University</span></h5>
-                            <h5 class="lead text-dark">Monday, 11.00 PM</h5>
-                            <p class="lead text-dark"> - Sparta FTI UII bermain sangat baik dan kompetitif</p>
+                    <div class="card mt-0" style="width: 30rem; height: fit-content;">
+                        <div class="card-header bg-primary">
+                            <h5 class="text-light">FEEDBACK</h5>
+                        </div>
+                        <div class="d-flex flex-md-row">
+                            <ul class="list-group list-group-flush flex-md-column">
+                                @if ($reviewLists->count() > 0)
+                                @foreach ($reviewLists as $index => $list)
+                                <li class="list-group-item">
+                                    <h5 class="card-title">Feedback from : <span class="text-blue">{{ $list->team_name }}</span></h5>
+                                    <h5 class="lead text-dark">{{ date('l, d F Y, H:i A ', strtotime($list->date)) }}</h5>
+                                    <p class="lead text-dark">{{ $list->comment }}</p>
+                                </li>
+                                @endforeach
+                                @else
+                                <li class="list-group-item text-center">
+                                    <h5>Data not found</h5>
+                                </li>
+                                @endif
+                            </ul>
                         </div>
                     </div>
             </section>

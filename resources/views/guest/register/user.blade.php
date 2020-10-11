@@ -33,30 +33,37 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/montserrat-font.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/registerstyle.css') }}">
-    
+
     <style>
-        .not-allowed {cursor: not-allowed;}
+        .not-allowed {
+            cursor: not-allowed;
+        }
+
         button:disabled {
             cursor: not-allowed !important;
             pointer-events: all !important;
-        }  
+        }
+
         input:disabled {
             cursor: not-allowed !important;
             pointer-events: all !important;
         }
+
         button[disabled] {
             cursor: not-allowed !important;
             pointer-events: all !important;
-        }  
+        }
+
         input[disabled] {
             cursor: not-allowed !important;
             pointer-events: all !important;
         }
+
         .error {
             color: rgb(0, 0, 0) !important;
         }
     </style>
-    
+
 </head>
 
 <body class="form-v10">
@@ -87,12 +94,12 @@
                 <div class="form-left">
 
                     <h2>General Infomation</h2>
-                    
+
                     <div class="form-row">
                         <input type="text" name="club_name" id="club_name" placeholder="Club Name" value="{{ old('club_name') }}">
-                        
+
                         @error('club_name')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
 
@@ -107,7 +114,7 @@
                         </span>
 
                         @error('category')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
                     <div class="form-row">
@@ -115,28 +122,28 @@
                         <input type="date" name="date_established" id="date_established" placeholder="Date Established" value="{{ old('date_established') }}">
 
                         @error('date_established')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
                     <div class="form-row">
                         <input type="text" name="address" id="address" placeholder="Address" value="{{ old('address') }}">
-                        
+
                         @error('address')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
                     <div class="form-row">
                         <input type="number" name="postal_code" id="postal_code" placeholder="Postal Code" value="{{ old('postal_code') }}">
 
                         @error('postal_code')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
                     <div class="form-row">
                         <input type="text" name="bio" id="bio" placeholder="Bio Team" value="{{ old('bio') }}">
 
                         @error('bio')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
                     <div class="form-row">
@@ -144,7 +151,7 @@
                         <input type="file" name="photo" class="photo" id="photo" placeholder="Photo or Team Logo">
 
                         @error('photo')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
 
@@ -158,35 +165,35 @@
                         <input type="text" name="email" id="email" placeholder="Email" value="{{ old('email') }}">
 
                         @error('email')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
                     <div class="form-row">
                         <input type="password" name="password" id="password" placeholder="Password" value="{{ old('password') }}">
 
                         @error('password')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
                     <div class="form-row">
                         <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirm Password">
-                        
+
                         @error('password_confirmation')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
                     <div class="form-row">
                         <input type="text" name="manager" id="manager" placeholder="Manager Name" value="{{ old('manager') }}">
 
                         @error('manager')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
                     <div class="form-row">
                         <input type="number" name="phone_number" id="phone_number" placeholder="Phone Number" value="{{ old('phone_number') }}">
 
                         @error('phone_number')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
                     <div class="form-checkbox">
@@ -245,8 +252,7 @@
 <script type="text/javascript" src="{{ asset('assets/js/flashsession.js') }}"></script>
 
 <script>
-    $(document).ready(function()
-    {
+    $(document).ready(function() {
         $('#terms').change(function() {
             if (this.checked) {
                 $('#register-button').prop("disabled", false);
@@ -256,7 +262,7 @@
         });
 
         $("#register-button").click(function() {
-            if(form.valid()) {
+            if (form.valid()) {
                 form.submit();
             }
         });
@@ -287,7 +293,7 @@
                 },
                 password_confirmation: {
                     required: true,
-                    equalTo : "#password"
+                    equalTo: "#password"
                 },
                 date_established: {
                     required: true
@@ -332,7 +338,7 @@
                 },
                 password_confirmation: {
                     required: "Must be filled!",
-                    equalTo : "Must be the same as the password!"
+                    equalTo: "Must be the same as the password!"
                 },
                 date_established: {
                     required: "Must be filled!",
@@ -355,31 +361,30 @@
                 },
             },
             errorElement: "em",
-            errorPlacement: function (error, element) {
+            errorPlacement: function(error, element) {
                 error.addClass("invalid-feedback");
 
                 if (element.prop("type") === "checkbox") {
                     error.insertAfter(element.next("label"));
-                }
-                else {
+                } else {
                     error.insertAfter(element);
                 }
             },
-            highlight: function (element, errorClass, validClass) {
+            highlight: function(element, errorClass, validClass) {
                 $(element).addClass("is-invalid").removeClass("is-valid");
             },
-            unhighlight: function (element, errorClass, validClass) {
+            unhighlight: function(element, errorClass, validClass) {
                 $(element).addClass("is-valid").removeClass("is-invalid");
             },
             invalidHandler: function(form, validator) {
-                
+
                 if (!validator.numberOfInvalids())
                     return;
-                
+
                 $('html, body').animate({
                     scrollTop: $(validator.errorList[0].element).offset().top - 150
                 }, 1000);
-                
+
             }
         });
     });

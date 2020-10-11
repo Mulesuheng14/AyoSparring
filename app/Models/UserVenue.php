@@ -11,7 +11,7 @@ class UserVenue extends Model
 
     protected $primaryKey = 'id';
     public $timestamps = false;
-    
+
     protected $fillable = [
         'user_id', 'venue_name', 'address', 'phone_number', 'photo', 'postal_code', 'nik',
         'flag_active', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'
@@ -22,8 +22,8 @@ class UserVenue extends Model
         return $this->belongsTo('App\Models\User', 'user_id');
     }
 
-    public function field()
+    public function fields()
     {
-        return $this->hasMany('App\Models\User', 'user_venue_id');
+        return $this->hasMany('App\Models\VenueField', 'user_venue_id');
     }
 }

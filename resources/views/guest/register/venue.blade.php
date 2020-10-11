@@ -34,25 +34,32 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/montserrat-font.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/fonts/material-design-iconic-font/css/material-design-iconic-font.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/registerstyle.css') }}">
-    
+
     <style>
-        .not-allowed {cursor: not-allowed;}
+        .not-allowed {
+            cursor: not-allowed;
+        }
+
         button:disabled {
             cursor: not-allowed !important;
             pointer-events: all !important;
-        }  
+        }
+
         input:disabled {
             cursor: not-allowed !important;
             pointer-events: all !important;
         }
+
         button[disabled] {
             cursor: not-allowed !important;
             pointer-events: all !important;
-        }  
+        }
+
         input[disabled] {
             cursor: not-allowed !important;
             pointer-events: all !important;
         }
+
         .error {
             color: rgb(0, 0, 0) !important;
         }
@@ -65,7 +72,7 @@
             width: 70%;
         }
     </style>
-    
+
 </head>
 
 <body class="form-v10">
@@ -91,57 +98,57 @@
         <div class="form-v10-content">
             <form class="form-detail" action="{{ url('register/venue/submit') }}" method="post" id="form" enctype="multipart/form-data">
                 @csrf
-                
+
                 <div class="form-left">
 
                     <h2>General Infomation</h2>
-                    
+
                     <div class="form-row">
                         <input type="text" name="venue_name" id="venue_name" placeholder="Venue Name" value="{{ old('venue_name') }}">
 
                         @error('venue_name')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
                     <div class="form-row">
                         <input type="text" name="address" id="address" placeholder="Address" value="{{ old('address') }}">
-                        
+
                         @error('address')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
                     <div class="form-row">
                         <input type="number" name="phone_number_venue" id="phone_number_venue" placeholder="Venue Phone Number" value="{{ old('phone_number_venue') }}">
 
                         @error('phone_number_venue')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
                     <div class="form-row">
                         <input type="number" name="postal_code" id="postal_code" placeholder="Postal Code" value="{{ old('postal_code') }}">
 
                         @error('postal_code')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
                     <div class="form-row">
                         <label class="pl-3">Photo or Venue Logo :</label>
-                        <input type="file" name="photo_venue" class="photo_venue" id="photo_venue" placeholder="Photo or Team Logo">
+                        <input type="file" name="photo_venue" class="photo_venue" id="photo_venue" placeholder="Photo or Venue Logo">
 
                         @error('photo_venue')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
 
                     <h2>Field Data</h2>
-                    
+
                     <div class="form-row">
-                        <div class="table-responsive pl-0 pr-0">  
-                            <table class="table" id="dynamic_field">  
-                                <tr>  
+                        <div class="table-responsive pl-0 pr-0">
+                            <table class="table" id="dynamic_field">
+                                <tr>
                                     <td class="pl-0">
-                                        <input type="text" name="field_name[]" placeholder="Field Name"/>
-                                    </td>  
+                                        <input type="text" name="field_name[]" placeholder="Field Name" />
+                                    </td>
                                     <td class="pl-0">
                                         <select name="field_type[]">
                                             <option value="">Choose Field Type</option>
@@ -152,22 +159,22 @@
                                             <option value="Rumput Sintetis">Rumput Sintetis</option>
                                             <option value="Semen">Semen</option>
                                         </select>
-                                    </td>  
+                                    </td>
                                     <td class="text-center" colspan="2">
                                         <button type="button" name="add" id="add" class="btn btn-success"><i class="fas fa-plus"></i></button>
-                                    </td>  
-                                </tr>  
-                                <tr>  
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td class="pl-0">
-                                        <input type="text" name="price[]" placeholder="Price per hour"/>
-                                    </td>  
+                                        <input type="text" name="price[]" placeholder="Price per hour" />
+                                    </td>
                                     <td class="pl-0">
                                         <input type="file" name="image_field[]" placeholder="Field Image">
-                                    </td>  
-                                </tr> 
-                            </table>  
-                        </div>  
-                    </div>  
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
 
                 </div>
 
@@ -179,42 +186,42 @@
                         <input type="text" name="owner_name" id="owner_name" placeholder="Owner Name" value="{{ old('owner_name') }}">
 
                         @error('owner_name')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
                     <div class="form-row">
                         <input type="number" name="nik" id="nik" placeholder="NIK" value="{{ old('nik') }}">
 
                         @error('nik')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
                     <div class="form-row">
                         <input type="number" name="phone_number_owner" id="phone_number_owner" placeholder="Owner Phone Number" value="{{ old('phone_number_owner') }}">
 
                         @error('phone_number_owner')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
                     <div class="form-row">
                         <input type="text" name="email" id="email" placeholder="Email" value="{{ old('email') }}">
 
                         @error('email')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
                     <div class="form-row">
                         <input type="password" name="password" id="password" placeholder="Password" value="{{ old('password') }}">
 
                         @error('password')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
                     <div class="form-row">
                         <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Confirm Password">
-                        
+
                         @error('password_confirmation')
-                            <i><small class="text-danger">{{ $message }}</small></i>
+                        <i><small class="text-danger">{{ $message }}</small></i>
                         @enderror
                     </div>
 
@@ -272,8 +279,7 @@
 <script type="text/javascript" src="{{ asset('assets/js/flashsession.js') }}"></script>
 
 <script>
-    $(document).ready(function()
-    {
+    $(document).ready(function() {
         $('#terms').change(function() {
             if (this.checked) {
                 $('#register-button').prop("disabled", false);
@@ -283,7 +289,7 @@
         });
 
         $("#register-button").click(function() {
-            if(form.valid()) {
+            if (form.valid()) {
                 form.submit();
             }
         });
@@ -320,7 +326,7 @@
                 },
                 password_confirmation: {
                     required: true,
-                    equalTo : "#password"
+                    equalTo: "#password"
                 },
                 nik: {
                     required: true
@@ -377,7 +383,7 @@
                 },
                 password_confirmation: {
                     required: "Must be filled!",
-                    equalTo : "Must be the same as the password!"
+                    equalTo: "Must be the same as the password!"
                 },
                 nik: {
                     required: "Must be filled!",
@@ -406,72 +412,71 @@
                 },
             },
             errorElement: "em",
-            errorPlacement: function (error, element) {
+            errorPlacement: function(error, element) {
                 error.addClass("invalid-feedback");
 
                 if (element.prop("type") === "checkbox") {
                     error.insertAfter(element.next("label"));
-                }
-                else {
+                } else {
                     error.insertAfter(element);
                 }
             },
-            highlight: function (element, errorClass, validClass) {
+            highlight: function(element, errorClass, validClass) {
                 $(element).addClass("is-invalid").removeClass("is-valid");
             },
-            unhighlight: function (element, errorClass, validClass) {
+            unhighlight: function(element, errorClass, validClass) {
                 $(element).addClass("is-valid").removeClass("is-invalid");
             },
             invalidHandler: function(form, validator) {
-                
+
                 if (!validator.numberOfInvalids())
                     return;
-                
+
                 $('html, body').animate({
                     scrollTop: $(validator.errorList[0].element).offset().top - 150
                 }, 1000);
-                
+
             }
         });
 
-        var i=1;  
-        $('#add').click(function(){  
-            i++;  
+        var i = 1;
+        $('#add').click(function() {
+            i++;
             $('#dynamic_field').append(
-            `<tr class="row_data_`+i+`">`+  
-                `<td class="pl-0">`+
-                    `<input type="text" name="field_name[]" placeholder="Field Name"/>`+
-                `</td>`+  
-                `<td class="pl-0">`+
-                    `<select name="field_type[]">`+
-                        `<option value="">Choose Field Type</option>`+
-                        `<option value="Vinyl">Vinyl</option>`+
-                        `<option value="Parquette">Parquette</option>`+
-                        `<option value="Taraflex">Taraflex</option>`+
-                        `<option value="Karpet Plastik">Karpet Plastik</option>`+
-                        `<option value="Rumput Sintetis">Rumput Sintetis</option>`+
-                        `<option value="Semen">Semen</option>`+
-                    `</select>`+
-                `</td>`+  
-                `<td class="text-center" colspan="2">`+
-                    `<button type="button" name="remove" id="`+i+`" class="btn btn-danger btn_remove"><i class="fas fa-minus"></i></button>`+
-                `</td>`+  
-            `</tr>`+  
-            `<tr class="row_data_`+i+`">>`+  
-                `<td class="pl-0">`+
-                    `<input type="text" name="price[]" placeholder="Price per hour"/>`+
-                `</td>`+  
-                `<td class="pl-0">`+
-                    `<input type="file" name="image_field[]" placeholder="Field Image">`+
-                `</td>`+  
-            `</tr>` 
-            );  
-        });  
+                `<tr class="row_data_` + i + `">` +
+                `<td class="pl-0">` +
+                `<input type="text" name="field_name[]" placeholder="Field Name"/>` +
+                `</td>` +
+                `<td class="pl-0">` +
+                `<select name="field_type[]">` +
+                `<option value="">Choose Field Type</option>` +
+                `<option value="Vinyl">Vinyl</option>` +
+                `<option value="Parquette">Parquette</option>` +
+                `<option value="Taraflex">Taraflex</option>` +
+                `<option value="Karpet Plastik">Karpet Plastik</option>` +
+                `<option value="Rumput Sintetis">Rumput Sintetis</option>` +
+                `<option value="Semen">Semen</option>` +
+                `</select>` +
+                `</td>` +
+                `<td class="text-center" colspan="2">` +
+                `<button type="button" name="remove" id="` + i + `" class="btn btn-danger btn_remove"><i class="fas fa-minus"></i></button>` +
+                `</td>` +
+                `</tr>` +
+                `<tr class="row_data_` + i + `">>` +
+                `<td class="pl-0">` +
+                `<input type="text" name="price[]" placeholder="Price per hour"/>` +
+                `</td>` +
+                `<td class="pl-0">` +
+                `<input type="file" name="image_field[]" placeholder="Field Image">` +
+                `</td>` +
+                `</tr>`
+            );
+        });
 
-        $(document).on('click', '.btn_remove', function(){  
-            var button_id = $(this).attr("id");   
-            $('.row_data_'+button_id+'').remove();  
-        });  
+        $(document).on('click', '.btn_remove', function() {
+            var button_id = $(this).attr("id");
+            $('.row_data_' + button_id + '').remove();
+        });
     });
 </script>
 
