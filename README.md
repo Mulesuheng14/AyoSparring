@@ -1,3 +1,32 @@
+## How To Install
+
+You will need to make sure your server / local server meets the following requirements (See the documentation laravel https://laravel.com/docs/8.x):
+
+- PHP >= 7.3
+- BCMath PHP Extension
+- Ctype PHP Extension
+- Fileinfo PHP Extension
+- JSON PHP Extension
+- Mbstring PHP Extension
+- OpenSSL PHP Extension
+- PDO PHP Extension
+- Tokenizer PHP Extension
+- XML PHP Extension
+
+If the requirement is install on your server / local server, follow step:
+
+1.  Clone this repository
+2.  Copy .env.example and paste with name .env
+3.  Open .env and configure with your database username and password
+4.  Open PHPMYADMIN and create new database with name "ayosparring"
+5.  Open terminal on VSCODE with your directory "ayosparring"
+6.  Type "composer install" and enter
+7.  Type "php artisan config:cache" and enter
+8.  Type "composer dumpautoload" and enter
+9.  Type "php artisan migrate:fresh --seed" and enter
+10. Type "php artisan serve" and enter
+11. Access in browser "localhost:8000"
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
