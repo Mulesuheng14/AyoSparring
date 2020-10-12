@@ -866,6 +866,7 @@
                                 @else
                                 <h4 class="text-red">{{$list->team_name}} vs {{$list->sparring_name}}</h4>
                                 @endif
+                                @if ($list->sparring_user != null)
                                 <button type="button" class="btn bg-secondary ml-5 mt-0" style="width: fit-content; height: fit-content;" data-toggle="modal" data-target="#{{'reviewUser'.$index}}">
                                     <h6 class="text-light">Review</h6>
                                 </button>
@@ -878,15 +879,19 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <div class="modal-body">
-                                                <form action="/action_page.php">
-                                                    <label for="Review">Review :</label>
-                                                    <textarea id="Review" name="Review" rows="4" cols="50"></textarea>
-                                                </form>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <input class="btn-secondary" type="submit" value="Submit">
-                                            </div>
+                                            <form action="{{ url('user/dashboard/review/review') }}" method="POST">
+                                                <div class="modal-body">
+                                                    @csrf
+                                                    <label for="Review">Review Venue :</label>
+                                                    <textarea id="review" name="review" rows="4" cols="50"></textarea>
+                                                    <input name="id_booking_list" type="hidden" value="{{ $list->id }}">
+                                                    <input name="object_type" type="hidden" value="venue">
+                                                    <input name="id_user_reported" type="hidden" value="{{ $list->user_id }}">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button class="btn-secondary" type="submit">Submit</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -902,22 +907,27 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <div class="modal-body">
-                                                <form>
-                                                    <input type="radio" id="Fake-request" name="report" value="Fake-request">
-                                                    <label for="Fake-request">Fake Request</label><br>
-                                                    <input type="radio" id="Bermain-kasar" name="report" value="Bermain-kasar">
-                                                    <label for="Bermain-kasar">Bermain kasar</label><br>
-                                                    <input type="radio" id="Deskripsi-tidakSesuai" name="report" value="Deskripsi-tidakSesuai">
-                                                    <label for="other">Deskripsi tidak sesuai</label>
-                                                </form>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <input class="btn-secondary" type="submit" value="Submit">
-                                            </div>
+                                            <form action="{{ url('user/dashboard/review/review') }}" method="POST">
+                                                <div class="modal-body">
+                                                    @csrf
+                                                    <input type="radio" id="fake-request" name="review" value="Fake request">
+                                                    <label for="fake-request">Fake Request</label><br>
+                                                    <input type="radio" id="bermain-kasar" name="review" value="Bermain kasar">
+                                                    <label for="bermain-kasar">Bermain kasar</label><br>
+                                                    <input type="radio" id="deskripsi" name="review" value="Deskripsi tidak sesuai">
+                                                    <label for="deskripsi">Deskripsi tidak sesuai</label>
+                                                    <input name="id_booking_list" type="hidden" value="{{ $list->id }}">
+                                                    <input name="object_type" type="hidden" value="venue">
+                                                    <input name="id_user_reported" type="hidden" value="{{ $list->user_id }}">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button class="btn-secondary" type="submit">Submit</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
+                                @endif
                             </div>
                             <h5>{{ date('l, d F Y', strtotime($list->date)) }},</h5>
                             <h5 class="text-dark mt-1">At {{ $list->venue_name.' '.$list->field_name }}</h5>
@@ -928,20 +938,24 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="{{'reviewVenue'.$index}}">Review</h5>
+                                            <h5 class="modal-title" id="{{'reviewVenue'.$index}}">Review Venue</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <div class="modal-body">
-                                            <form action="/action_page.php">
-                                                <label for="Review">Review :</label>
-                                                <textarea id="Review" name="Review" rows="4" cols="50"></textarea>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <input class="btn-secondary" type="submit" value="Submit">
-                                        </div>
+                                        <form action="{{ url('user/dashboard/review/good') }}" method="POST">
+                                            <div class="modal-body">
+                                                @csrf
+                                                <label for="Review">Review Venue :</label>
+                                                <textarea id="review" name="review" rows="4" cols="50"></textarea>
+                                                <input name="id_booking_list" type="hidden" value="{{ $list->id }}">
+                                                <input name="object_type" type="hidden" value="venue">
+                                                <input name="id_user_reported" type="hidden" value="{{ $list->user_id }}">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn-secondary" type="submit">Submit</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

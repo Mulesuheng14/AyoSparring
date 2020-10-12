@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Classing\FlashSession;
 use App\Models\BookingList;
+use App\Models\Review;
 use App\Models\SparringRequest;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -80,15 +82,57 @@ class UserController extends Controller
             'user_id' => Auth::user()->id,
             'booking_list_id' => $request->id_booking_list,
             'created_at' => Carbon::now(),
-            'created_by' => 'Self',
+            'created_by' => Auth::user()->id,
             'updated_at' => Carbon::now(),
-            'updated_by' => 'Self',
+            'updated_by' => Auth::user()->id,
         ]);
 
         if ($requestSparring) {
             return FlashSession::success('user/dashboard', 'Response sparring request successful');
         } else {
             return FlashSession::error('user/dashboard', 'Response sparring request failed');
+        }
+    }
+
+    public function review(Request $request, $status)
+    {
+        $currentBookingList = BookingList::where('id', $request->id_booking_list)->first();
+        if ($currentBookingList == null) {
+            return FlashSession::error('user/dashboard', 'Review failed, id booking not found!');
+        }
+
+        $currentUserReported = User::where('id', $request->id_user_reported)->first();
+        if ($currentUserReported == null) {
+            return FlashSession::error('user/dashboard', 'Review failed, id user reported not found!');
+        }
+
+        $existReview = Review::where('booking_list_id', $request->id_booking_list)
+            ->where('user_reporter_id', Auth::user()->id)
+            ->where('user_reported_id', $request->id_user_reported)
+            ->first();
+        if ($request->object_type == 'venue' && $existReview != null) {
+            return FlashSession::warning('user/dashboard', 'Review failed, you have reviewed the venue!');
+        } else if ($request->object_type == 'team' && $existReview != null) {
+            return FlashSession::warning('user/dashboard', 'Review failed, you have reviewed the team!');
+        }
+
+        $review = Review::create([
+            'user_reporter_id' => Auth::user()->id,
+            'user_reported_id' => $request->id_user_reported,
+            'booking_list_id' => $request->id_booking_list,
+            'object_type' => $request->object_type,
+            'review_type' => $status,
+            'comment' => $request->review,
+            'created_at' => Carbon::now(),
+            'created_by' => Auth::user()->id,
+            'updated_at' => Carbon::now(),
+            'updated_by' => Auth::user()->id,
+        ]);
+
+        if ($review) {
+            return FlashSession::success('user/dashboard', 'Review successful');
+        } else {
+            return FlashSession::error('user/dashboard', 'Review failed');
         }
     }
 
@@ -154,7 +198,7 @@ class UserController extends Controller
     private function historyLists()
     {
         $historyList = DB::table('booking_lists AS b')
-            ->select('ut.team_name', 'ut.bio', 'vf.field_name', 'uv.venue_name', 'b.booking_type', 'b.date', 'b.hour', 'b.duration', 'b.sparring_user', 'tu.team_name AS sparring_name')
+            ->select('b.id', 'uv.user_id', 'ut.team_name', 'ut.bio', 'vf.field_name', 'uv.venue_name', 'b.booking_type', 'b.date', 'b.hour', 'b.duration', 'b.sparring_user', 'tu.team_name AS sparring_name')
             ->leftjoin('user_teams AS ut', 'ut.user_id', '=', 'b.user_id')
             ->leftjoin('user_teams AS tu', 'tu.user_id', '=', 'b.sparring_user')
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
