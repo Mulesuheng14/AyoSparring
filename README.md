@@ -20,8 +20,8 @@ If the requirement is install on your server / local server, follow step:
 3.  Open .env and configure with your database username and password
 4.  Open PHPMYADMIN and create new database with name "ayosparring"
 5.  Open terminal on VSCODE with your directory "ayosparring"
-6.  Type "php artisan config:cache" and enter
-7.  Type "composer install" and enter
+6.  Type "composer install" and enter
+7.  Type "php artisan config:cache" and enter
 8.  Type "composer dumpautoload" and enter
 9.  Type "php artisan migrate:fresh --seed" and enter
 10. Type "php artisan serve" and enter
