@@ -96,11 +96,9 @@
                 </div>
 
                 <div class="card mt-1 " style="width: 70rem; height: fit-content;">
-
-                    <h5 class="card-header bg-primary text-light">Schedule Availability</h5>
-
+                    @foreach ($schedules as $venue)
+                    <h5 class="card-header bg-primary text-light">Schedule Availability - {{$venue['venue_field']['field_name'].' '.$venue['venue_field']['field_type']}}</h5>
                     <div class="car-body">
-
                         <table class="table table-striped table-bordered display nowrap">
                             <thead>
                                 <tr>
@@ -110,14 +108,14 @@
                                 </tr>
                                 </tr>
                                 <tr>
-                                    @foreach ($schedules[0]['time'] as $time)
+                                    @foreach ($venue['schedule'][0]['time'] as $time)
                                     <th class="text-center align-middle">{{$time}}</th>
                                     @endforeach
                                 </tr>
                             </thead>
                             <tbody>
 
-                                @foreach ($schedules as $schedule)
+                                @foreach ($venue['schedule'] as $schedule)
                                 <tr>
                                     <th class="text-center align-middle">{{ $schedule['date'] }}</th>
                                     @foreach ($schedule['time'] as $index => $time)
@@ -134,8 +132,8 @@
                             </tbody>
                         </table>
                     </div>
-
                 </div>
+                @endforeach
 
                 <div class="card mt-5 " style="width: 40rem;">
                     <h5 class="card-header bg-primary text-light">Upcoming Schedule</h5>

@@ -7,6 +7,8 @@ use App\Models\BookingList;
 use App\Models\Review;
 use App\Models\SparringRequest;
 use App\Models\User;
+use App\Models\UserVenue;
+use App\Models\VenueField;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -16,6 +18,7 @@ class UserController extends Controller
 {
     public function index()
     {
+        $data['schedules'] = $this->schedules();
         $data['bookingLists'] = $this->bookingLists();
         $data['requestLists'] = $this->requestLists();
         $data['sparringLists'] = $this->sparringLists();
@@ -92,6 +95,55 @@ class UserController extends Controller
         } else {
             return FlashSession::error('user/dashboard', 'Response sparring request failed');
         }
+    }
+
+    private function schedules()
+    {
+        $thisMonth = now()->month;
+        $firstDateInThisMonth = now()->startOfMonth();
+        $endDateInThisMonth = now()->endOfMonth();
+        $allDateInThisMonth = \Carbon\CarbonPeriod::create($firstDateInThisMonth, $endDateInThisMonth);
+        $schedules = [];
+        $userVenue = UserVenue::where('flag_active', 1)->get();
+        foreach ($userVenue as $tempUserVenue) {
+            $venueFields = VenueField::where('user_venue_id', $tempUserVenue['id'])->where('flag_active', 1)->get();
+            $schedule = [];
+            $schedule['venue'] = $tempUserVenue;
+            foreach ($venueFields as $tempVenueField) {
+                $dataSchedule = BookingList::where('venue_field_id', $tempVenueField['id'])
+                    ->whereMonth('date', $thisMonth)
+                    ->where('is_accepted', 1)
+                    ->where('flag_active', 1);
+                $tempVenue = [];
+                $tempVenue['venue_field'] = $tempVenueField;
+                foreach ($allDateInThisMonth as $i => $date) {
+                    $tempVenue['schedule'][$i] = ['date' => $date->isoFormat('DD MMMM YYYY')];
+                    $loop = 6;
+                    while ($loop <= 24) {
+                        $hour = $this->convertToTime($loop);
+                        $tempDataSchedule = clone $dataSchedule;
+                        $dateBooked = $tempDataSchedule->whereDate('date', '=', $date)->where('hour', $hour)->first();
+                        if ($dateBooked != NULL) {
+                            if ($dateBooked->duration >= 1) {
+                                foreach (range(1, $dateBooked->duration) as $interval) {
+                                    $tempVenue['schedule'][$i]['time'][] = $hour;
+                                    $tempVenue['schedule'][$i]['availibility'][] = true;
+                                    $loop++;
+                                    $hour = $this->convertToTime($loop);
+                                }
+                            }
+                        } else {
+                            $tempVenue['schedule'][$i]['time'][] = $hour;
+                            $tempVenue['schedule'][$i]['availibility'][] = false;
+                            $loop++;
+                        }
+                    }
+                }
+                $schedule['field'][] = $tempVenue;
+            }
+            $schedules[] = $schedule;
+        }
+        return $schedules;
     }
 
     public function review(Request $request, $status)
@@ -227,6 +279,17 @@ class UserController extends Controller
             ->where('r.flag_active', 1)
             ->get();
         return $reviewList;
+    }
+
+    private function convertToTime($integer)
+    {
+        if (strlen($integer) == 1) {
+            return '0' . $integer . ':00';
+        } else if (strlen($integer) == 2) {
+            return $integer . ':00';
+        } else {
+            return false;
+        }
     }
 
     // return FlashSession::error(url("hiring-partner"), 'Company Logo is required, please upload your company logo!');

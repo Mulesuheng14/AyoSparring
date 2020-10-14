@@ -68,43 +68,46 @@ class VenueController extends Controller
     {
         $thisMonth = now()->month;
         $venueFields = Auth::user()->venues->first()->fields->toArray();
-        $idVenueFields = array_map(function ($data) {
-            return $data['id'];
-        }, $venueFields);
+        // $idVenueFields = array_map(function ($data) {
+        //     return $data['id'];
+        // }, $venueFields);
         $firstDateInThisMonth = now()->startOfMonth();
         $endDateInThisMonth = now()->endOfMonth();
         $allDateInThisMonth = \Carbon\CarbonPeriod::create($firstDateInThisMonth, $endDateInThisMonth);
-        $dataSchedule = BookingList::whereIn('venue_field_id', $idVenueFields)
-            ->whereMonth('date', $thisMonth)
-            ->where('is_accepted', 1)
-            ->where('flag_active', 1);
-
-        // $schedulesThisMonth = BookingList::whereIn('venue_field_id', $idVenueFields)->whereMonth('date', $thisMonth)->where('is_accepted', 1)->where('flag_active', 1);
-
         $schedules = [];
-        foreach ($allDateInThisMonth as $i => $date) {
-            $schedules[$i] = ['date' => $date->isoFormat('DD MMMM YYYY')];
+        foreach ($venueFields as $tempVenueField) {
+            $dataSchedule = BookingList::where('venue_field_id', $tempVenueField['id'])
+                ->whereMonth('date', $thisMonth)
+                ->where('is_accepted', 1)
+                ->where('flag_active', 1);
 
-            $loop = 6;
-            while ($loop <= 24) {
-                $hour = $this->convertToTime($loop);
-                $tempDataSchedule = clone $dataSchedule;
-                $dateBooked = $tempDataSchedule->whereDate('date', '=', $date)->where('hour', $hour)->first();
-                if ($dateBooked != NULL) {
-                    if ($dateBooked->duration >= 1) {
-                        foreach (range(1, $dateBooked->duration) as $interval) {
-                            $schedules[$i]['time'][] = $hour;
-                            $schedules[$i]['availibility'][] = true;
-                            $loop++;
-                            $hour = $this->convertToTime($loop);
+            $tempVenue = [];
+            $tempVenue['venue_field'] = $tempVenueField;
+            foreach ($allDateInThisMonth as $i => $date) {
+                $tempVenue['schedule'][$i] = ['date' => $date->isoFormat('DD MMMM YYYY')];
+
+                $loop = 6;
+                while ($loop <= 24) {
+                    $hour = $this->convertToTime($loop);
+                    $tempDataSchedule = clone $dataSchedule;
+                    $dateBooked = $tempDataSchedule->whereDate('date', '=', $date)->where('hour', $hour)->first();
+                    if ($dateBooked != NULL) {
+                        if ($dateBooked->duration >= 1) {
+                            foreach (range(1, $dateBooked->duration) as $interval) {
+                                $tempVenue['schedule'][$i]['time'][] = $hour;
+                                $tempVenue['schedule'][$i]['availibility'][] = true;
+                                $loop++;
+                                $hour = $this->convertToTime($loop);
+                            }
                         }
+                    } else {
+                        $tempVenue['schedule'][$i]['time'][] = $hour;
+                        $tempVenue['schedule'][$i]['availibility'][] = false;
+                        $loop++;
                     }
-                } else {
-                    $schedules[$i]['time'][] = $hour;
-                    $schedules[$i]['availibility'][] = false;
-                    $loop++;
                 }
             }
+            $schedules[] = $tempVenue;
         }
         return $schedules;
     }

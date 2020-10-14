@@ -291,144 +291,21 @@
         <hr class="m-0" />
         <!-- Find Venue-->
         <div style="background-color: #f2f2f2;">
-            <section class="resume-section" style="width: fit-content; height: fit-content" id="find-venue">
+            <section class="resume-section" style="min-width: fit-content; height: fit-content" id="find-venue">
                 <div class="resume-section-content d-flex flex-md-row justify-content-between mb-5" style="width: fit-content;">
-                    <div class="card mt-0" style="width: fit-content; height: fit-content;">
+                    <div class="card mt-0" style="min-width: 700px; height: fit-content;">
                         <div class="card-header bg-primary">
                             <h5 class="text-light">VENUE AVAILABLE</h5>
                         </div>
                         <div class="d-flex flex-md-row">
                             <ul class="list-group list-group-flush flex-md-column">
+                                @foreach ($schedules as $index => $schedule_venue)
                                 <li class="list-group-item">
                                     <div class="d-flex flex-md-row width:fit-content height:fit-content">
-                                        <h4 class="text-red">Jakal 7 Futsal</h4>
-                                        <!-- <span class="fa fa-star checked ml-2 mt-1"></span>
-                                <span class="fa fa-star checked mt-1"></span>
-                                <span class="fa fa-star checked mt-1"></span>
-                                <span class="fa fa-star checked mt-1"></span>
-                                <span class="fa fa-star mt-1"></span>  -->
-                                        <!-- <div class="dropdown ml-0 mb-2">
-                                    <button class="btn btn-danger dropdown-toggle d-flex flex-md-row ml-2 mt-1" href="#teaminfo" style="width: fit-content;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#teaminfo">Action</a>
-                                      </div>
-                                  </div>           -->
+                                        <h4 class="text-red">{{$schedule_venue['venue']->venue_name}}</h4>
                                     </div>
-
-                                    <!-- <h6 class="lead text-dark1">Jl. Kaliurang No.7,7, Ngabean Kulon, Sinduharjo, Kec. Ngaglik, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55581</h6> -->
-                                    <button onclick="myFunction('https://maps.google.com/maps?q=Jakal7%20&t=&z=13&ie=UTF8&iwloc=&output=embed')">Jl. Kaliurang No.7,7, Ngabean Kulon, Sinduharjo, Kec. Ngaglik, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55581</button> <br /> <br />
-                                    <div class="accordion" id="accordionExample3">
-                                        <div class="card mb-5">
-                                            <div class="card-header" id="headingFour">
-                                                <h2 class="mb-0">
-                                                    <button class="btn btn-link btn-block text-middle" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                                                        <h4 class="text-red">Schedule Available</h4>
-                                                    </button>
-                                                </h2>
-                                            </div>
-                                            <div id="collapseFour" class="collapse hide" aria-labelledby="headingFour" data-parent="#accordionExample3">
-                                                <div class="card-body">
-
-                                                    <table class="table table-bordered">
-                                                        <thead>
-                                                            <tr>
-                                                                <th scope="col">
-                                                                    <style>
-                                                                        h3 {
-                                                                            text-align: center;
-                                                                        }
-                                                                    </style>
-
-                                                                    <body>
-                                                                        <h3 class>Date</h3>
-                                                                    </body>
-                                                                </th>
-                                                                </th>
-                                                                <th scope="col" colspan="10">
-                                                                    <style>
-                                                                        h3 {
-                                                                            text-align: center;
-                                                                        }
-                                                                    </style>
-
-                                                                    <body>
-                                                                        <h3 class>Time</h3>
-                                                                    </body>
-                                                                </th>
-                                                            </tr>
-                                                            <tr>
-                                                                <td scope="col">-</td>
-                                                                <th scope="col" colspan="2">19.00-20.00</th>
-                                                                <th scope="col" colspan="2">20.00-21.00</th>
-                                                                <th scope="col" colspan="2">21.00-22.00</th>
-                                                                <th scope="col" colspan="2">22.00-23.00</th>
-                                                                <th scope="col" colspan="2">23.00-24.00</th>
-
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <th scope="row">05/10/2020</th>
-                                                                <td colspan="2">Available</td>
-                                                                <td colspan="2">Not Available</td>
-                                                                <td colspan="2">Not Available</td>
-                                                                <td colspan="2">Available</td>
-                                                                <td colspan="2">Available</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">06/10/2020</th>
-                                                                <td colspan="2">Available</td>
-                                                                <td colspan="2">Not Available</td>
-                                                                <td colspan="2">Not Available</td>
-                                                                <td colspan="2">Available</td>
-                                                                <td colspan="2">Available</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">07/10/2020</th>
-                                                                <td colspan="2">Available</td>
-                                                                <td colspan="2">Not Available</td>
-                                                                <td colspan="2">Not Available</td>
-                                                                <td colspan="2">Available</td>
-                                                                <td colspan="2">Available</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">08/10/2020</th>
-                                                                <td colspan="2">Available</td>
-                                                                <td colspan="2">Not Available</td>
-                                                                <td colspan="2">Not Available</td>
-                                                                <td colspan="2">Available</td>
-                                                                <td colspan="2">Available</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">09/10/2020</th>
-                                                                <td colspan="2">Available</td>
-                                                                <td colspan="2">Not Available</td>
-                                                                <td colspan="2">Not Available</td>
-                                                                <td colspan="2">Available</td>
-                                                                <td colspan="2">Available</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">10/10/2020</th>
-                                                                <td colspan="2">Available</td>
-                                                                <td colspan="2">Not Available</td>
-                                                                <td colspan="2">Not Available</td>
-                                                                <td colspan="2">Available</td>
-                                                                <td colspan="2">Available</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">11/10/2020</th>
-                                                                <td colspan="2">Available</td>
-                                                                <td colspan="2">Not Available</td>
-                                                                <td colspan="2">Not Available</td>
-                                                                <td colspan="2">Available</td>
-                                                                <td colspan="2">Available</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <h6 class="lead text-dark1">{{$schedule_venue['venue']->address}}</h6>
+                                    @foreach ($schedule_venue['field'] as $index => $field)
                                     <div class="d-flex flex-md-row">
                                         <form action="/action_page.php">
                                             <label for="Jadwal-hari">Date</label>
@@ -442,16 +319,16 @@
                                             <label for="appt">End</label>
                                             <input type="time" id="appt" name="appt">
                                         </form>
-                                        <button type="button" class="btn bg-secondary ml-5" data-toggle="modal" data-target="#exampleModalLong3">
+                                        <button type="button" class="btn bg-secondary ml-5" data-toggle="modal" data-target="#modalLong{{$index}}">
                                             <h6 class="text-light">Book</h6>
                                         </button>
 
                                         <!-- Modal -->
-                                        <div class="modal fade" id="exampleModalLong3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLong3" aria-hidden="true">
+                                        <div class="modal fade" id="modalLong{{$index}}" tabindex="-1" role="dialog" aria-labelledby="modalLong{{$index}}" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLong3">Schedule Confirmation</h5>
+                                                        <h5 class="modal-title" id="modalLong{{$index}}">Schedule Confirmation</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
@@ -471,363 +348,58 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="accordion" id="accordion{{ $index }}">
+                                        <div class="card mb-5">
+                                            <div class="card-header" id="heading{{$index}}">
+                                                <h2 class="mb-0">
+                                                    <button class="btn btn-link btn-block text-middle" type="button" data-toggle="collapse" data-target="#collapse{{ $index }}" aria-expanded="true" aria-controls="collapse{{ $index }}">
+                                                        <h4 class="text-red">Schedule Available {{$field['venue_field']->field_name.' - '.$field['venue_field']->field_type}}</h4>
+                                                    </button>
+                                                </h2>
+                                            </div>
+                                            <div id="collapse{{ $index }}" class="collapse hide" aria-labelledby="heading{{$index}}" data-parent="#accordion{{ $index }}">
+                                                <div class="car-body">
+                                                    <table class="table table-striped table-bordered display nowrap">
+                                                        <thead>
+                                                            <tr>
+                                                            <tr>
+                                                                <th rowspan="2" class="text-center align-middle">Date</th>
+                                                                <th colspan="99999" class="text-center align-middle">Time</th>
+                                                            </tr>
+                                                            </tr>
+                                                            <tr>
+                                                                @foreach ($field['schedule'][0]['time'] as $time)
+                                                                <th class="text-center align-middle">{{$time}}</th>
+                                                                @endforeach
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                            @foreach ($field['schedule'] as $schedule)
+                                                            <tr>
+                                                                <th class="text-center align-middle">{{ $schedule['date'] }}</th>
+                                                                @foreach ($schedule['time'] as $index => $time)
+                                                                <td class="text-center align-middle">
+                                                                    @if ($schedule['availibility'][$index])
+                                                                    <i class="fas fa-check-circle text-success"></i>
+                                                                    @else
+                                                                    <i class="fas fa-times-circle text-danger"></i>
+                                                                    @endif
+                                                                </td>
+                                                                @endforeach
+                                                            </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endforeach
                                 </li>
+                                @endforeach
+                            </ul>
                         </div>
-                        <li class="list-group-item">
-                            <div class="d-flex flex-md-row">
-                                <h4 class="text-red">Meteor Futsal</h4>
-                                <!-- <span class="fa fa-star checked ml-2 mt-1"></span>
-                        <span class="fa fa-star checked mt-1"></span>
-                        <span class="fa fa-star checked mt-1"></span>
-                        <span class="fa fa-star checked mt-1"></span>
-                        <span class="fa fa-star mt-1"></span>  -->
-                                <!-- <div class="dropdown ml-0 mb-2">
-                            <button class="btn bg-secondary dropdown-toggle d-flex flex-md-row ml-2 mt-1" href="#teaminfo" style="width: fit-content;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#teaminfo">Action</a>
-                              </div>
-                          </div>-->
-                            </div>
-                            <!-- <h6 class="lead text-dark1">Jalan Karang Ploso, RT.01/RW.11, Gempol, Condongcatur, Sleman Regency, Special Region of Yogyakarta</h6> -->
-                            <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.8414885627003!2d110.41241231472522!3d-7.70015399444927!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a5ea54c0e5dd9%3A0x3a44464434e056a8!2sMeteor%20Futsal%20Court%20and%20Bilyard!5e0!3m2!1sen!2sid!4v1601870594892!5m2!1sen!2sid" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe> -->
-                            <button onclick="myFunction('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.8414885627003!2d110.41241231472522!3d-7.70015399444927!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a5ea54c0e5dd9%3A0x3a44464434e056a8!2sMeteor%20Futsal%20Court%20and%20Bilyard!5e0!3m2!1sen!2sid!4v1601870594892!5m2!1sen!2sid')">Sardonoharjo Jalan Kaliurang No.Km. 13, Candi Karang, Sinduharjo, Kec. Ngaglik, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55581</button> <br /> <br />
-                            <div class="accordion" id="accordionExample4">
-                                <div class="card mb-5">
-                                    <div class="card-header" id="headingFive">
-                                        <h2 class="mb-0">
-                                            <button class="btn btn-link btn-block text-middle" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
-                                                <h4 class="text-red">Schedule Available</h4>
-                                            </button>
-                                        </h2>
-                                    </div>
-                                    <div id="collapseFive" class="collapse hide" aria-labelledby="headingFive" data-parent="#accordionExample4">
-                                        <div class="card-body">
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">
-                                                            <style>
-                                                                h3 {
-                                                                    text-align: center;
-                                                                }
-                                                            </style>
-
-                                                            <body>
-                                                                <h3 class>Date</h3>
-                                                            </body>
-                                                        </th>
-                                                        </th>
-                                                        <th scope="col" colspan="10">
-                                                            <style>
-                                                                h3 {
-                                                                    text-align: center;
-                                                                }
-                                                            </style>
-
-                                                            <body>
-                                                                <h3 class>Time</h3>
-                                                            </body>
-                                                        </th>
-                                                    </tr>
-                                                    <tr>
-                                                        <td scope="col">-</td>
-                                                        <th scope="col" colspan="2">19.00-20.00</th>
-                                                        <th scope="col" colspan="2">20.00-21.00</th>
-                                                        <th scope="col" colspan="2">21.00-22.00</th>
-                                                        <th scope="col" colspan="2">22.00-23.00</th>
-                                                        <th scope="col" colspan="2">23.00-24.00</th>
-
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <th scope="row">05/10/2020</th>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Available</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">06/10/2020</th>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Available</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">07/10/2020</th>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Available</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">08/10/2020</th>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Available</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">09/10/2020</th>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Available</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">10/10/2020</th>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Available</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">11/10/2020</th>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Available</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex flex-md-row">
-                                <form action="/action_page.php">
-                                    <label for="Jadwal-hari">Date</label>
-                                    <input type="date" id="Jadwal-hari" name="Jadwal">
-                                </form>
-                                <form action="/action_page.php">
-                                    <label for="appt">Start</label>
-                                    <input type="time" id="appt" name="appt">
-                                </form>
-                                <form action="/action_page.php">
-                                    <label for="appt">End</label>
-                                    <input type="time" id="appt" name="appt">
-                                </form>
-                                <button type="button" class="btn bg-secondary ml-5" data-toggle="modal" data-target="#exampleModalLong4">
-                                    <h6 class="text-light">Book</h6>
-                                </button>
-
-                                <!-- Modal -->
-                                <div class="modal fade" id="exampleModalLong4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLong4" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLong4">Schedule Confirmation</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                Your book request has been sent. After the owner accept it, Do you want to post your schedule on Sparring List?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                                    <h6 class="text-light">No</h6>
-                                                </button>
-                                                <button type="button" class="btn bg-secondary">
-                                                    <h6 class="text-light">Yes</h6>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <!-- <form action="http://maps.google.com/maps" method="get" target="_blank">
-                        <label for="saddr">Enter your location</label>
-                        <input type="text" name="saddr" />
-                        <input type="hidden" name="daddr" value="350 5th Ave New York, NY 10018 (Empire State Building)" />
-                        <input type="submit" value="Get directions" />
-                     </form> -->
-                            <div class="d-flex flex-md-row">
-                                <h4 class="text-red">Star Futsal</h4>
-                                <!-- <span class="fa fa-star checked ml-2 mt-1"></span>
-                        <span class="fa fa-star checked mt-1"></span>
-                        <span class="fa fa-star checked mt-1"></span>
-                        <span class="fa fa-star checked mt-1"></span>
-                        <span class="fa fa-star mt-1"></span>  -->
-                                <!-- <div class="dropdown ml-0 mb-2">
-                            <button class="btn bg-secondary dropdown-toggle d-flex flex-md-row ml-2 mt-1" href="#teaminfo" style="width: fit-content;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#teaminfo">Action</a>
-                              </div>
-                          </div>           -->
-                            </div>
-                            <!-- <button onclick="myFunction('https://maps.google.com/maps?q=meteor%20futsal&t=&z=13&ie=UTF8&iwloc=&output=embed")>Jl. Kaliurang No.9,6, Gondangan, Sardonoharjo, Kec. Ngaglik, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55581</button> -->
-                            <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.6124673662425!2d110.39903331472546!3d-7.72466099443204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a5938616504cd%3A0xa1625d4f77e3cacf!2sStar%20Futsal%20Center!5e0!3m2!1sen!2sid!4v1601870720336!5m2!1sen!2sid" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe> -->
-                            <button onclick="myFunction('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.6124673662425!2d110.39903331472546!3d-7.72466099443204!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a5938616504cd%3A0xa1625d4f77e3cacf!2sStar%20Futsal%20Center!5e0!3m2!1sen!2sid!4v1601870720336!5m2!1sen!2sid')">Jl. Kaliurang No.9,6, Gondangan, Sardonoharjo, Kec. Ngaglik, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55581</button> <br /> <br />
-                            <div class="accordion" id="accordionExample5">
-                                <div class="card mb-5">
-                                    <div class="card-header" id="headingSix">
-                                        <h2 class="mb-0">
-                                            <button class="btn btn-link btn-block text-middle" type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
-                                                <h4 class="text-red">Schedule Available</h4>
-                                            </button>
-                                        </h2>
-                                    </div>
-                                    <div id="collapseSix" class="collapse hide" aria-labelledby="headingSix" data-parent="#accordionExample5">
-                                        <div class="card-body">
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">
-                                                            <style>
-                                                                h3 {
-                                                                    text-align: center;
-                                                                }
-                                                            </style>
-
-                                                            <body>
-                                                                <h3 class>Date</h3>
-                                                            </body>
-                                                        </th>
-                                                        </th>
-                                                        <th scope="col" colspan="10">
-                                                            <style>
-                                                                h3 {
-                                                                    text-align: center;
-                                                                }
-                                                            </style>
-
-                                                            <body>
-                                                                <h4 class>Time</h3>
-                                                            </body>
-                                                        </th>
-                                                    </tr>
-                                                    <tr>
-                                                        <td scope="col">-</td>
-                                                        <th scope="col" colspan="2">19.00-20.00</th>
-                                                        <th scope="col" colspan="2">20.00-21.00</th>
-                                                        <th scope="col" colspan="2">21.00-22.00</th>
-                                                        <th scope="col" colspan="2">22.00-23.00</th>
-                                                        <th scope="col" colspan="2">23.00-24.00</th>
-
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <th scope="row">05/10/2020</th>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Available</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">06/10/2020</th>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Available</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">07/10/2020</th>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Available</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">08/10/2020</th>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Available</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">09/10/2020</th>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Available</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">10/10/2020</th>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Available</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">11/10/2020</th>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Not Available</td>
-                                                        <td colspan="2">Available</td>
-                                                        <td colspan="2">Available</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex flex-md-row">
-                                <form action="/action_page.php">
-                                    <label for="Jadwal-hari">Date</label>
-                                    <input type="date" id="Jadwal-hari" name="Jadwal">
-                                </form>
-                                <form action="/action_page.php">
-                                    <label for="appt">Start</label>
-                                    <input type="time" id="appt" name="appt">
-                                </form>
-                                <form action="/action_page.php">
-                                    <label for="appt">End</label>
-                                    <input type="time" id="appt" name="appt">
-                                </form>
-                                <button type="button" class="btn bg-secondary ml-5" data-toggle="modal" data-target="#exampleModalLong5">
-                                    <h6 class="text-light">Book</h6>
-                                </button>
-
-                                <!-- Modal -->
-                                <div class="modal fade" id="exampleModalLong5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLong5" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLong5">Schedule Confirmation</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                Your book request has been sent. Do you want to post your schedule on Sparring List?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                                    <h6 class="text-light">No</h6>
-                                                </button>
-                                                <button type="button" class="btn bg-secondary">
-                                                    <h6 class="text-light">Yes</h6>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        </ul>
                     </div>
                     <script>
                         function myFunction(habib) {
