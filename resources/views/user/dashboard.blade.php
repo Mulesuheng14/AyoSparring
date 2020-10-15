@@ -299,65 +299,65 @@
                         </div>
                         <div class="d-flex flex-md-row">
                             <ul class="list-group list-group-flush flex-md-column">
-                                @foreach ($schedules as $index => $schedule_venue)
+                                @foreach ($schedules as $indexOne => $schedule_venue)
                                 <li class="list-group-item">
                                     <div class="d-flex flex-md-row width:fit-content height:fit-content">
                                         <h4 class="text-red">{{$schedule_venue['venue']->venue_name}}</h4>
                                     </div>
                                     <h6 class="lead text-dark1">{{$schedule_venue['venue']->address}}</h6>
-                                    @foreach ($schedule_venue['field'] as $index => $field)
+                                    @foreach ($schedule_venue['field'] as $indexTwo => $field)
                                     <div class="d-flex flex-md-row">
-                                        <form action="/action_page.php">
-                                            <label for="Jadwal-hari">Date</label>
-                                            <input type="date" id="Jadwal-hari" name="Jadwal">
-                                        </form>
-                                        <form action="/action_page.php">
-                                            <label for="appt">Start</label>
-                                            <input type="time" id="appt" name="appt">
-                                        </form>
-                                        <form action="/action_page.php">
-                                            <label for="appt">End</label>
-                                            <input type="time" id="appt" name="appt">
-                                        </form>
-                                        <button type="button" class="btn bg-secondary ml-5" data-toggle="modal" data-target="#modalLong{{$index}}">
-                                            <h6 class="text-light">Book</h6>
-                                        </button>
+                                        <form class="form-booking{{$indexOne.'-'.$indexTwo}}" action="{{ url('user/dashboard/request/booking') }}" method="POST">
+                                            @csrf
+                                            <label for="date">Date</label>
+                                            <input type="date" id="date" name="date">
+                                            <label for="start">Start</label>
+                                            <input type="time" id="start" name="start">
+                                            <label for="end">End</label>
+                                            <input type="time" id="end" name="end">
+                                            <input name="id_venue_field" type="hidden" value="{{ $field['venue_field']->id }}">
+                                            <input name="price" type="hidden" value="{{ $field['venue_field']->price }}">
+                                            <button type="button" class="btn bg-secondary ml-5" data-toggle="modal" data-target="#modalLong{{$indexOne.'-'.$indexTwo}}">
+                                                <h6 class="text-light">Book</h6>
+                                            </button>
 
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="modalLong{{$index}}" tabindex="-1" role="dialog" aria-labelledby="modalLong{{$index}}" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="modalLong{{$index}}">Schedule Confirmation</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        Your book request has been sent. After the owner accept it, Do you want to post your schedule on Sparring List?
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                                            <h6 class="text-light">No</h6>
-                                                        </button>
-                                                        <button type="button" class="btn bg-secondary">
-                                                            <h6 class="text-light">Yes</h6>
-                                                        </button>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="modalLong{{$indexOne.'-'.$indexTwo}}" tabindex="-1" role="dialog" aria-labelledby="modalLong{{$indexOne.'-'.$indexTwo}}" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="modalLong{{$indexOne.'-'.$indexTwo}}">Schedule Confirmation</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Your book request has been sent. After the owner accept it, Do you want to post your schedule on Sparring List?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <input class="booking_type" name="booking_type" type="hidden" value="regular">
+                                                            <button type="button" class="btn btn-secondary" onclick="return decline('{{$indexOne.'-'.$indexTwo}}')">
+                                                                <h6 class="text-light">No</h6>
+                                                            </button>
+                                                            <button type="button" class="btn bg-secondary" onclick="return accept('{{$indexOne.'-'.$indexTwo}}')">
+                                                                <h6 class="text-light">Yes</h6>
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
-                                    <div class="accordion" id="accordion{{ $index }}">
+                                    <div class="accordion" id="accordion{{ $indexOne.'-'.$indexTwo }}">
                                         <div class="card mb-5">
-                                            <div class="card-header" id="heading{{$index}}">
+                                            <div class="card-header" id="heading{{$indexOne.'-'.$indexTwo}}">
                                                 <h2 class="mb-0">
-                                                    <button class="btn btn-link btn-block text-middle" type="button" data-toggle="collapse" data-target="#collapse{{ $index }}" aria-expanded="true" aria-controls="collapse{{ $index }}">
+                                                    <button class="btn btn-link btn-block text-middle" type="button" data-toggle="collapse" data-target="#collapse{{ $indexOne.'-'.$indexTwo }}" aria-expanded="true" aria-controls="collapse{{ $indexOne.'-'.$indexTwo }}">
                                                         <h4 class="text-red">Schedule Available {{$field['venue_field']->field_name.' - '.$field['venue_field']->field_type}}</h4>
                                                     </button>
                                                 </h2>
                                             </div>
-                                            <div id="collapse{{ $index }}" class="collapse hide" aria-labelledby="heading{{$index}}" data-parent="#accordion{{ $index }}">
+                                            <div id="collapse{{ $indexOne.'-'.$indexTwo }}" class="collapse hide" aria-labelledby="heading{{$indexOne.'-'.$indexTwo}}" data-parent="#accordion{{ $indexOne.'-'.$indexTwo }}">
                                                 <div class="car-body">
                                                     <table class="table table-striped table-bordered display nowrap">
                                                         <thead>
@@ -378,12 +378,12 @@
                                                             @foreach ($field['schedule'] as $schedule)
                                                             <tr>
                                                                 <th class="text-center align-middle">{{ $schedule['date'] }}</th>
-                                                                @foreach ($schedule['time'] as $index => $time)
+                                                                @foreach ($schedule['time'] as $indexThree => $time)
                                                                 <td class="text-center align-middle">
-                                                                    @if ($schedule['availibility'][$index])
-                                                                    <i class="fas fa-check-circle text-success"></i>
-                                                                    @else
+                                                                    @if ($schedule['availibility'][$indexThree])
                                                                     <i class="fas fa-times-circle text-danger"></i>
+                                                                    @else
+                                                                    <i class="fas fa-check-circle text-success"></i>
                                                                     @endif
                                                                 </td>
                                                                 @endforeach
@@ -599,6 +599,17 @@
     <script type="text/javascript" src="{{ asset('assets/js/scripts_user.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/flashsession.js') }}"></script>
 
+    <script>
+        function decline(index) {
+            $(".booking_type").val('regular');
+            $('.form-booking' + index).submit();
+        }
+
+        function accept(index) {
+            $(".booking_type").val('sparring');
+            $('.form-booking' + index).submit();
+        }
+    </script>
 </body>
 
 </html>

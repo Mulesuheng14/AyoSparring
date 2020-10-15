@@ -121,9 +121,9 @@
                                     @foreach ($schedule['time'] as $index => $time)
                                     <td class="text-center align-middle">
                                         @if ($schedule['availibility'][$index])
-                                        <i class="fas fa-check-circle text-success"></i>
-                                        @else
                                         <i class="fas fa-times-circle text-danger"></i>
+                                        @else
+                                        <i class="fas fa-check-circle text-success"></i>
                                         @endif
                                     </td>
                                     @endforeach

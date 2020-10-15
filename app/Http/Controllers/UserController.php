@@ -28,6 +28,71 @@ class UserController extends Controller
         return view('user.dashboard', $data);
     }
 
+    public function requestBooking(Request $request)
+    {
+        if (Carbon::parse($request->date) < Carbon::today()->format('Y-m-d')) {
+            return FlashSession::error('user/dashboard', 'Request booking failed, today date is greater than input date!');
+        } else if ($request->start > $request->end) {
+            return FlashSession::error('user/dashboard', 'Request booking failed, hour start is greater than end hour!');
+        } else if (Carbon::now()->format('H:i') > $request->start) {
+            return FlashSession::error('user/dashboard', 'Request booking failed, now hour is greater than start hour!');
+        } else if (substr(strval($request->start), 3) != '00') {
+            return FlashSession::error('user/dashboard', 'Request booking failed, the hour start must be ended by :00!');
+        } else if (substr(strval($request->end), 3) != '00') {
+            return FlashSession::error('user/dashboard', 'Request booking failed, the hour end must be ended by :00!');
+        }
+
+        $currentField = VenueField::where('id', $request->id_venue_field)->first();
+        if ($currentField == null) {
+            return FlashSession::error('user/dashboard', 'Request booking failed, id field not found!');
+        }
+
+        $duration = substr(strval($request->end), 0, 2) - substr(strval($request->start), 0, 2);
+
+        $hourBooking = [];
+        for ($i = 0; $i < $duration; $i++) {
+            $hourBooking[] = substr(strval($request->start), 0, 2) + $i;
+        }
+
+        $bookingLists = BookingList::select('user_id', 'date', 'duration', 'hour')->whereDate('date', '=', $request->date)->where('is_accepted', 1)->where('flag_active', 1)->get();
+        if ($bookingLists != null) {
+            foreach ($bookingLists as $bookingList) {
+                for ($a = 0; $a < $bookingList->duration; $i++) {
+                    $existHour = substr(strval($bookingList->hour), 0, 2) + $a;
+                    for ($b = 0; $b < $duration; $b++) {
+                        if ($existHour == $hourBooking[$b]) {
+                            if ($bookingList->user_id == Auth::user()->id) {
+                                return FlashSession::error('user/dashboard', 'You have already booked!');
+                            } else {
+                                return FlashSession::error('user/dashboard', 'Request booking failed, Booking hour has booked!');
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        $requestBooking = BookingList::create([
+            'user_id' => Auth::user()->id,
+            'venue_field_id' => $request->id_venue_field,
+            'date' => $request->date,
+            'hour' => $request->start,
+            'duration' => $duration,
+            'price' => $request->price * $duration,
+            'booking_type' => $request->booking_type,
+            'created_at' => Carbon::now(),
+            'created_by' => Auth::user()->id,
+            'updated_at' => Carbon::now(),
+            'updated_by' => Auth::user()->id,
+        ]);
+
+        if ($requestBooking) {
+            return FlashSession::success('user/dashboard', 'Response booking request successful');
+        } else {
+            return FlashSession::error('user/dashboard', 'Response booking request failed');
+        }
+    }
+
     public function responseSparring(Request $request, $status)
     {
         $currentSparringRequest = SparringRequest::where('id', $request->id_sparring_request)->first();

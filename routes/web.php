@@ -42,6 +42,7 @@ Route::group(['middleware' => ['role:2']], function () {
 Route::group(['middleware' => ['role:3']], function () {
     Route::get('user/dashboard', 'UserController@index');
     Route::post('user/dashboard/response/sparring/{status}', 'UserController@responseSparring');
+    Route::post('user/dashboard/request/booking/', 'UserController@requestBooking');
     Route::post('user/dashboard/request/sparring/', 'UserController@requestSparring');
     Route::post('user/dashboard/review/{status}', 'UserController@review');
 });
