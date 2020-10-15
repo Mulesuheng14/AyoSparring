@@ -11,10 +11,10 @@ class BookingList extends Model
 
     protected $primaryKey = 'id';
     public $timestamps = false;
-    
+
     protected $fillable = [
         'user_id', 'venue_field_id', 'is_accepted', 'booking_type', 'date', 'hour',
-        'duration', 'price', 'sparring_user', 'is_available', 'is_paid',
+        'duration', 'price', 'sparring_user', 'is_available',
         'flag_active', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'
     ];
 
