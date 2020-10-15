@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Classing\FlashSession;
@@ -74,6 +75,16 @@ class LoginController extends Controller
         $user_is_verified = $user->verified;
         if ($user_is_verified == 0) {
             return FlashSession::error('login','Your account has not been verified by Administrator!');
+        }
+
+        $user_type = $user->account_type;
+        if ($user_type == 'venue') {
+            $now = Carbon::now();
+            $end_trial = Carbon::parse($user->verified_at)->addMonths(1);
+            $payment_status = $user->venues->first()->payment_status;
+            if($payment_status == 0 && $now > $end_trial) {
+                return FlashSession::error('login','Your free trial period is expired, please contact Ayo Sparring to subscribe!');
+            }
         }
 
         if (method_exists($this, 'hasTooManyLoginAttempts') &&
