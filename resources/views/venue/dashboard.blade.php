@@ -80,8 +80,10 @@
                 </li>
         </div>
     </nav>
+
     <!-- Page Content-->
     <div class="container-fluid p-0">
+
         <!-- My-Venue-->
         <section class="resume-section" style="width: fit-content;height: fit-content;" id="my-venue">
             <div class="resume-section-content d-flex flex-column ">
@@ -94,6 +96,16 @@
                     {{ Auth::user()->venues->first()->address }}
                     <h4 class="text-dark">{{ Auth::user()->venues->first()->phone_number }}</h4>
                 </div>
+
+                @if ($statusTrial)
+                    <div class="alert alert-info">
+                        You are in the free trial version till {{ $endTrial }}
+                    </div>
+                @else
+                    <div class="alert alert-danger">
+                        Your free trial period has expired since {{ $endTrial }}
+                    </div>
+                @endif
 
                 <div class="card mt-1 " style="width: 70rem; height: fit-content;">
                     @foreach ($schedules as $venue)

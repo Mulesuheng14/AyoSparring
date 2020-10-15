@@ -13,6 +13,20 @@ class VenueController extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
+
+        $now = Carbon::now();
+        $endTrial = Carbon::parse($user->verified_at)->addMonths(1);
+        $payment_status = $user->venues->first()->payment_status;
+        if($payment_status == 0 && $now > $endTrial) {
+            $statusTrial = 0;
+        } else {
+            $statusTrial = 1;
+        }
+        $endTrial = $endTrial->format('d M Y');
+
+        $data['statusTrial'] = $statusTrial;
+        $data['endTrial'] = $endTrial;
         $data['upcomingLists'] = $this->upcomingLists();
         $data['schedules'] = $this->schedules();
         $data['bookingLists'] = $this->bookingLists();
@@ -196,7 +210,4 @@ class VenueController extends Controller
             ->get();
         return $reviewList;
     }
-
-    // return FlashSession::error(url("hiring-partner"), 'Company Logo is required, please upload your company logo!');
-
 }
