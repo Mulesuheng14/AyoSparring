@@ -30,12 +30,13 @@ class UserController extends Controller
 
     public function requestBooking(Request $request)
     {
-        if (Carbon::parse($request->date) < Carbon::today()->format('Y-m-d')) {
-            return FlashSession::error('user/dashboard', 'Request booking failed, today date is greater than input date!');
+        $dateHour = ($request->date) . ' ' . strval($request->start) . ':00';
+        if ($dateHour < Carbon::now()) {
+            return FlashSession::error('user/dashboard', 'Request booking failed, today hour date is greater than input date!');
         } else if ($request->start > $request->end) {
             return FlashSession::error('user/dashboard', 'Request booking failed, hour start is greater than end hour!');
-        } else if (Carbon::now()->format('H:i') > $request->start) {
-            return FlashSession::error('user/dashboard', 'Request booking failed, now hour is greater than start hour!');
+            // } else if (Carbon::now()->format('H:i') > $request->start) {
+            //     return FlashSession::error('user/dashboard', 'Request booking failed, now hour is greater than start hour!');
         } else if (substr(strval($request->start), 3) != '00') {
             return FlashSession::error('user/dashboard', 'Request booking failed, the hour start must be ended by :00!');
         } else if (substr(strval($request->end), 3) != '00') {
@@ -152,6 +153,10 @@ class UserController extends Controller
 
     public function requestSparring(Request $request)
     {
+        $existRequestSparring = SparringRequest::where('user_id', Auth::user()->id)->where('booking_list_id', $request->id_booking_list)->first();
+        if ($existRequestSparring) {
+            return FlashSession::error('user/dashboard', 'Request sparring failed, You have requested!');
+        }
         $currentBookingList = BookingList::where('id', $request->id_booking_list)->where('is_accepted', 1)->where('is_available', 1)->where('flag_active', 1)->first();
         if ($currentBookingList == null) {
             return FlashSession::error('user/dashboard', 'Request sparring failed, id booking not found!');
@@ -328,7 +333,7 @@ class UserController extends Controller
     private function historyLists()
     {
         $historyList = DB::table('booking_lists AS b')
-            ->select('b.id', 'uv.user_id', 'ut.team_name', 'ut.bio', 'vf.field_name', 'uv.venue_name', 'b.booking_type', 'b.date', 'b.hour', 'b.duration', 'b.sparring_user', 'tu.team_name AS sparring_name')
+            ->select('b.id', 'uv.user_id AS user_owner_id', 'ut.user_id AS user_team_id', 'ut.team_name', 'ut.bio', 'vf.field_name', 'uv.venue_name', 'b.booking_type', 'b.date', 'b.hour', 'b.duration', 'b.sparring_user', 'tu.team_name AS sparring_name')
             ->leftjoin('user_teams AS ut', 'ut.user_id', '=', 'b.user_id')
             ->leftjoin('user_teams AS tu', 'tu.user_id', '=', 'b.sparring_user')
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
@@ -352,7 +357,7 @@ class UserController extends Controller
             ->leftjoin('booking_lists AS b', 'b.id', '=', 'r.booking_list_id')
             ->leftjoin('user_teams AS ut', 'ut.user_id', '=', 'r.user_reporter_id')
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
-            ->where('r.object_type', 'user')
+            ->where('r.object_type', 'team')
             ->where('r.user_reported_id', Auth::user()->id)
             ->where('r.flag_active', 1)
             ->get();

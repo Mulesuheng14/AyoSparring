@@ -35,15 +35,19 @@
 
     <!-- Mine CSS  -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/styles.css') }}">
-    
+
     <style>
-        .not-allowed {cursor: not-allowed;}
+        .not-allowed {
+            cursor: not-allowed;
+        }
+
         button:disabled {
             cursor: not-allowed;
-        }  
+        }
+
         input:disabled {
             cursor: not-allowed;
-        }  
+        }
     </style>
 
 </head>
@@ -106,49 +110,49 @@
                             <tbody>
 
                                 @foreach ($users as $index => $user)
-                                    <tr>
-                                        <td class="text-center align-middle">{{ $index+1 }}</td>
-                                        <td class="text-left align-middle">{{ $user->account_type == 'owner' ? 'Owner' : 'User' }}</td>
-                                        <td class="text-left align-middle">{{ $user->name }}</td>
-                                        <td class="text-left align-middle">{{ $user->email }}</td>
-                                        <td class="text-left align-middle">{{ $user->phone_number }}</td>
-                                        <td class="text-center align-middle">{{ $user->verified == 1 ? 'Verified' : 'Not Verified' }}</td>
-                                        <td class="text-center align-middle">
-                                            @if ($user->verified == 0)
-                                                <form action="{{ url('admin/dashboard/user/verifikasi/active') }}" method="POST">
-                                                    @csrf
-                                                    <button type="submit" class="form-control btn btn-success">
-                                                        <i class="fas fa-double-check mr-2"></i>Verification
-                                                    </button>
-                                                    <input name="id_user" type="hidden" value="{{ $user->id }}">
-                                                </form>
-                                            @else
-                                                <form action="{{ url('admin/dashboard/user/verifikasi/deactive') }}" method="POST">
-                                                    @csrf
-                                                    <button type="submit" class="form-control btn btn-danger">
-                                                        <i class="fas fa-minus mr-2"></i>Cancel Verification
-                                                    </button>
-                                                    <input name="id_user" type="hidden" value="{{ $user->id }}">
-                                                </form>
-                                            @endif
-                                        </td>
-                                        <td class="text-center align-middle">
-                                            <form action="{{ url('admin/dashboard/user/block') }}" method="POST">
-                                                @csrf
-                                                <button type="submit" class="form-control btn btn-danger">
-                                                    <i class="fas fa-user-times mr-2"></i>Block
-                                                </button>
-                                                <input name="id_user" type="hidden" value="{{ $user->id }}">
-                                            </form>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td class="text-center align-middle">{{ $index+1 }}</td>
+                                    <td class="text-left align-middle">{{ $user->account_type == 'owner' ? 'Owner' : 'User' }}</td>
+                                    <td class="text-left align-middle">{{ $user->name }}</td>
+                                    <td class="text-left align-middle">{{ $user->email }}</td>
+                                    <td class="text-left align-middle">{{ $user->phone_number }}</td>
+                                    <td class="text-center align-middle">{{ $user->verified == 1 ? 'Verified' : 'Not Verified' }}</td>
+                                    <td class="text-center align-middle">
+                                        @if ($user->verified == 0)
+                                        <form action="{{ url('admin/dashboard/user/verifikasi/active') }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="form-control btn btn-success">
+                                                <i class="fas fa-double-check mr-2"></i>Verification
+                                            </button>
+                                            <input name="id_user" type="hidden" value="{{ $user->id }}">
+                                        </form>
+                                        @else
+                                        <form action="{{ url('admin/dashboard/user/verifikasi/deactive') }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="form-control btn btn-danger">
+                                                <i class="fas fa-minus mr-2"></i>Cancel Verification
+                                            </button>
+                                            <input name="id_user" type="hidden" value="{{ $user->id }}">
+                                        </form>
+                                        @endif
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        <form action="{{ url('admin/dashboard/user/block') }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="form-control btn btn-danger">
+                                                <i class="fas fa-user-times mr-2"></i>Block
+                                            </button>
+                                            <input name="id_user" type="hidden" value="{{ $user->id }}">
+                                        </form>
+                                    </td>
+                                </tr>
                                 @endforeach
 
                             </tbody>
                         </table>
                     </div>
                 </div>
-                
+
             </div>
         </section>
 
@@ -175,23 +179,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                
+
                                 @foreach ($venues as $index => $venues)
-                                    <tr>
-                                        <td class="text-center align-middle">{{ $index+1 }}</td>
-                                        <td class="text-left align-middle">{{ $venues->venue_name }}</td>
-                                        <td class="text-left align-middle">{{ $venues->field_name }}</td>
-                                        <td class="text-left align-middle">{{ $venues->address }}</td>
-                                        <td class="text-left align-middle">{{ $venues->field_type }}</td>
-                                        <td class="text-right align-middle">{{ $venues->price }}</td>
-                                        <td class="text-center align-middle">
-                                            <a target="_blank" href="{{ asset('storage/field/'.$venues->photo) }}">
-                                                <button class="btn btn-info">
-                                                    <i class="fas fa-eye mr-2"></i>See
-                                                </button>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td class="text-center align-middle">{{ $index+1 }}</td>
+                                    <td class="text-left align-middle">{{ $venues->venue_name }}</td>
+                                    <td class="text-left align-middle">{{ $venues->field_name }}</td>
+                                    <td class="text-left align-middle">{{ $venues->address }}</td>
+                                    <td class="text-left align-middle">{{ $venues->field_type }}</td>
+                                    <td class="text-right align-middle">{{ $venues->price }}</td>
+                                    <td class="text-center align-middle">
+                                        <a target="_blank" href="{{ asset('storage/field/'.$venues->photo) }}">
+                                            <button class="btn btn-info">
+                                                <i class="fas fa-eye mr-2"></i>See
+                                            </button>
+                                        </a>
+                                    </td>
+                                </tr>
                                 @endforeach
 
                             </tbody>
@@ -214,31 +218,31 @@
 
                     <div class="d-flex flex-md-row">
                         <ul class="list-group list-group-flush flex-md-column">
-                            
+
                             @if ($review_reports->count() > 0)
-                                @foreach ($review_reports as $indexReview => $review)
-                                    <li class="list-group-item">
+                            @foreach ($review_reports as $indexReview => $review)
+                            <li class="list-group-item">
 
-                                        @if ($indexReview != 0)
-                                            <hr>
-                                        @endif
+                                @if ($indexReview != 0)
+                                <hr>
+                                @endif
 
-                                        @if ($review->object_type == "team")
-                                            <h4 class="card-title">{{ $review->reported->name }} <span class="text-danger">reported</span> {{ $review->reporter->name }}</h4>
-                                            <h5>{{ $review->comment }}</h5>
-                                            <h5 class="lead text-dark1 mt-0">{{ $review->created_at }}</h5>
-                                        @else
-                                            <h4 class="card-title">{{ $review->reported->venues->first()->venue_name }} <span class="text-danger">reported</span> {{ $review->reporter->name }}</h4>
-                                            <h5>{{ $review->comment }}</h5>
-                                            <h5 class="lead text-dark1 mt-0">{{ $review->created_at }}</h5>
-                                        @endif
-                                        
-                                    </li>
-                                @endforeach 
+                                @if ($review->object_type == "team")
+                                <h4 class="card-title">{{ $review->reporter->name }} <span class="text-danger">reported</span> {{ $review->reported->name }}</h4>
+                                <h5>{{ $review->comment }}</h5>
+                                <h5 class="lead text-dark1 mt-0">{{ $review->created_at }}</h5>
+                                @else
+                                <h4 class="card-title">{{ $review->reporter->venues->first()->venue_name }} <span class="text-danger">reported</span> {{ $review->reported->name }}</h4>
+                                <h5>{{ $review->comment }}</h5>
+                                <h5 class="lead text-dark1 mt-0">{{ $review->created_at }}</h5>
+                                @endif
+
+                            </li>
+                            @endforeach
                             @else
-                                <li class="list-group-item text-center">
-                                    <h5>Data not found</h5>
-                                </li>
+                            <li class="list-group-item text-center">
+                                <h5>Data not found</h5>
+                            </li>
                             @endif
 
                         </ul>
@@ -257,60 +261,60 @@
                     <div class="card-body">
 
                         @if ($review_ulasans->count() > 0)
-                            @foreach ($review_ulasans as $indexUlasan => $ulasan)
+                        @foreach ($review_ulasans as $indexUlasan => $ulasan)
 
-                                @if ($indexUlasan != 0)
-                                    <hr>
-                                @endif
-
-                                @if ($ulasan->object_type == "team")
-                                    <h5 class="card-title">Feedback from : <span class="text-blue">{{ $ulasan->reporter->name }}</span></h5>
-                                    <p class="lead text-dark">{{ $ulasan->comment }}</p>
-                                    <h5 class="lead text-dark">{{ $ulasan->created_at }}</h5>
-                                @else
-                                    <h5 class="card-title">Feedback from : <span class="text-blue">{{ $ulasan->reporter->name }}</span></h5>
-                                    <p class="lead text-dark">{{ $ulasan->comment }}</p>
-                                    <h5 class="lead text-dark">{{ $ulasan->created_at }}</h5>
-                                @endif
-                                
-                            @endforeach 
-                        @else
-                            <h5 class="text-center">Data not found</h5>
+                        @if ($indexUlasan != 0)
+                        <hr>
                         @endif
-                        
+
+                        @if ($ulasan->object_type == "team")
+                        <h5 class="card-title">Feedback from : <span class="text-blue">{{ $ulasan->reporter->name }}</span></h5>
+                        <p class="lead text-dark">{{ $ulasan->comment }}</p>
+                        <h5 class="lead text-dark">{{ $ulasan->created_at }}</h5>
+                        @else
+                        <h5 class="card-title">Feedback from : <span class="text-blue">{{ $ulasan->reporter->name }}</span></h5>
+                        <p class="lead text-dark">{{ $ulasan->comment }}</p>
+                        <h5 class="lead text-dark">{{ $ulasan->created_at }}</h5>
+                        @endif
+
+                        @endforeach
+                        @else
+                        <h5 class="text-center">Data not found</h5>
+                        @endif
+
                     </div>
                 </div>
             </div>
         </section>
 
-    @include('flashsession.flashsession')
+        @include('flashsession.flashsession')
 
-    <input type="hidden" id="base_url" value="{{ url('/') }}">
+        <input type="hidden" id="base_url" value="{{ url('/') }}">
 
-    {{-- ============================================== --}}
-    {{-- JAVASCRIPT   									--}}
-    {{-- ============================================== --}}
+        {{-- ============================================== --}}
+        {{-- JAVASCRIPT   									--}}
+        {{-- ============================================== --}}
 
-    {{-- JQuery JAVASCRIPT --}}
-    <script type="text/javascript" src="{{ asset('assets/jquery/jquery-3.4.1.min.js') }}"></script>
+        {{-- JQuery JAVASCRIPT --}}
+        <script type="text/javascript" src="{{ asset('assets/jquery/jquery-3.4.1.min.js') }}"></script>
 
-    {{-- Bootstrap JAVASCRIPT --}}
-    <script type="text/javascript" src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+        {{-- Bootstrap JAVASCRIPT --}}
+        <script type="text/javascript" src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" type="text/javascript"></script>
 
-    {{-- Vendor JAVASCRIPT --}}
-    <script type="text/javascript" src="{{ asset('assets/vendor/jquery.easing/jquery.easing.min.js') }}"></script>
+        {{-- Vendor JAVASCRIPT --}}
+        <script type="text/javascript" src="{{ asset('assets/vendor/jquery.easing/jquery.easing.min.js') }}"></script>
 
-    {{-- JToast JAVASCRIPT --}}
-    <script type="text/javascript" src="{{ asset('assets/jtoast/src/toast.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/jtoast/src/custom.js') }}"></script>
+        {{-- JToast JAVASCRIPT --}}
+        <script type="text/javascript" src="{{ asset('assets/jtoast/src/toast.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/jtoast/src/custom.js') }}"></script>
 
-    {{-- DataTables JAVASCRIPT --}}
-    <script type="text/javascript" src="{{ asset('assets/datatables/js/dataTables.js') }}"></script>
+        {{-- DataTables JAVASCRIPT --}}
+        <script type="text/javascript" src="{{ asset('assets/datatables/js/dataTables.js') }}"></script>
 
-    {{-- Mine JAVASCRIPT --}}
-    <script type="text/javascript" src="{{ asset('assets/js/scripts.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/flashsession.js') }}"></script>
+        {{-- Mine JAVASCRIPT --}}
+        <script type="text/javascript" src="{{ asset('assets/js/scripts.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('assets/js/flashsession.js') }}"></script>
 
 </body>
 

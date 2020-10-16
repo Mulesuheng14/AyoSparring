@@ -460,11 +460,11 @@
                                             <form action="{{ url('user/dashboard/review/review') }}" method="POST">
                                                 <div class="modal-body">
                                                     @csrf
-                                                    <label for="Review">Review Venue :</label>
+                                                    <label for="Review">Review Team :</label>
                                                     <textarea id="review" name="review" rows="4" cols="50"></textarea>
                                                     <input name="id_booking_list" type="hidden" value="{{ $list->id }}">
-                                                    <input name="object_type" type="hidden" value="venue">
-                                                    <input name="id_user_reported" type="hidden" value="{{ $list->user_id }}">
+                                                    <input name="object_type" type="hidden" value="team">
+                                                    <input name="id_user_reported" type="hidden" value="{{ $list->user_team_id }}">
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button class="btn-secondary" type="submit">Submit</button>
@@ -485,7 +485,7 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form action="{{ url('user/dashboard/review/review') }}" method="POST">
+                                            <form action="{{ url('user/dashboard/review/report') }}" method="POST">
                                                 <div class="modal-body">
                                                     @csrf
                                                     <input type="radio" id="fake-request" name="review" value="Fake request">
@@ -495,8 +495,8 @@
                                                     <input type="radio" id="deskripsi" name="review" value="Deskripsi tidak sesuai">
                                                     <label for="deskripsi">Deskripsi tidak sesuai</label>
                                                     <input name="id_booking_list" type="hidden" value="{{ $list->id }}">
-                                                    <input name="object_type" type="hidden" value="venue">
-                                                    <input name="id_user_reported" type="hidden" value="{{ $list->user_id }}">
+                                                    <input name="object_type" type="hidden" value="team">
+                                                    <input name="id_user_reported" type="hidden" value="{{ $list->user_team_id }}">
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button class="btn-secondary" type="submit">Submit</button>
@@ -528,7 +528,7 @@
                                                 <textarea id="review" name="review" rows="4" cols="50"></textarea>
                                                 <input name="id_booking_list" type="hidden" value="{{ $list->id }}">
                                                 <input name="object_type" type="hidden" value="venue">
-                                                <input name="id_user_reported" type="hidden" value="{{ $list->user_id }}">
+                                                <input name="id_user_reported" type="hidden" value="{{ $list->user_owner_id }}">
                                             </div>
                                             <div class="modal-footer">
                                                 <button class="btn-secondary" type="submit">Submit</button>
