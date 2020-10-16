@@ -299,6 +299,7 @@
                         </div>
                         <div class="d-flex flex-md-row">
                             <ul class="list-group list-group-flush flex-md-column">
+                                @if (count($schedules) > 0)
                                 @foreach ($schedules as $indexOne => $schedule_venue)
                                 <li class="list-group-item">
                                     <div class="d-flex flex-md-row width:fit-content height:fit-content">
@@ -398,6 +399,11 @@
                                     @endforeach
                                 </li>
                                 @endforeach
+                                @else
+                                <li class="list-group-item text-center">
+                                    <h5>Data not found</h5>
+                                </li>
+                                @endif
                             </ul>
                         </div>
                     </div>

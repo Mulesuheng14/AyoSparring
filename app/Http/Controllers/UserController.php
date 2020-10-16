@@ -40,9 +40,11 @@ class UserController extends Controller
             return FlashSession::error('user/dashboard', 'Request booking failed, the hour start must be ended by :00!');
         } else if (substr(strval($request->end), 3) != '00') {
             return FlashSession::error('user/dashboard', 'Request booking failed, the hour end must be ended by :00!');
+        } else if ($request->start == $request->end) {
+            return FlashSession::error('user/dashboard', 'Request booking failed, hour start and hour end must be different!');
         }
 
-        $currentField = VenueField::where('id', $request->id_venue_field)->first();
+        $currentField = VenueField::where('id', $request->id_venue_field)->where('flag_active', 1)->first();
         if ($currentField == null) {
             return FlashSession::error('user/dashboard', 'Request booking failed, id field not found!');
         }
@@ -57,7 +59,7 @@ class UserController extends Controller
         $bookingLists = BookingList::select('user_id', 'date', 'duration', 'hour')->whereDate('date', '=', $request->date)->where('is_accepted', 1)->where('flag_active', 1)->get();
         if ($bookingLists != null) {
             foreach ($bookingLists as $bookingList) {
-                for ($a = 0; $a < $bookingList->duration; $i++) {
+                for ($a = 0; $a < $bookingList->duration; $a++) {
                     $existHour = substr(strval($bookingList->hour), 0, 2) + $a;
                     for ($b = 0; $b < $duration; $b++) {
                         if ($existHour == $hourBooking[$b]) {
@@ -71,15 +73,20 @@ class UserController extends Controller
                 }
             }
         }
-
+        $available = 0;
+        if ($request->booking_type == 'sparring') {
+            $available = 1;
+        }
         $requestBooking = BookingList::create([
             'user_id' => Auth::user()->id,
             'venue_field_id' => $request->id_venue_field,
-            'date' => $request->date,
+            'date' => substr(strval($request->date), 0, 10) . ' ' . strval($request->start) . ':00',
+            // 'date' => $request->date,
             'hour' => $request->start,
             'duration' => $duration,
             'price' => $request->price * $duration,
             'booking_type' => $request->booking_type,
+            'is_available' => $available,
             'created_at' => Carbon::now(),
             'created_by' => Auth::user()->id,
             'updated_at' => Carbon::now(),
@@ -95,15 +102,19 @@ class UserController extends Controller
 
     public function responseSparring(Request $request, $status)
     {
-        $currentSparringRequest = SparringRequest::where('id', $request->id_sparring_request)->first();
+        $currentSparringRequest = SparringRequest::where('id', $request->id_sparring_request)->where('flag_active', 1)->first();
         if ($currentSparringRequest == null) {
             return FlashSession::error('user/dashboard', 'Response sparring request failed, sparring request not found!');
         }
         if ($status == 'accepted') {
 
-            $currentBookingList = BookingList::where('id', $request->id_booking_list)->first();
+            $currentBookingList = BookingList::where('id', $request->id_booking_list)->where('flag_active', 1)->first();
             if ($currentBookingList == null) {
                 return FlashSession::error('user/dashboard', 'Response sparring request failed, id booking not found!');
+            }
+
+            if ($currentBookingList->is_available == 0) {
+                return FlashSession::error('user/dashboard', 'Response sparring request failed, your team has had sparring team!');
             }
 
             $responseSparringRequest = $currentSparringRequest->update([
@@ -141,7 +152,7 @@ class UserController extends Controller
 
     public function requestSparring(Request $request)
     {
-        $currentBookingList = BookingList::where('id', $request->id_booking_list)->first();
+        $currentBookingList = BookingList::where('id', $request->id_booking_list)->where('is_accepted', 1)->where('is_available', 1)->where('flag_active', 1)->first();
         if ($currentBookingList == null) {
             return FlashSession::error('user/dashboard', 'Request sparring failed, id booking not found!');
         }
@@ -169,7 +180,8 @@ class UserController extends Controller
         $endDateInThisMonth = now()->endOfMonth();
         $allDateInThisMonth = \Carbon\CarbonPeriod::create($firstDateInThisMonth, $endDateInThisMonth);
         $schedules = [];
-        $userVenue = UserVenue::where('flag_active', 1)->get();
+        $ownerId = User::select('id')->where('role', 2)->where('verified', 1)->where('flag_active', 1)->get();
+        $userVenue = UserVenue::whereIn('user_id', $ownerId)->where('flag_active', 1)->get();
         foreach ($userVenue as $tempUserVenue) {
             $venueFields = VenueField::where('user_venue_id', $tempUserVenue['id'])->where('flag_active', 1)->get();
             $schedule = [];
@@ -213,12 +225,12 @@ class UserController extends Controller
 
     public function review(Request $request, $status)
     {
-        $currentBookingList = BookingList::where('id', $request->id_booking_list)->first();
+        $currentBookingList = BookingList::where('id', $request->id_booking_list)->where('flag_active', 1)->first();
         if ($currentBookingList == null) {
             return FlashSession::error('user/dashboard', 'Review failed, id booking not found!');
         }
 
-        $currentUserReported = User::where('id', $request->id_user_reported)->first();
+        $currentUserReported = User::where('id', $request->id_user_reported)->where('flag_active', 1)->first();
         if ($currentUserReported == null) {
             return FlashSession::error('user/dashboard', 'Review failed, id user reported not found!');
         }
@@ -226,6 +238,7 @@ class UserController extends Controller
         $existReview = Review::where('booking_list_id', $request->id_booking_list)
             ->where('user_reporter_id', Auth::user()->id)
             ->where('user_reported_id', $request->id_user_reported)
+            ->where('flag_active', 1)
             ->first();
         if ($request->object_type == 'venue' && $existReview != null) {
             return FlashSession::warning('user/dashboard', 'Review failed, you have reviewed the venue!');

@@ -18,7 +18,7 @@ class VenueController extends Controller
         $now = Carbon::now();
         $endTrial = Carbon::parse($user->verified_at)->addMonths(1);
         $payment_status = $user->venues->first()->payment_status;
-        if($payment_status == 0 && $now > $endTrial) {
+        if ($payment_status == 0 && $now > $endTrial) {
             $statusTrial = 0;
         } else {
             $statusTrial = 1;
@@ -38,11 +38,30 @@ class VenueController extends Controller
 
     public function responseBooking(Request $request, $status)
     {
-        $currentBookingList = BookingList::where('id', $request->id_booking_list)->first();
+        $currentBookingList = BookingList::where('id', $request->id_booking_list)->where('flag_active', 1)->first();
         if ($currentBookingList == null) {
-            return FlashSession::error('venue/dashboard', 'Response booking request failed, sparring request not found!');
+            return FlashSession::error('venue/dashboard', 'Response booking request failed, booking request not found!');
         }
         if ($status == 'accepted') {
+
+            $hourBooking = [];
+            for ($i = 0; $i < $currentBookingList->duration; $i++) {
+                $hourBooking[] = substr(strval($currentBookingList->hour), 0, 2) + $i;
+            }
+
+            $bookingLists = BookingList::select('user_id', 'date', 'duration', 'hour')->whereDate('date', '=', $currentBookingList)->where('id', '!=', $currentBookingList->id)->where('is_accepted', 1)->where('flag_active', 1)->get();
+            if ($bookingLists != null) {
+                foreach ($bookingLists as $bookingList) {
+                    for ($a = 0; $a < $bookingList->duration; $a++) {
+                        $existHour = substr(strval($bookingList->hour), 0, 2) + $a;
+                        for ($b = 0; $b < $currentBookingList->duration; $b++) {
+                            if ($existHour == $hourBooking[$b]) {
+                                return FlashSession::error('user/dashboard', 'Request booking failed, Booking hour has booked!');
+                            }
+                        }
+                    }
+                }
+            }
 
             $responseBookingList = $currentBookingList->update([
                 'is_accepted' => 1,
@@ -94,7 +113,6 @@ class VenueController extends Controller
                 ->whereMonth('date', $thisMonth)
                 ->where('is_accepted', 1)
                 ->where('flag_active', 1);
-
             $tempVenue = [];
             $tempVenue['venue_field'] = $tempVenueField;
             foreach ($allDateInThisMonth as $i => $date) {
