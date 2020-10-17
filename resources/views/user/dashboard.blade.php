@@ -93,12 +93,6 @@
                     <h4 class="text-dark">{{ Auth::user()->phone_number }}</h4>
                 </div>
                 <p class="lead mb-3">{{ Auth::user()->teams->first()->bio }}</p>
-                <p class="lead mb-3 text-dark text-secondary">FIND US AT</p>
-                <div class="social-icons">
-                    <a class="social-icon" href="#"><i class="fab fa-instagram"></i></a>
-                    <a class="social-icon" href="#"><i class="fab fa-twitter"></i></a>
-                    <a class="social-icon" href="#"><i class="fab fa-facebook-f"></i></a>
-                </div>
 
                 <div class="card mt-5 " style="width: 40rem;">
                     <h5 class="card-header bg-primary text-light">Next Match</h5>
@@ -137,7 +131,32 @@
                             @if ($requestLists->count() > 0)
                             @foreach ($requestLists as $index => $list)
                             <li class="list-group-item">
-                                <h4 class="text-red">{{ $list->team_name }}</h4>
+                                <div class="accordion" id="{{'accordionSparringRequest'.$index}}">
+                                    <div class="card">
+                                        <div class="card-header" id="{{'headingSparringRequest'.$index}}">
+                                            <h2 class="mb-0">
+                                                <button class="btn btn-link btn-block text-middle " type="button" data-toggle="collapse" data-target="#{{'collapseSparringRequest'.$index}}" aria-expanded="true" aria-controls="{{'collapseSparringRequest'.$index}}">
+                                                    <h4 class="text-red">{{$list->team_name}}</h4>
+                                                </button>
+                                            </h2>
+                                        </div>
+                                        <div id="{{'collapseSparringRequest'.$index}}" class="collapse hide" aria-labelledby="{{'headingSparringRequest'.$index}}" data-parent="#{{'accordionSparringRequest'.$index}}">
+                                            <div class="card-body">
+                                                <ul>
+                                                    <li>
+                                                        <h9 class="lead text-dark1">Category: {{$list->category}}</h9>
+                                                    </li>
+                                                    <li>
+                                                        <h9 class="lead text-dark1">Phone Number: {{$list->phone_number}}</h9>
+                                                    </li>
+                                                    <li>
+                                                        <h9 class="lead text-dark1">Bio: {{$list->bio}}</h9>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <p class="lead text-dark">{{ $list->venue_name.' '.$list->field_name }}</p>
                                 <p class="lead text-dark">{{ date('l, d F Y, H:i A ', strtotime($list->date)) }}</p>
                                 <div class="d-flex flex-md-row">
@@ -219,7 +238,17 @@
                                     </div>
                                     <div id="{{'collapseSparring'.$index}}" class="collapse hide" aria-labelledby="{{'heading'.$index}}" data-parent="#{{'accordionSparring'.$index}}">
                                         <div class="card-body">
-                                            {{ $list->bio }}
+                                            <ul>
+                                                <li>
+                                                    <h9 class="lead text-dark1">Category: {{$list->category}}</h9>
+                                                </li>
+                                                <li>
+                                                    <h9 class="lead text-dark1">Phone Number: {{$list->phone_number}}</h9>
+                                                </li>
+                                                <li>
+                                                    <h9 class="lead text-dark1">Bio: {{$list->bio}}</h9>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
@@ -305,17 +334,18 @@
                                     <div class="d-flex flex-md-row width:fit-content height:fit-content">
                                         <h4 class="text-red">{{$schedule_venue['venue']->venue_name}}</h4>
                                     </div>
+                                    <h6 class="lead text-dark1">{{$schedule_venue['venue']->phone_number}}</h6>
                                     <h6 class="lead text-dark1">{{$schedule_venue['venue']->address}}</h6>
                                     @foreach ($schedule_venue['field'] as $indexTwo => $field)
                                     <div class="d-flex flex-md-row">
                                         <form class="form-booking{{$indexOne.'-'.$indexTwo}}" action="{{ url('user/dashboard/request/booking') }}" method="POST">
                                             @csrf
                                             <label for="date">Date</label>
-                                            <input type="date" id="date" name="date">
+                                            <input type="date" id="date" name="date" value="{{date('Y-m-d')}}">
                                             <label for="start">Start</label>
-                                            <input type="time" id="start" name="start">
-                                            <label for="end">End</label>
-                                            <input type="time" id="end" name="end">
+                                            <input type="time" id="start" name="start" value="{{date('H:i')}}">
+                                            <label for="duration">Duration</label>
+                                            <input style="max-width: 4rem;" type="number" id="duration" name="duration" min=1 value=1>
                                             <input name="id_venue_field" type="hidden" value="{{ $field['venue_field']->id }}">
                                             <input name="price" type="hidden" value="{{ $field['venue_field']->price }}">
                                             <button type="button" class="btn bg-secondary ml-5" data-toggle="modal" data-target="#modalLong{{$indexOne.'-'.$indexTwo}}">
@@ -354,7 +384,7 @@
                                             <div class="card-header" id="heading{{$indexOne.'-'.$indexTwo}}">
                                                 <h2 class="mb-0">
                                                     <button class="btn btn-link btn-block text-middle" type="button" data-toggle="collapse" data-target="#collapse{{ $indexOne.'-'.$indexTwo }}" aria-expanded="true" aria-controls="collapse{{ $indexOne.'-'.$indexTwo }}">
-                                                        <h4 class="text-red">Schedule Available {{$field['venue_field']->field_name.' - '.$field['venue_field']->field_type}}</h4>
+                                                        <h4 class="text-red">{{$field['venue_field']->field_name.' - '.$field['venue_field']->field_type .' ('.$field['venue_field']->price.'/hour)'}}</h4>
                                                     </button>
                                                 </h2>
                                             </div>

@@ -98,13 +98,13 @@
                 </div>
 
                 @if ($statusTrial)
-                    <div class="alert alert-info">
-                        You are in the free trial version till {{ $endTrial }}
-                    </div>
+                <div class="alert alert-info">
+                    You are in the free trial version till {{ $endTrial }}
+                </div>
                 @else
-                    <div class="alert alert-danger">
-                        Your free trial period has expired since {{ $endTrial }}
-                    </div>
+                <div class="alert alert-danger">
+                    Your free trial period has expired since {{ $endTrial }}
+                </div>
                 @endif
 
                 <div class="card mt-1 " style="width: 70rem; height: fit-content;">
@@ -197,17 +197,23 @@
                                         <div class="card-header" id="{{'heading'.$index}}">
                                             <h2 class="mb-0">
                                                 <button class="btn btn-link btn-block text-middle " type="button" data-toggle="collapse" data-target="#{{'collapse'.$index}}" aria-expanded="true" aria-controls="{{'collapse'.$index}}">
-                                                    @if ($list->sparring_user == null)
                                                     <h4 class="text-red">{{$list->team_name}}</h4>
-                                                    @else
-                                                    <h4 class="text-red">{{$list->team_name}} vs {{$list->sparring_name}}</h4>
-                                                    @endif
                                                 </button>
                                             </h2>
                                         </div>
                                         <div id="{{'collapse'.$index}}" class="collapse hide" aria-labelledby="{{'heading'.$index}}" data-parent="#{{'accordionExample'.$index}}">
                                             <div class="card-body">
-                                                {{$list->bio}}
+                                                <ul>
+                                                    <li>
+                                                        <h9 class="lead text-dark1">Category: {{$list->category}}</h9>
+                                                    </li>
+                                                    <li>
+                                                        <h9 class="lead text-dark1">Phone Number: {{$list->phone_number}}</h9>
+                                                    </li>
+                                                    <li>
+                                                        <h9 class="lead text-dark1">Bio: {{$list->bio}}</h9>
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
@@ -230,8 +236,34 @@
                             @if ($requestLists->count() > 0)
                             @foreach ($requestLists as $index => $list)
                             <li class="list-group-item">
-                                <h4 class="text-red">{{$list->team_name}}</h4>
-                                <h9 class="lead text-dark1">{{ date('l, d F Y, H:i A ', strtotime($list->date)) }}</h9>
+                                <div class="accordion" id="{{'accordionRequestBooking'.$index}}">
+                                    <div class="card">
+                                        <div class="card-header" id="{{'headingRequestBooking'.$index}}">
+                                            <h2 class="mb-0">
+                                                <button class="btn btn-link btn-block text-middle " type="button" data-toggle="collapse" data-target="#{{'collapseRequestBooking'.$index}}" aria-expanded="true" aria-controls="{{'collapseRequestBooking'.$index}}">
+                                                    <h4 class="text-red">{{$list->team_name}}</h4>
+                                                </button>
+                                            </h2>
+                                        </div>
+                                        <div id="{{'collapseRequestBooking'.$index}}" class="collapse hide" aria-labelledby="{{'headingRequestBooking'.$index}}" data-parent="#{{'accordionRequestBooking'.$index}}">
+                                            <div class="card-body">
+                                                <ul>
+                                                    <li>
+                                                        <h9 class="lead text-dark1">Category: {{$list->category}}</h9>
+                                                    </li>
+                                                    <li>
+                                                        <h9 class="lead text-dark1">Phone Number: {{$list->phone_number}}</h9>
+                                                    </li>
+                                                    <li>
+                                                        <h9 class="lead text-dark1">Bio: {{$list->bio}}</h9>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <h4 class="text-red">{{$list->team_name}}</h4>
+                                <h9 class="lead text-dark1">{{ date('l, d F Y, H:i A ', strtotime($list->date)) }}</h9> -->
                                 <div class="d-flex flex-md-row">
                                     <button type="button" class="btn bg-primary ml-0 mt-3" data-toggle="modal" data-target="#{{'exampleModal'.$index}}">
                                         Accept

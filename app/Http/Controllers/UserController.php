@@ -33,16 +33,8 @@ class UserController extends Controller
         $dateHour = ($request->date) . ' ' . strval($request->start) . ':00';
         if ($dateHour < Carbon::now()) {
             return FlashSession::error('user/dashboard', 'Request booking failed, today hour date is greater than input date!');
-        } else if ($request->start > $request->end) {
-            return FlashSession::error('user/dashboard', 'Request booking failed, hour start is greater than end hour!');
-            // } else if (Carbon::now()->format('H:i') > $request->start) {
-            //     return FlashSession::error('user/dashboard', 'Request booking failed, now hour is greater than start hour!');
         } else if (substr(strval($request->start), 3) != '00') {
             return FlashSession::error('user/dashboard', 'Request booking failed, the hour start must be ended by :00!');
-        } else if (substr(strval($request->end), 3) != '00') {
-            return FlashSession::error('user/dashboard', 'Request booking failed, the hour end must be ended by :00!');
-        } else if ($request->start == $request->end) {
-            return FlashSession::error('user/dashboard', 'Request booking failed, hour start and hour end must be different!');
         }
 
         $currentField = VenueField::where('id', $request->id_venue_field)->where('flag_active', 1)->first();
@@ -50,11 +42,14 @@ class UserController extends Controller
             return FlashSession::error('user/dashboard', 'Request booking failed, id field not found!');
         }
 
-        $duration = substr(strval($request->end), 0, 2) - substr(strval($request->start), 0, 2);
+        // $duration = substr(strval($request->end), 0, 2) - substr(strval($request->start), 0, 2);
 
         $hourBooking = [];
-        for ($i = 0; $i < $duration; $i++) {
-            $hourBooking[] = substr(strval($request->start), 0, 2) + $i;
+        for ($i = 0; $i < $request->duration; $i++) {
+            $hourBooking[$i] = substr(strval($request->start), 0, 2) + $i;
+            if ($hourBooking[$i] < 6 || $hourBooking[$i] > 24) {
+                return FlashSession::error('user/dashboard', 'Request booking failed, venue opens at 06.00 - 24.00!');
+            }
         }
 
         $bookingLists = BookingList::select('user_id', 'date', 'duration', 'hour')->whereDate('date', '=', $request->date)->where('is_accepted', 1)->where('flag_active', 1)->get();
@@ -62,7 +57,7 @@ class UserController extends Controller
             foreach ($bookingLists as $bookingList) {
                 for ($a = 0; $a < $bookingList->duration; $a++) {
                     $existHour = substr(strval($bookingList->hour), 0, 2) + $a;
-                    for ($b = 0; $b < $duration; $b++) {
+                    for ($b = 0; $b < $request->duration; $b++) {
                         if ($existHour == $hourBooking[$b]) {
                             if ($bookingList->user_id == Auth::user()->id) {
                                 return FlashSession::error('user/dashboard', 'You have already booked!');
@@ -82,10 +77,9 @@ class UserController extends Controller
             'user_id' => Auth::user()->id,
             'venue_field_id' => $request->id_venue_field,
             'date' => substr(strval($request->date), 0, 10) . ' ' . strval($request->start) . ':00',
-            // 'date' => $request->date,
             'hour' => $request->start,
-            'duration' => $duration,
-            'price' => $request->price * $duration,
+            'duration' => $request->duration,
+            'price' => $request->price * $request->duration,
             'booking_type' => $request->booking_type,
             'is_available' => $available,
             'created_at' => Carbon::now(),
@@ -294,9 +288,10 @@ class UserController extends Controller
     private function requestLists()
     {
         $requestList = DB::table('sparring_requests AS s')
-            ->select('s.id as sparring_request_id', 's.booking_list_id', 's.user_id', 'ut.team_name', 'vf.field_name', 'uv.venue_name', 'b.date')
+            ->select('s.id as sparring_request_id', 'ut.category', 'ut.bio', 'u.phone_number', 's.booking_list_id', 's.user_id', 'ut.team_name', 'vf.field_name', 'uv.venue_name', 'b.date')
             ->leftjoin('booking_lists AS b', 'b.id', '=', 's.booking_list_id')
             ->leftjoin('user_teams AS ut', 'ut.user_id', '=', 's.user_id')
+            ->leftjoin('users AS u', 'u.id', '=', 's.user_id')
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
             ->leftjoin('user_venues AS uv', 'uv.id', '=', 'vf.user_venue_id')
             ->where('b.date', '>=', Carbon::now())
@@ -315,8 +310,9 @@ class UserController extends Controller
     private function sparringLists()
     {
         $sparringList = DB::table('booking_lists AS b')
-            ->select('b.id', 'ut.team_name', 'ut.bio', 'vf.field_name', 'uv.venue_name', 'b.booking_type', 'b.date')
+            ->select('b.id', 'ut.team_name', 'ut.category', 'ut.bio', 'u.phone_number', 'vf.field_name', 'uv.venue_name', 'b.booking_type', 'b.date')
             ->leftjoin('user_teams AS ut', 'ut.user_id', '=', 'b.user_id')
+            ->leftjoin('users AS u', 'u.id', '=', 'b.user_id')
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
             ->leftjoin('user_venues AS uv', 'uv.id', '=', 'vf.user_venue_id')
             ->where('b.date', '>=', Carbon::now())
