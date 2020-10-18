@@ -152,6 +152,9 @@
                                                     <li>
                                                         <h9 class="lead text-dark1">Bio: {{$list->bio}}</h9>
                                                     </li>
+                                                    <li>
+                                                        <h9 class="lead text-dark1">Review: {{$list->latest_review}}</h9>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -247,6 +250,9 @@
                                                 </li>
                                                 <li>
                                                     <h9 class="lead text-dark1">Bio: {{$list->bio}}</h9>
+                                                </li>
+                                                <li>
+                                                    <h9 class="lead text-dark1">Review: {{$list->latest_review}}</h9>
                                                 </li>
                                             </ul>
                                         </div>

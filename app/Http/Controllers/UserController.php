@@ -18,9 +18,9 @@ class UserController extends Controller
 {
     public function index()
     {
+        $data['requestLists'] = $this->requestLists();
         $data['schedules'] = $this->schedules();
         $data['bookingLists'] = $this->bookingLists();
-        $data['requestLists'] = $this->requestLists();
         $data['sparringLists'] = $this->sparringLists();
         $data['historyLists'] = $this->historyLists();
         $data['reviewLists'] = $this->reviewLists();
@@ -304,13 +304,17 @@ class UserController extends Controller
             ->where('s.flag_active', 1)
             ->orderBy('b.date', 'ASC')
             ->get();
+        foreach ($requestList as $key => $value) {
+            $tempReview = Review::select('comment')->where('user_reported_id', $value->user_id)->orderBy('created_at', 'DESC')->first();
+            $requestList[$key]->latest_review = $tempReview->comment;
+        }
         return $requestList;
     }
 
     private function sparringLists()
     {
         $sparringList = DB::table('booking_lists AS b')
-            ->select('b.id', 'ut.team_name', 'ut.category', 'ut.bio', 'u.phone_number', 'vf.field_name', 'uv.venue_name', 'b.booking_type', 'b.date')
+            ->select('b.id', 'b.user_id', 'ut.team_name', 'ut.category', 'ut.bio', 'u.phone_number', 'vf.field_name', 'uv.venue_name', 'b.booking_type', 'b.date')
             ->leftjoin('user_teams AS ut', 'ut.user_id', '=', 'b.user_id')
             ->leftjoin('users AS u', 'u.id', '=', 'b.user_id')
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
@@ -323,6 +327,10 @@ class UserController extends Controller
             ->where('b.flag_active', 1)
             ->orderBy('b.date', 'ASC')
             ->get();
+        foreach ($sparringList as $key => $value) {
+            $tempReview = Review::select('comment')->where('user_reported_id', $value->user_id)->orderBy('created_at', 'DESC')->first();
+            $sparringList[$key]->latest_review = $tempReview->comment;
+        }
         return $sparringList;
     }
 

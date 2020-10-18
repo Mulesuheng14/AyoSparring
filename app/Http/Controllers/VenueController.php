@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Classing\FlashSession;
 use App\Models\BookingList;
+use App\Models\Review;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -165,7 +166,7 @@ class VenueController extends Controller
     private function bookingLists()
     {
         $bookingList = DB::table('booking_lists AS b')
-            ->select('ut.team_name', 'ut.bio', 'ut.category', 'u.phone_number', 'vf.field_name', 'b.booking_type', 'b.date', 'b.hour', 'b.duration', 'b.sparring_user', 'tu.team_name AS sparring_name')
+            ->select('b.user_id', 'ut.team_name', 'ut.bio', 'ut.category', 'u.phone_number', 'vf.field_name', 'b.booking_type', 'b.date', 'b.hour', 'b.duration', 'b.sparring_user', 'tu.team_name AS sparring_name')
             ->leftjoin('user_teams AS ut', 'ut.user_id', '=', 'b.user_id')
             ->leftjoin('users AS u', 'u.id', '=', 'b.user_id')
             ->leftjoin('user_teams AS tu', 'tu.user_id', '=', 'b.sparring_user')
@@ -177,13 +178,17 @@ class VenueController extends Controller
             ->where('b.flag_active', 1)
             ->orderBy('b.date', 'ASC')
             ->get();
+        foreach ($bookingList as $key => $value) {
+            $tempReview = Review::select('comment')->where('user_reported_id', $value->user_id)->orderBy('created_at', 'DESC')->first();
+            $bookingList[$key]->latest_review = $tempReview->comment;
+        }
         return $bookingList;
     }
 
     private function requestLists()
     {
         $requestList = DB::table('booking_lists AS b')
-            ->select('b.id', 'ut.team_name', 'ut.category', 'ut.bio', 'u.phone_number', 'vf.field_name', 'b.booking_type', 'b.date', 'b.hour', 'b.duration')
+            ->select('b.id', 'b.user_id', 'ut.team_name', 'ut.category', 'ut.bio', 'u.phone_number', 'vf.field_name', 'b.booking_type', 'b.date', 'b.hour', 'b.duration')
             ->leftjoin('user_teams AS ut', 'ut.user_id', '=', 'b.user_id')
             ->leftjoin('users AS u', 'u.id', '=', 'b.user_id')
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
@@ -194,6 +199,10 @@ class VenueController extends Controller
             ->where('b.flag_active', 1)
             ->orderBy('b.date', 'ASC')
             ->get();
+        foreach ($requestList as $key => $value) {
+            $tempReview = Review::select('comment')->where('user_reported_id', $value->user_id)->orderBy('created_at', 'DESC')->first();
+            $requestList[$key]->latest_review = $tempReview->comment;
+        }
         return $requestList;
     }
 

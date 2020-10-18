@@ -213,12 +213,15 @@
                                                     <li>
                                                         <h9 class="lead text-dark1">Bio: {{$list->bio}}</h9>
                                                     </li>
+                                                    <li>
+                                                        <h9 class="lead text-dark1">Review: {{$list->latest_review}}</h9>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <h9 class="lead text-dark1">{{ date('l, d F Y, H:i A ', strtotime($list->date)) }}</h9>
+                                <h9 class="lead text-dark1">{{ date('l, d F Y, H:i A ', strtotime($list->date)) }} : {{ $list->field_name }} ({{ $list->duration }} hour(s))</h9>
                             </li>
                             @endforeach
                             @else
@@ -257,13 +260,15 @@
                                                     <li>
                                                         <h9 class="lead text-dark1">Bio: {{$list->bio}}</h9>
                                                     </li>
+                                                    <li>
+                                                        <h9 class="lead text-dark1">Review: {{$list->latest_review}}</h9>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <h4 class="text-red">{{$list->team_name}}</h4>
-                                <h9 class="lead text-dark1">{{ date('l, d F Y, H:i A ', strtotime($list->date)) }}</h9> -->
+                                <h9 class="lead text-dark1">{{ date('l, d F Y, H:i A ', strtotime($list->date)) }} : {{ $list->field_name }} ({{ $list->duration }} hour(s))</h9>
                                 <div class="d-flex flex-md-row">
                                     <button type="button" class="btn bg-primary ml-0 mt-3" data-toggle="modal" data-target="#{{'exampleModal'.$index}}">
                                         Accept
