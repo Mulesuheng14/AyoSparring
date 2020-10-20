@@ -109,8 +109,8 @@
                 </div>
                 @endif
 
+                @foreach ($schedules as $venue)
                 <div class="card mt-1 " style="width: 70rem; height: fit-content;">
-                    @foreach ($schedules as $venue)
                     <h5 class="card-header bg-primary text-light">Schedule Availability - {{$venue['venue_field']['field_name'].' '.$venue['venue_field']['field_type']}}</h5>
                     <div class="car-body">
                         <table class="table table-striped table-bordered display nowrap">
