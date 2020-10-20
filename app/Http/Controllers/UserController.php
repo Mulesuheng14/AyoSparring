@@ -327,10 +327,18 @@ class UserController extends Controller
             ->where('b.flag_active', 1)
             ->orderBy('b.date', 'ASC')
             ->get();
+
         foreach ($sparringList as $key => $value) {
             $tempReview = Review::select('comment')->where('user_reported_id', $value->user_id)->orderBy('created_at', 'DESC')->first();
-            $sparringList[$key]->latest_review = $tempReview->comment;
+            if($tempReview) {
+                $sparringList[$key]->latest_review = $tempReview->comment;
+            } else {
+                $sparringList[$key]->latest_review = null;
+            }
         }
+
+
+
         return $sparringList;
     }
 

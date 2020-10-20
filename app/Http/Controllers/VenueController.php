@@ -201,7 +201,11 @@ class VenueController extends Controller
             ->get();
         foreach ($requestList as $key => $value) {
             $tempReview = Review::select('comment')->where('user_reported_id', $value->user_id)->orderBy('created_at', 'DESC')->first();
-            $requestList[$key]->latest_review = $tempReview->comment;
+            if($tempReview){
+                $requestList[$key]->latest_review = $tempReview->comment;
+            } else {
+                $requestList[$key]->latest_review = null;
+            }
         }
         return $requestList;
     }

@@ -55,7 +55,9 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
         <a class="navbar-brand js-scroll-trigger" href="#page-top">
             <span class="d-block d-lg-none"> </span>
-            <span class="d-none d-lg-block"><img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="assets/img/SPARTA-FTI.jpg" alt="" /></span>
+            <span class="d-none d-lg-block">
+                <img class="img-fluid img-profile rounded-circle mx-auto mb-2" src="{{ asset('storage/team/'.Auth::user()->teams->first()->photo) }}" alt="" />
+            </span>
         </a>
         <div class="sidebar-heading text-warning">{{ Auth::user()->teams->first()->team_name }}</div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -448,17 +450,6 @@
                             document.getElementById("demo").src = habib;
                         }
                     </script>
-                    <div class="card mt-0 ml-5" style="width: fit-content; height: fit-content;">
-                        <div class="card-header bg-primary" style="width: 37.5rem;">
-                            <h5 class="text-light">Location</h5>
-                        </div>
-                        <div class="mapouter">
-                            <div class="gmap_canvas">
-                                <iframe id="demo" width="600" height="500" id="gmap_canvas" src="https://maps.google.com/maps?q=uii&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginwidth="0"></iframe>
-
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </section>
         </div>

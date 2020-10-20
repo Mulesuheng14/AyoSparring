@@ -24,8 +24,9 @@ If the requirement is install on your server / local server, follow step:
 7.  Type "php artisan config:cache" and enter
 8.  Type "composer dumpautoload" and enter
 9.  Type "php artisan migrate:fresh --seed" and enter
-10. Type "php artisan serve" and enter
-11. Access in browser "localhost:8000"
+10. Type "php artisan storage:link" and enter
+11. Type "php artisan serve" and enter
+12. Access in browser "localhost:8000"
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
