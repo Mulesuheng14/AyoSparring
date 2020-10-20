@@ -225,6 +225,7 @@ class UserController extends Controller
 
     public function review(Request $request, $status)
     {
+
         $currentBookingList = BookingList::where('id', $request->id_booking_list)->where('flag_active', 1)->first();
         if ($currentBookingList == null) {
             return FlashSession::error('user/dashboard', 'Review failed, id booking not found!');
@@ -375,6 +376,7 @@ class UserController extends Controller
             ->leftjoin('user_teams AS ut', 'ut.user_id', '=', 'r.user_reporter_id')
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
             ->where('r.object_type', 'team')
+            ->where('r.review_type', 'review')
             ->where('r.user_reported_id', Auth::user()->id)
             ->where('r.flag_active', 1)
             ->get();
