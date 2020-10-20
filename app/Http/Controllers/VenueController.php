@@ -180,7 +180,11 @@ class VenueController extends Controller
             ->get();
         foreach ($bookingList as $key => $value) {
             $tempReview = Review::select('comment')->where('user_reported_id', $value->user_id)->orderBy('created_at', 'DESC')->first();
-            $bookingList[$key]->latest_review = $tempReview->comment;
+            if ($tempReview) {
+                $bookingList[$key]->latest_review = $tempReview->comment;
+            } else {
+                $bookingList[$key]->latest_review = NULL;
+            }
         }
         return $bookingList;
     }
@@ -201,7 +205,7 @@ class VenueController extends Controller
             ->get();
         foreach ($requestList as $key => $value) {
             $tempReview = Review::select('comment')->where('user_reported_id', $value->user_id)->orderBy('created_at', 'DESC')->first();
-            if($tempReview){
+            if ($tempReview) {
                 $requestList[$key]->latest_review = $tempReview->comment;
             } else {
                 $requestList[$key]->latest_review = null;
