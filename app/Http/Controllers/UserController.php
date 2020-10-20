@@ -23,6 +23,7 @@ class UserController extends Controller
         $data['bookingLists'] = $this->bookingLists();
         $data['sparringLists'] = $this->sparringLists();
         $data['historyLists'] = $this->historyLists();
+        // dd($data['historyLists']);
         $data['reviewLists'] = $this->reviewLists();
 
         return view('user.dashboard', $data);
@@ -306,7 +307,11 @@ class UserController extends Controller
             ->get();
         foreach ($requestList as $key => $value) {
             $tempReview = Review::select('comment')->where('user_reported_id', $value->user_id)->orderBy('created_at', 'DESC')->first();
-            $requestList[$key]->latest_review = $tempReview->comment;
+            if ($tempReview) {
+                $requestList[$key]->latest_review = $tempReview->comment;
+            } else {
+                $requestList[$key]->latest_review = NULL;
+            }
         }
         return $requestList;
     }
@@ -330,7 +335,7 @@ class UserController extends Controller
 
         foreach ($sparringList as $key => $value) {
             $tempReview = Review::select('comment')->where('user_reported_id', $value->user_id)->orderBy('created_at', 'DESC')->first();
-            if($tempReview) {
+            if ($tempReview) {
                 $sparringList[$key]->latest_review = $tempReview->comment;
             } else {
                 $sparringList[$key]->latest_review = null;
