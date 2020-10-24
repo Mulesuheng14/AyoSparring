@@ -73,7 +73,7 @@
 
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
-                    <li><a href="{{ url('/') }}landing/index">Home</a></li>
+                    <li><a href="{{ url('/') }}">Home</a></li>
                     <li><a href="{{ url('login') }}">Login</a></li>
                     <li class="active"><a href="{{ url('register/user') }}">User Register</a></li>
                     <li><a href="{{ url('register/venue') }}">Venue Register</a></li>
