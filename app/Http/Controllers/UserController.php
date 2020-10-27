@@ -236,28 +236,37 @@ class UserController extends Controller
             return FlashSession::error('user/dashboard', 'Review failed, id user reported not found!');
         }
 
+        $user_reported = null;
+
+        if ($request->id_user_reported == Auth::user()->id){
+            $user_reported = $request->id_user_owner;
+        } else {
+            $user_reported = $request->id_user_reported;
+        }
+        
         $existReview = Review::where('booking_list_id', $request->id_booking_list)
             ->where('user_reporter_id', Auth::user()->id)
-            ->where('user_reported_id', $request->id_user_reported)
+            ->where('user_reported_id', $user_reported)
             ->where('flag_active', 1)
             ->first();
+        
         if ($request->object_type == 'venue' && $existReview != null) {
             return FlashSession::warning('user/dashboard', 'Review failed, you have reviewed the venue!');
         } else if ($request->object_type == 'team' && $existReview != null) {
             return FlashSession::warning('user/dashboard', 'Review failed, you have reviewed the team!');
         }
-
+        
         $review = Review::create([
-            'user_reporter_id' => Auth::user()->id,
-            'user_reported_id' => $request->id_user_reported,
-            'booking_list_id' => $request->id_booking_list,
-            'object_type' => $request->object_type,
-            'review_type' => $status,
-            'comment' => $request->review,
-            'created_at' => Carbon::now(),
-            'created_by' => Auth::user()->id,
-            'updated_at' => Carbon::now(),
-            'updated_by' => Auth::user()->id,
+                    'user_reporter_id' => Auth::user()->id,
+                    'user_reported_id' => $user_reported,
+                    'booking_list_id' => $request->id_booking_list,
+                    'object_type' => $request->object_type,
+                    'review_type' => $status,
+                    'comment' => $request->review,
+                    'created_at' => Carbon::now(),
+                    'created_by' => Auth::user()->id,
+                    'updated_at' => Carbon::now(),
+                    'updated_by' => Auth::user()->id,
         ]);
 
         if ($review) {
