@@ -99,6 +99,7 @@
                                 <tr>
                                     <th class="text-center align-middle">No</th>
                                     <th class="text-center align-middle">Account Type</th>
+                                    <th class="text-center align-middle">Date Created</th>
                                     <th class="text-center align-middle">Name</th>
                                     <th class="text-center align-middle">Email</th>
                                     <th class="text-center align-middle">Phone Number</th>
@@ -113,6 +114,7 @@
                                 <tr>
                                     <td class="text-center align-middle">{{ $index+1 }}</td>
                                     <td class="text-left align-middle">{{ $user->account_type == 'owner' ? 'Owner' : 'User' }}</td>
+                                    <td class="text-left align-middle">{{ $user->created_at }}</td>
                                     <td class="text-left align-middle">{{ $user->name }}</td>
                                     <td class="text-left align-middle">{{ $user->email }}</td>
                                     <td class="text-left align-middle">{{ $user->phone_number }}</td>
@@ -315,7 +317,21 @@
         {{-- Mine JAVASCRIPT --}}
         <script type="text/javascript" src="{{ asset('assets/js/scripts.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/js/flashsession.js') }}"></script>
+        <script>
+            function decline(index) {
+                $(".booking_type").val('regular');
+                $('.form-booking' + index).submit();
+            }
 
+            function accept(index) {
+                $(".booking_type").val('sparring');
+                $('.form-booking' + index).submit();
+            }
+
+            $(document).ready(function() {
+                $('.msha_toast_close').css('display', 'none');
+            });
+        </script>
 </body>
 
 </html>

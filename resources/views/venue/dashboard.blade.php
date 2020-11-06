@@ -99,6 +99,53 @@
                     <h4 class="text-dark">{{ Auth::user()->venues->first()->phone_number }}</h4>
                 </div>
 
+
+                <div class="col-md-4">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#staticBackdrop">
+                        Edit Profile
+                    </button>
+
+                    Modal
+                    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Edit Venue Profile</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="formGroupExampleInput">Venue Name</label>
+                                            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Venue name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="formGroupExampleInput2">Address</label>
+                                            <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Address">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="formGroupExampleInput">Venue Phone Number</label>
+                                            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Phone Number">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="formGroupExampleInput2">Postal Code</label>
+                                            <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Postal Code">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger ml-2 mt-3" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-secondary ml-2 mt-3">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
                 @if ($statusTrial)
                 <div class="alert alert-info">
                     You are in the free trial version till {{ $endTrial }}
@@ -272,7 +319,7 @@
                                 </div>
                                 <h9 class="lead text-dark1">{{ date('l, d F Y, H:i A ', strtotime($list->date)) }} : {{ $list->field_name }} ({{ $list->duration }} hour(s))</h9>
                                 <div class="d-flex flex-md-row">
-                                    <button type="button" class="btn bg-primary ml-0 mt-3" data-toggle="modal" data-target="#{{'exampleModal'.$index}}">
+                                    <button type="button" class="btn btn-secondary ml-0 mt-3" data-toggle="modal" data-target="#{{'exampleModal'.$index}}">
                                         Accept
                                     </button>
                                     <form action="{{ url('venue/dashboard/response/booking/declined') }}" method="POST">
@@ -417,6 +464,22 @@
     {{-- Mine JAVASCRIPT --}}
     <script type="text/javascript" src="{{ asset('assets/js/scripts.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/flashsession.js') }}"></script>
+
+    <script>
+        function decline(index) {
+            $(".booking_type").val('regular');
+            $('.form-booking' + index).submit();
+        }
+
+        function accept(index) {
+            $(".booking_type").val('sparring');
+            $('.form-booking' + index).submit();
+        }
+
+        $(document).ready(function() {
+            $('.msha_toast_close').css('display', 'none');
+        });
+    </script>
 
 </body>
 

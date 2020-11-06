@@ -480,4 +480,20 @@
     });
 </script>
 
+<script>
+    function decline(index) {
+        $(".booking_type").val('regular');
+        $('.form-booking' + index).submit();
+    }
+
+    function accept(index) {
+        $(".booking_type").val('sparring');
+        $('.form-booking' + index).submit();
+    }
+
+    $(document).ready(function() {
+        $('.msha_toast_close').css('display', 'none');
+    });
+</script>
+
 </html>

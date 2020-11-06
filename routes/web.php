@@ -45,4 +45,5 @@ Route::group(['middleware' => ['role:3']], function () {
     Route::post('user/dashboard/request/booking/', 'UserController@requestBooking');
     Route::post('user/dashboard/request/sparring/', 'UserController@requestSparring');
     Route::post('user/dashboard/review/{status}', 'UserController@review');
+    Route::post('user/dashboard/edit/', 'UserController@editUser');
 });

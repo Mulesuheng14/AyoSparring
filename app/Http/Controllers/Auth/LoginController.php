@@ -45,12 +45,12 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        if(Auth::user()) {
-            if(Auth::user()->role == 1) {
+        if (Auth::user()) {
+            if (Auth::user()->role == 1) {
                 return redirect('admin/dashboard');
-            } else if(Auth::user()->role == 2) {
+            } else if (Auth::user()->role == 2) {
                 return redirect('venue/dashboard');
-            } else if(Auth::user()->role == 3) {
+            } else if (Auth::user()->role == 3) {
                 return redirect('user/dashboard');
             }
         }
@@ -67,14 +67,14 @@ class LoginController extends Controller
     {
         $this->validateLogin($request);
 
-        $user = User::where('email',$request->email)->first();
+        $user = User::where('email', $request->email)->first();
         if ($user == null) {
-            return FlashSession::error('login','Your email is not registered!');
+            return FlashSession::error('login', 'Your email is not registered!');
         }
 
         $user_is_verified = $user->verified;
         if ($user_is_verified == 0) {
-            return FlashSession::error('login','Your account has not been verified by Administrator!');
+            return FlashSession::error('login', 'Your account has not been verified by Administrator!');
         }
 
         $user_type = $user->account_type;
@@ -82,13 +82,15 @@ class LoginController extends Controller
             $now = Carbon::now();
             $end_trial = Carbon::parse($user->verified_at)->addMonths(1);
             $payment_status = $user->venues->first()->payment_status;
-            if($payment_status == 0 && $now > $end_trial) {
-                return FlashSession::error('login','Your free trial period is expired, please contact Ayo Sparring to subscribe!');
+            if ($payment_status == 0 && $now > $end_trial) {
+                return FlashSession::error('login', 'Your free trial period is expired, please contact Ayo Sparring to subscribe!');
             }
         }
 
-        if (method_exists($this, 'hasTooManyLoginAttempts') &&
-            $this->hasTooManyLoginAttempts($request)) {
+        if (
+            method_exists($this, 'hasTooManyLoginAttempts') &&
+            $this->hasTooManyLoginAttempts($request)
+        ) {
             $this->fireLockoutEvent($request);
 
             return $this->sendLockoutResponse($request);
@@ -111,5 +113,4 @@ class LoginController extends Controller
 
         return $this->loggedOut($request) ?: redirect('/');
     }
-
 }

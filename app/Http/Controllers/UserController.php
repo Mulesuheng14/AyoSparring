@@ -7,6 +7,7 @@ use App\Models\BookingList;
 use App\Models\Review;
 use App\Models\SparringRequest;
 use App\Models\User;
+use App\Models\UserTeam;
 use App\Models\UserVenue;
 use App\Models\VenueField;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,11 @@ class UserController extends Controller
         // dd($data['historyLists']);
         $data['reviewLists'] = $this->reviewLists();
 
+        $id = auth()->user()->id;
+        $user = UserTeam::where('user_id', $id)->first();
+        $user->date_established = Carbon::parse($user->date_established)->format('Y-m-d');
+        $data['user'] = $user;
+        // return view("user.dashboard", compact('user', 'data'));
         return view('user.dashboard', $data);
     }
 
@@ -238,35 +244,35 @@ class UserController extends Controller
 
         $user_reported = null;
 
-        if ($request->id_user_reported == Auth::user()->id){
+        if ($request->id_user_reported == Auth::user()->id) {
             $user_reported = $request->id_user_owner;
         } else {
             $user_reported = $request->id_user_reported;
         }
-        
+
         $existReview = Review::where('booking_list_id', $request->id_booking_list)
             ->where('user_reporter_id', Auth::user()->id)
             ->where('user_reported_id', $user_reported)
             ->where('flag_active', 1)
             ->first();
-        
+
         if ($request->object_type == 'venue' && $existReview != null) {
             return FlashSession::warning('user/dashboard', 'Review failed, you have reviewed the venue!');
         } else if ($request->object_type == 'team' && $existReview != null) {
             return FlashSession::warning('user/dashboard', 'Review failed, you have reviewed the team!');
         }
-        
+
         $review = Review::create([
-                    'user_reporter_id' => Auth::user()->id,
-                    'user_reported_id' => $user_reported,
-                    'booking_list_id' => $request->id_booking_list,
-                    'object_type' => $request->object_type,
-                    'review_type' => $status,
-                    'comment' => $request->review,
-                    'created_at' => Carbon::now(),
-                    'created_by' => Auth::user()->id,
-                    'updated_at' => Carbon::now(),
-                    'updated_by' => Auth::user()->id,
+            'user_reporter_id' => Auth::user()->id,
+            'user_reported_id' => $user_reported,
+            'booking_list_id' => $request->id_booking_list,
+            'object_type' => $request->object_type,
+            'review_type' => $status,
+            'comment' => $request->review,
+            'created_at' => Carbon::now(),
+            'created_by' => Auth::user()->id,
+            'updated_at' => Carbon::now(),
+            'updated_by' => Auth::user()->id,
         ]);
 
         if ($review) {
@@ -402,7 +408,36 @@ class UserController extends Controller
             return false;
         }
     }
+    public function editUser(Request $request)
+    {
+        $id = auth()->user()->id;
+        $user = UserTeam::where('user_id', $id)->first();
 
+        $team_name = $request->team_name;
+        $category = $request->category;
+        $date = $request->date_established;
+        $address = $request->address;
+        $postal_code = $request->postal_code;
+        $bio = $request->bio;
+        // $user = new UserTeam;
+        $user->team_name = $team_name;
+        $user->category = $category;
+        $user->date_established = $date;
+        $user->address = $address;
+        $user->postal_code = $postal_code;
+        $user->bio = $bio;
+
+        $user->save();
+        // UserTeam::update([
+        //     'team_name' => $team_name,
+        //     'category' => $category,
+        //     'date_established' => $date,
+        //     'address' => $address,
+        //     'postal_code' => $postal_code,
+        //     'bio' => $bio
+        // ]);
+        return FlashSession::success('user/dashboard', 'Edit Profile successful');
+    }
     // return FlashSession::error(url("hiring-partner"), 'Company Logo is required, please upload your company logo!');
 
 }

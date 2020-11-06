@@ -118,7 +118,7 @@
                         @enderror
                     </div>
                     <div class="form-row">
-                        <label class="pl-3">Tanggal Berdiri :</label>
+                        <label class="pl-3">Date Established :</label>
                         <input type="date" name="date_established" id="date_established" placeholder="Date Established" value="{{ old('date_established') }}">
 
                         @error('date_established')
@@ -387,6 +387,22 @@
 
             }
         });
+    });
+</script>
+
+<script>
+    function decline(index) {
+        $(".booking_type").val('regular');
+        $('.form-booking' + index).submit();
+    }
+
+    function accept(index) {
+        $(".booking_type").val('sparring');
+        $('.form-booking' + index).submit();
+    }
+
+    $(document).ready(function() {
+        $('.msha_toast_close').css('display', 'none');
     });
 </script>
 

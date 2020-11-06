@@ -96,6 +96,62 @@
                 </div>
                 <p class="lead mb-3">{{ Auth::user()->teams->first()->bio }}</p>
 
+                <div class="col-md-4">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#staticBackdrop">
+                        Edit Profile
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Edit Team Profile</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="POST" action="{{url('user/dashboard/edit/')}}">
+                                        @csrf
+                                        <div class="form-group">
+                                            <label for="formGroupExampleInput">Club Name</label>
+                                            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Club Name" name="team_name" value="{{$user->team_name}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputState">Category</label>
+                                            <select id="inputState" class="form-control" name="category">
+                                                <option selected>Choose Category</option>
+                                                <option value="profesional">Profesional</option>
+                                                <option value="amatir">Amatir</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="formGroupExampleInput">Date Established</label>
+                                            <input type="date" class="form-control" id="formGroupExampleInput" placeholder="Established" name="date_established" value="{{$user->date_established}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="formGroupExampleInput2">Address</label>
+                                            <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Address" name="address" value="{{$user->address}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="formGroupExampleInput">Postal Code</label>
+                                            <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Postal Code" name="postal_code" value="{{$user->postal_code}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="formGroupExampleInput2">Bio</label>
+                                            <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Bio" name="bio" value="{{$user->bio}}">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger ml-2 mt-3" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-secondary ml-2 mt-3">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="card mt-5 " style="width: 40rem;">
                     <h5 class="card-header bg-primary text-light">Next Match</h5>
                     <div class="d-flex flex-md-row">
@@ -165,7 +221,7 @@
                                 <p class="lead text-dark">{{ $list->venue_name.' '.$list->field_name }}</p>
                                 <p class="lead text-dark">{{ date('l, d F Y, H:i A ', strtotime($list->date)) }}</p>
                                 <div class="d-flex flex-md-row">
-                                    <button type="button" class="btn bg-secondary ml-0 mt-3" data-toggle="modal" data-target="#{{'requestSparring'.$index}}">
+                                    <button type="button" class="btn btn-secondary ml-0 mt-3" data-toggle="modal" data-target="#{{'requestSparring'.$index}}">
                                         Accept
                                     </button>
                                     <form action="{{ url('user/dashboard/response/sparring/declined') }}" method="POST">
@@ -457,7 +513,7 @@
         <!-- History-->
         <section class="resume-section height: fit-content" id="history">
             <div class="resume-section-content d-flex flex-md-row justify-content-between mb-5">
-                <div class="card mt-0" style="width: fit-content; height: fit-content;">
+                <div class="card mt-0" style="width: 500px; height: fit-content;">
                     <div class="card-header bg-primary" id="history1">
                         <h5 class="text-light">HISTORY</h5>
                     </div>
@@ -643,6 +699,10 @@
             $(".booking_type").val('sparring');
             $('.form-booking' + index).submit();
         }
+
+        $(document).ready(function() {
+            $('.msha_toast_close').css('display', 'none');
+        });
     </script>
 </body>
 
