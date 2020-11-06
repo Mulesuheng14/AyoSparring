@@ -546,8 +546,9 @@
                                                     <label for="Review">Review Team :</label>
                                                     <textarea id="review" name="review" rows="4" cols="50"></textarea>
                                                     <input name="id_booking_list" type="hidden" value="{{ $list->id }}">
-                                                    <input name="id_user_reported" type="hidden" value="{{ $list->user_team_id }}">
-                                                    <input name="id_user_owner" type="hidden" value="{{ $list->user_owner_id }}">
+                                                    <input name="object_type" type="hidden" value="team">
+                                                    <input name="id_user_reported" type="hidden" value="{{ $list->user_sparring_id }}">
+                                                    <input name="id_user_team" type="hidden" value="{{ $list->user_team_id }}">
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button class="btn-secondary" type="submit">Submit</button>
@@ -579,8 +580,8 @@
                                                     <label for="deskripsi">Deskripsi tidak sesuai</label>
                                                     <input name="id_booking_list" type="hidden" value="{{ $list->id }}">
                                                     <input name="object_type" type="hidden" value="team">
-                                                    <input name="id_user_reported" type="hidden" value="{{ $list->user_team_id }}">
-                                                    <input name="id_user_owner" type="hidden" value="{{ $list->user_owner_id }}">
+                                                    <input name="id_user_reported" type="hidden" value="{{ $list->user_sparring_id }}">
+                                                    <input name="id_user_team" type="hidden" value="{{ $list->user_team_id }}">
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button class="btn-secondary" type="submit">Submit</button>

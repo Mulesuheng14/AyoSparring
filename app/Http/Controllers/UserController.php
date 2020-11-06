@@ -231,7 +231,6 @@ class UserController extends Controller
 
     public function review(Request $request, $status)
     {
-
         $currentBookingList = BookingList::where('id', $request->id_booking_list)->where('flag_active', 1)->first();
         if ($currentBookingList == null) {
             return FlashSession::error('user/dashboard', 'Review failed, id booking not found!');
@@ -242,7 +241,7 @@ class UserController extends Controller
             return FlashSession::error('user/dashboard', 'Review failed, id user reported not found!');
         }
 
-        $user_reported = null;
+        $user_reported = $request->id_user_reported;
 
         if ($request->id_user_reported == Auth::user()->id) {
             $user_reported = $request->id_user_owner;
@@ -366,7 +365,7 @@ class UserController extends Controller
     private function historyLists()
     {
         $historyList = DB::table('booking_lists AS b')
-            ->select('b.id', 'uv.user_id AS user_owner_id', 'ut.user_id AS user_team_id', 'ut.team_name', 'ut.bio', 'vf.field_name', 'uv.venue_name', 'b.booking_type', 'b.date', 'b.hour', 'b.duration', 'b.sparring_user', 'tu.team_name AS sparring_name')
+            ->select('b.id', 'uv.user_id AS user_owner_id', 'ut.user_id AS user_team_id', 'tu.user_id AS user_sparring_id', 'ut.team_name', 'ut.bio', 'vf.field_name', 'uv.venue_name', 'b.booking_type', 'b.date', 'b.hour', 'b.duration', 'b.sparring_user', 'tu.team_name AS sparring_name')
             ->leftjoin('user_teams AS ut', 'ut.user_id', '=', 'b.user_id')
             ->leftjoin('user_teams AS tu', 'tu.user_id', '=', 'b.sparring_user')
             ->leftjoin('venue_fields AS vf', 'vf.id', '=', 'b.venue_field_id')
