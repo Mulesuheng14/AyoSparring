@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Ayo Sparring - Register</title>
+    <title>Ayosparring - Register</title>
 
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">

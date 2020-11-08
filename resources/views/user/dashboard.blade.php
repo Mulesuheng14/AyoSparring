@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Ayo Sparring - User</title>
+    <title>Ayosparring - User</title>
     <link rel="icon" href="{{ asset('assets/img/icon2.ico') }}" type="image/gif">
 
     <!-- Google fonts-->

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Ayo Sparring - Login</title>
+    <title>Ayosparring - Login</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -29,30 +29,37 @@
     <!-- Mine CSS  -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/utillogin.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/mainlogin.css') }}">
-    
+
     <style>
-        .not-allowed {cursor: not-allowed;}
+        .not-allowed {
+            cursor: not-allowed;
+        }
+
         button:disabled {
             cursor: not-allowed !important;
             pointer-events: all !important;
-        }  
+        }
+
         input:disabled {
             cursor: not-allowed !important;
             pointer-events: all !important;
         }
+
         button[disabled] {
             cursor: not-allowed !important;
             pointer-events: all !important;
-        }  
+        }
+
         input[disabled] {
             cursor: not-allowed !important;
             pointer-events: all !important;
         }
+
         .error {
             color: rgb(0, 0, 0) !important;
         }
     </style>
-    
+
 </head>
 
 <body style="background-color: #666666;">
@@ -65,7 +72,7 @@
             <div class="wrap-login100">
                 <form class="login100-form validate-form" id="form" action="{{ url('login') }}" method="POST">
                     @csrf
-                    
+
                     <span class="login100-form-title p-b-43">
                         Sign In
                     </span>
@@ -77,7 +84,7 @@
                     </div>
 
                     @error('email')
-                        <i><small class="text-danger">{{ $message }}</small></i>
+                    <i><small class="text-danger">{{ $message }}</small></i>
                     @enderror
 
                     <div class="wrap-input100 validate-input">
@@ -87,9 +94,9 @@
                     </div>
 
                     @error('password')
-                        <i><small class="text-danger">{{ $message }}</small></i>
+                    <i><small class="text-danger">{{ $message }}</small></i>
                     @enderror
-                    
+
                     <div class="container-login100-form-btn mt-5">
                         <button type="button" id="login-button" class="login100-form-btn">
                             Login
@@ -103,7 +110,7 @@
                     </div>
                 </form>
 
-                <div class="login100-more" style="background-image: url({{ url('assets/img/hero-bg.jpg') }});">
+                <div class="login100-more" style="background-image: url({{url('assets/img/hero-bg.jpg')}});">
                 </div>
             </div>
         </div>
@@ -142,14 +149,13 @@
     <script type="text/javascript" src="{{ asset('assets/js/flashsession.js') }}"></script>
 
     <script>
-        $(document).ready(function()
-        {
+        $(document).ready(function() {
             $("#login-button").click(function() {
-                if(form.valid()) {
+                if (form.valid()) {
                     form.submit();
                 }
             });
-    
+
             var form = $("#form");
             form.validate({
                 focusInvalid: false,
@@ -174,36 +180,35 @@
                     },
                 },
                 errorElement: "em",
-                errorPlacement: function (error, element) {
+                errorPlacement: function(error, element) {
                     error.addClass("invalid-feedback");
-    
+
                     if (element.prop("type") === "checkbox") {
                         error.insertAfter(element.next("label"));
-                    }
-                    else {
+                    } else {
                         error.insertAfter(element);
                     }
                 },
-                highlight: function (element, errorClass, validClass) {
+                highlight: function(element, errorClass, validClass) {
                     $(element).addClass("is-invalid").removeClass("is-valid");
                 },
-                unhighlight: function (element, errorClass, validClass) {
+                unhighlight: function(element, errorClass, validClass) {
                     $(element).addClass("is-valid").removeClass("is-invalid");
                 },
                 invalidHandler: function(form, validator) {
-                    
+
                     if (!validator.numberOfInvalids())
                         return;
-                    
+
                     $('html, body').animate({
                         scrollTop: $(validator.errorList[0].element).offset().top - 150
                     }, 1000);
-                    
+
                 }
             });
         });
     </script>
-    
+
 </body>
 
 </html>
